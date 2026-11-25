@@ -42,17 +42,21 @@
           <div class="view-toolbar">
             <div class="breadcrumb"><span id="model-title">No model</span><span class="crumb-slash">/</span><span id="selected-crumb">View</span></div>
             <div class="view-actions">
-              <button id="fit-view" class="tool-button" disabled title="Fit model in view"><svg viewBox="0 0 24 24"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></svg><span>Fit</span></button>
-              <span class="tool-divider"></span>
-              <button id="reset-view" class="tool-button" disabled title="Reset camera"><svg viewBox="0 0 24 24"><path d="M4.5 11a7.5 7.5 0 1 1 .9 4.3M4.5 5.5V11H10"/></svg><span>Reset</span></button>
-              <span class="tool-divider"></span>
-              <button id="show-all" class="tool-button" disabled title="Show every structure"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Show all</span></button>
-              <span class="tool-divider"></span>
-              <button id="toggle-animation" class="tool-button animation-tool" disabled title="Play the heart cycle" aria-label="Play the heart cycle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Play beat</span></button>
-              <button id="toggle-conduction" class="tool-button conduction-tool" disabled title="Show cardiac conduction overlay" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.2-5 4.2 10 2.1-5H21"/><circle cx="9.2" cy="7" r="1"/><circle cx="15.5" cy="12" r="1"/></svg><span>Conduction</span></button>
-              <button id="toggle-depolarization" class="tool-button depolarization-tool" disabled title="Show cardiac depolarization overlay" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.5-8 5-11 8-11s5.5 3 8 11"/><path d="M4 20h16"/><path d="M12 5V2.5"/></svg><span>Depolarization</span></button>
-              <button id="toggle-ecg" class="tool-button ecg-tool" disabled title="Show limb electrode guides in 3D" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M2.5 12h4l2.1-5 3.1 10 2.4-7 1.6 2h5.8"/></svg><span>ECG guides</span></button>
-              <button id="focus-heart" class="tool-button heart-tool" disabled title="Show heart structures"><svg viewBox="0 0 24 24"><path d="M20.4 5.9a5 5 0 0 0-7.1 0L12 7.2l-1.3-1.3a5 5 0 0 0-7.1 7.1l8.4 8.1 8.4-8.1a5 5 0 0 0 0-7.1Z"/><path d="M4.2 12h4l1.7-3.1 3 6.2 1.9-3.1h5"/></svg><span>Heart focus</span></button>
+              <button id="focus-heart" class="tool-button heart-tool" disabled hidden title="Show heart structures"><svg viewBox="0 0 24 24"><path d="M20.4 5.9a5 5 0 0 0-7.1 0L12 7.2l-1.3-1.3a5 5 0 0 0-7.1 7.1l8.4 8.1 8.4-8.1a5 5 0 0 0 0-7.1Z"/><path d="M4.2 12h4l1.7-3.1 3 6.2 1.9-3.1h5"/></svg><span>Heart focus</span></button>
+              <div class="controls-menu-wrap">
+                <button id="controls-menu-toggle" class="tool-button controls-menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="controls-menu"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg><span id="controls-menu-label">View controls</span></button>
+                <div id="controls-menu" class="controls-menu" hidden>
+                  <button id="fit-view" class="tool-button" disabled title="Fit model in view"><svg viewBox="0 0 24 24"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/></svg><span>Fit</span></button>
+                  <button id="reset-view" class="tool-button" disabled title="Reset camera"><svg viewBox="0 0 24 24"><path d="M4.5 11a7.5 7.5 0 1 1 .9 4.3M4.5 5.5V11H10"/></svg><span>Reset</span></button>
+                  <button id="show-all" class="tool-button" disabled title="Show every structure"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Show all</span></button>
+                  <button id="toggle-animation" class="tool-button animation-tool" disabled title="Play the heart cycle" aria-label="Play the heart cycle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Play beat</span></button>
+                  <button id="toggle-conduction" class="tool-button conduction-tool" disabled title="Show cardiac conduction overlay" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.2-5 4.2 10 2.1-5H21"/><circle cx="9.2" cy="7" r="1"/><circle cx="15.5" cy="12" r="1"/></svg><span>Conduction</span></button>
+                  <button id="toggle-depolarization" class="tool-button depolarization-tool" disabled title="Show cardiac depolarization overlay" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.5-8 5-11 8-11s5.5 3 8 11"/><path d="M4 20h16"/><path d="M12 5V2.5"/></svg><span>Depolarization</span></button>
+                  <button id="toggle-ecg" class="tool-button ecg-tool" disabled title="Show limb electrode guides in 3D" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M2.5 12h4l2.1-5 3.1 10 2.4-7 1.6 2h5.8"/></svg><span>ECG guides</span></button>
+                  <span class="controls-menu-divider"></span>
+                  <button id="low-power-mode" class="tool-button low-power-tool" type="button" aria-pressed="false" title="Reduce rendering resolution for lower-power hardware"><svg viewBox="0 0 24 24"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg><span>Low power</span></button>
+                </div>
+              </div>
             </div>
           </div>
           <div id="viewport-wrap" class="viewport-wrap">

@@ -39,6 +39,11 @@ const ui = {
   isolate: el('isolate-selected'),
   toggle: el('toggle-selected'),
   toast: el('toast'),
+  controlsMenuToggle: el('controls-menu-toggle'),
+  controlsMenuLabel: el('controls-menu-label'),
+  controlsMenu: el('controls-menu'),
+  lowPowerMode: el('low-power-mode'),
+  focusHeart: el('focus-heart'),
   animation: el('toggle-animation'),
   conduction: el('toggle-conduction'),
   depolarization: el('toggle-depolarization'),
@@ -46,8 +51,11 @@ const ui = {
 };
 
 const canvas = el('viewport');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+const LOW_POWER_MODE_STORAGE_KEY = 'forme-low-power-mode-v1';
+let lowPowerMode = false;
+try { lowPowerMode = localStorage.getItem(LOW_POWER_MODE_STORAGE_KEY) === 'true'; } catch { /* Use full quality when browser storage is unavailable. */ }
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPowerMode, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(lowPowerMode ? Math.min(window.devicePixelRatio || 1, 1) : Math.min(window.devicePixelRatio || 1, 1.75));
 renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;
@@ -221,6 +229,7 @@ let depolarizationShell = null;
 let depolarizationMeshPairs = [];
 let lastDepolarizationPhase = -1;
 let previousFrameTime = performance.now();
+let renderRequest = 0;
 const heartMaterials = new Map();
 const originalHeartTextures = new Map();
 let conductionNodeGeometryPromise;
@@ -229,6 +238,25 @@ let ecgLandmarksPromise;
 const depolarizationResting = new THREE.Color('#167bd4');
 const depolarizationActive = new THREE.Color('#ec253e');
 const depolarizationFront = new THREE.Color('#ffe052');
+
+function requestRender() {
+  if (renderRequest || document.hidden) return;
+  renderRequest = requestAnimationFrame(render);
+}
+
+function applyLowPowerMode() {
+  renderer.setPixelRatio(lowPowerMode
+    ? Math.min(window.devicePixelRatio || 1, 1)
+    : Math.min(window.devicePixelRatio || 1, 1.75));
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  if (width && height) renderer.setSize(width, height, false);
+  ui.lowPowerMode.setAttribute('aria-pressed', String(lowPowerMode));
+  ui.lowPowerMode.title = lowPowerMode
+    ? 'Low power rendering is on; disable it for higher resolution'
+    : 'Reduce rendering resolution for lower-power hardware';
+  requestRender();
+}
 // Approximate adult cardiac activation timing for this educational map.
 // Calibrate model units to an adult heart height instead of assuming the GLB's scale.
 const REFERENCE_HEART_HEIGHT_METERS = 0.12;
@@ -351,19 +379,33 @@ function createECGLeadOverlay(root, landmarks) {
   const guideRadius = Math.max(labelHeight * 0.07, 0.012);
   const addGuide = (start, end, color, name) => {
     const delta = end.clone().sub(start);
+    const guideLength = Math.max(delta.length(), 1e-6);
+    const material = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.88, depthTest: false, depthWrite: false, toneMapped: false });
+    // Fade the chest rays into the myocardial contact point so they read as
+    // surface guides instead of hard lines drawn across the heart.
+    material.onBeforeCompile = (shader) => {
+      shader.uniforms.guideFadeLength = { value: guideLength };
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nuniform float guideFadeLength;\nvarying float vGuideFade;')
+        .replace('#include <begin_vertex>', '#include <begin_vertex>\nvGuideFade = smoothstep(-guideFadeLength, -guideFadeLength * 0.58, position.y);');
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', '#include <common>\nvarying float vGuideFade;')
+        .replace('#include <color_fragment>', '#include <color_fragment>\ndiffuseColor.a *= vGuideFade;');
+    };
+    material.customProgramCacheKey = () => 'ecg-chest-guide-surface-fade-v1';
     const guide = new THREE.Mesh(
-      new THREE.CylinderGeometry(guideRadius, guideRadius, delta.length(), 8),
-      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.88, depthTest: false, depthWrite: false, toneMapped: false }),
+      new THREE.CylinderGeometry(guideRadius, guideRadius, guideLength, 8),
+      material,
     );
     // Anchor the cylinder at the electrode label: its local -Y end points
     // inward, so animation can change only its length without moving it.
-    guide.geometry.translate(0, -delta.length() * 0.5, 0);
+    guide.geometry.translate(0, -guideLength * 0.5, 0);
     guide.position.copy(end);
     guide.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
     guide.name = name;
     guide.renderOrder = 8;
     group.add(guide);
-    return { guide, baseLength: Math.max(delta.length(), 1e-6) };
+    return { guide, baseLength: guideLength };
   };
   const label = (name, end, type, accent = '#82c9ca') => {
     const labelCanvas = document.createElement('canvas');
@@ -1926,6 +1968,10 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   animationAction = null;
   animationPlaying = false;
   activeHeartRoot = heartRoot;
+  ui.focusHeart.hidden = !heartRoot;
+  ui.controlsMenuLabel.textContent = heartRoot ? 'Heart controls' : 'View controls';
+  ui.controlsMenu.hidden = true;
+  ui.controlsMenuToggle.setAttribute('aria-expanded', 'false');
   activeHeartModelId = heartModelId;
   loadedLibraryModels = catalogModels;
   ecgTorsoContextPromise = null;
@@ -2003,6 +2049,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   setStatus(`${modelCount} model${modelCount === 1 ? '' : 's'} loaded`);
   showToast(`Loaded ${displayName}.`);
   modelGroup.userData.blobUrls = blobUrls;
+  requestRender();
 }
 
 async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
@@ -2220,6 +2267,7 @@ async function appendLibraryModelsToScene(models) {
     if (selectedNode) updateInspector(selectedNode);
     setStatus(`${loadedLibraryModels.length} models loaded`);
     showToast(`Added ${additions.map((model) => model.system).join(' and ')} for ECG placement.`);
+    requestRender();
     return true;
   } catch (error) {
     for (const { root, blobUrls } of prepared) {
@@ -2308,19 +2356,26 @@ function resize() {
   renderer.setSize(width, height, false);
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
+  requestRender();
 }
 
 function render(frameTime = performance.now()) {
-  requestAnimationFrame(render);
+  renderRequest = 0;
+  if (document.hidden) return;
   controls.update();
   const delta = Math.min(Math.max((frameTime - previousFrameTime) / 1000, 0), 0.05);
   previousFrameTime = frameTime;
-  mixer?.update(delta);
+  if (animationPlaying) mixer?.update(delta);
   if (ecgLeadOverlay?.visible) ecgLeadOverlay.userData.updateAnimatedSurfaceGuides?.();
   updateConductionOverlay(delta);
   updateSelectionHighlight();
   renderer.render(scene, camera);
+  const cycleOverlayActive = conductionOverlay?.visible || depolarizationShell?.visible;
+  const overlayUsesWallClock = !animationAction && cycleOverlayActive;
+  if (animationPlaying || overlayUsesWallClock) requestRender();
 }
+
+controls.addEventListener('change', requestRender);
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
@@ -2349,6 +2404,26 @@ canvas.addEventListener('pointerup', (event) => {
 
 ui.input.addEventListener('change', async () => { await loadFiles(ui.input.files); ui.input.value = ''; });
 ui.libraryLoad.addEventListener('click', () => loadSelectedLibraryModels());
+ui.controlsMenuToggle.addEventListener('click', () => {
+  const open = ui.controlsMenu.hidden;
+  ui.controlsMenu.hidden = !open;
+  ui.controlsMenuToggle.setAttribute('aria-expanded', String(open));
+});
+ui.controlsMenu.addEventListener('click', (event) => {
+  if (event.target.closest('button:not(:disabled)')) {
+    ui.controlsMenu.hidden = true;
+    ui.controlsMenuToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+ui.lowPowerMode.setAttribute('aria-pressed', String(lowPowerMode));
+ui.lowPowerMode.addEventListener('click', () => {
+  lowPowerMode = !lowPowerMode;
+  try { localStorage.setItem(LOW_POWER_MODE_STORAGE_KEY, String(lowPowerMode)); } catch { /* The setting remains active for this session. */ }
+  applyLowPowerMode();
+  showToast(lowPowerMode
+    ? 'Low power rendering is on. Antialiasing updates after reload.'
+    : 'Higher rendering resolution is on. Antialiasing updates after reload.');
+});
 ui.emptyModelLoad.addEventListener('click', () => {
   const selected = libraryModels.find((model) => model.id === ui.emptyModelPicker.value);
   if (selected) loadSelectedLibraryModels([selected]);
@@ -2377,6 +2452,7 @@ ui.ecg.addEventListener('click', async () => {
   if (!active) {
     if (ecgLeadOverlay) ecgLeadOverlay.visible = false;
     ui.ecg.setAttribute('aria-pressed', 'false');
+    requestRender();
     return;
   }
   if (!ecgLeadOverlay || !activeHeartRoot) return;
@@ -2404,6 +2480,7 @@ ui.ecg.addEventListener('click', async () => {
     if (ecgLeadOverlay) ecgLeadOverlay.visible = true;
     ui.ecg.setAttribute('aria-pressed', 'true');
     focusHeart({ frontView: true, distanceScale: 1.45 });
+    requestRender();
   } finally {
     ui.ecg.disabled = !ecgLeadOverlay;
   }
@@ -2439,6 +2516,31 @@ document.addEventListener('keydown', (event) => {
   if (event.key.toLowerCase() === 'r' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) resetCamera();
 });
 const workspace = document.querySelector('.workspace');
+for (const eventName of ['click', 'input', 'change', 'pointerup', 'keydown']) {
+  workspace.addEventListener(eventName, requestRender);
+}
+const controlsMenuWrap = ui.controlsMenuToggle.parentElement;
+document.addEventListener('pointerdown', (event) => {
+  if (!controlsMenuWrap.contains(event.target)) {
+    ui.controlsMenu.hidden = true;
+    ui.controlsMenuToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !ui.controlsMenu.hidden) {
+    ui.controlsMenu.hidden = true;
+    ui.controlsMenuToggle.setAttribute('aria-expanded', 'false');
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (renderRequest) cancelAnimationFrame(renderRequest);
+    renderRequest = 0;
+    return;
+  }
+  previousFrameTime = performance.now();
+  requestRender();
+});
 function setSidebarCollapsed(side, collapsed) {
   const isLeft = side === 'left';
   const className = isLeft ? 'tree-collapsed' : 'inspector-collapsed';
@@ -2467,5 +2569,5 @@ try {
   setStatus(error.message);
 }
 resize();
-render();
+requestRender();
 if (wasm) loadBundledHeart();
