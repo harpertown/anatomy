@@ -217,6 +217,7 @@ let loadedRoot = null;
 let modelFileName = '';
 let allNodes = [];
 let selectedNode = null;
+let selectedLead = null;
 let selectionBox = null;
 let selectionHighlightSources = [];
 let toastTimer = 0;
@@ -273,6 +274,132 @@ function applyLowPowerMode() {
 // Calibrate model units to an adult heart height instead of assuming the GLB's scale.
 const REFERENCE_HEART_HEIGHT_METERS = 0.12;
 const ECG_LABEL_RENDER_ORDER = 1000;
+const ECG_LEAD_DETAILS = {
+  I: {
+    kind: 'Bipolar limb lead',
+    sections: [
+      ['What it measures', 'The voltage at the left arm electrode (LA) compared with the right arm electrode (RA): LA − RA.'],
+      ['Electrical view', 'Its positive direction runs from the right arm toward the left arm. Lead I gives a leftward, generally lateral view of the heart’s electrical activity.'],
+      ['How to read it', 'The trace is a projection of the heart’s combined electrical activity along this axis; it does not isolate one structure.'],
+    ],
+  },
+  II: {
+    kind: 'Bipolar limb lead',
+    sections: [
+      ['What it measures', 'The voltage at the left leg electrode (LL) compared with the right arm electrode (RA): LL − RA.'],
+      ['Electrical view', 'Its positive direction points down and left toward LL, giving an inferior view of cardiac activity.'],
+      ['How to read it', 'Lead II is commonly used to follow rhythm because atrial and ventricular activity often project clearly along this axis.'],
+    ],
+  },
+  III: {
+    kind: 'Bipolar limb lead',
+    sections: [
+      ['What it measures', 'The voltage at the left leg electrode (LL) compared with the left arm electrode (LA): LL − LA.'],
+      ['Electrical view', 'Its positive direction runs from the left arm down toward the left leg, providing another inferior view.'],
+      ['How to read it', 'Lead III records a directional projection of total cardiac activity; it complements leads I and II.'],
+    ],
+  },
+  aVR: {
+    kind: 'Augmented unipolar limb lead',
+    sections: [
+      ['What it measures', 'The right arm voltage compared with the average of the left arm and left leg: RA − (LA + LL) / 2.'],
+      ['Electrical view', 'The positive viewpoint is toward the right shoulder. Normal depolarization often travels away from this viewpoint, so much of the QRS is commonly negative.'],
+      ['How it is derived', 'The augmented reference is the average of the other two limb electrodes. The right leg electrode (RL) is ground and is not part of this equation.'],
+    ],
+  },
+  aVL: {
+    kind: 'Augmented unipolar limb lead',
+    sections: [
+      ['What it measures', 'The left arm voltage compared with the average of the right arm and left leg: LA − (RA + LL) / 2.'],
+      ['Electrical view', 'The positive viewpoint is toward the left shoulder, giving a high-lateral view of cardiac activity.'],
+      ['How it is derived', 'The augmented reference is the average of the other two limb electrodes. The right leg electrode (RL) is ground and is not part of this equation.'],
+    ],
+  },
+  aVF: {
+    kind: 'Augmented unipolar limb lead',
+    sections: [
+      ['What it measures', 'The left leg voltage compared with the average of the right arm and left arm: LL − (RA + LA) / 2.'],
+      ['Electrical view', 'The positive viewpoint is from below the heart, giving an inferior view of cardiac activity.'],
+      ['How it is derived', 'The augmented reference is the average of the other two limb electrodes. The right leg electrode (RL) is ground and is not part of this equation.'],
+    ],
+  },
+  V1: {
+    kind: 'Unipolar precordial lead',
+    sections: [
+      ['What it measures', 'The voltage at chest electrode V1 compared with the Wilson central terminal, the average of RA, LA, and LL.'],
+      ['Electrical view', 'V1 views cardiac activity from the right anterior chest and is particularly useful for right-sided and septal projections.'],
+      ['Placement landmark', 'Standard placement is the fourth intercostal space at the right sternal border.'],
+    ],
+  },
+  V2: {
+    kind: 'Unipolar precordial lead',
+    sections: [
+      ['What it measures', 'The voltage at chest electrode V2 compared with the Wilson central terminal, the average of RA, LA, and LL.'],
+      ['Electrical view', 'V2 views cardiac activity from the left anterior chest, contributing a septal and anterior perspective.'],
+      ['Placement landmark', 'Standard placement is the fourth intercostal space at the left sternal border.'],
+    ],
+  },
+  V3: {
+    kind: 'Unipolar precordial lead',
+    sections: [
+      ['What it measures', 'The voltage at chest electrode V3 compared with the Wilson central terminal, the average of RA, LA, and LL.'],
+      ['Electrical view', 'V3 provides an anterior view between the more septal V2 and the anterior V4.'],
+      ['Placement landmark', 'Standard placement is midway between V2 and V4.'],
+    ],
+  },
+  V4: {
+    kind: 'Unipolar precordial lead',
+    sections: [
+      ['What it measures', 'The voltage at chest electrode V4 compared with the Wilson central terminal, the average of RA, LA, and LL.'],
+      ['Electrical view', 'V4 provides an anterior view near the cardiac apex.'],
+      ['Placement landmark', 'Standard placement is the fifth intercostal space at the left midclavicular line.'],
+    ],
+  },
+  V5: {
+    kind: 'Unipolar precordial lead',
+    sections: [
+      ['What it measures', 'The voltage at chest electrode V5 compared with the Wilson central terminal, the average of RA, LA, and LL.'],
+      ['Electrical view', 'V5 provides a left lateral view and is interpreted together with the other precordial leads.'],
+      ['Placement landmark', 'Standard placement is level with V4 at the left anterior axillary line.'],
+    ],
+  },
+  V6: {
+    kind: 'Unipolar precordial lead',
+    sections: [
+      ['What it measures', 'The voltage at chest electrode V6 compared with the Wilson central terminal, the average of RA, LA, and LL.'],
+      ['Electrical view', 'V6 provides the most lateral view of the standard precordial leads.'],
+      ['Placement landmark', 'Standard placement is level with V4 and V5 at the left midaxillary line.'],
+    ],
+  },
+  RA: {
+    kind: 'Limb electrode',
+    sections: [
+      ['Role', 'The right arm electrode is an active measurement electrode in the bipolar and augmented limb leads.'],
+      ['Used by', 'It is the negative pole for leads I and II, the positive viewpoint for aVR, and part of the Wilson central terminal used by V1–V6.'],
+    ],
+  },
+  LA: {
+    kind: 'Limb electrode',
+    sections: [
+      ['Role', 'The left arm electrode contributes to the limb-lead measurements.'],
+      ['Used by', 'It is the positive pole for lead I, the negative pole for lead III, the positive viewpoint for aVL, and part of the references for the other augmented and precordial leads.'],
+    ],
+  },
+  LL: {
+    kind: 'Limb electrode',
+    sections: [
+      ['Role', 'The left leg electrode contributes to the limb-lead measurements.'],
+      ['Used by', 'It is the positive pole for leads II and III, the positive viewpoint for aVF, and part of the references for the other augmented and precordial leads.'],
+    ],
+  },
+  RL: {
+    kind: 'Ground electrode',
+    sections: [
+      ['Role', 'The right leg electrode provides the ECG system ground and helps reduce common-mode electrical interference.'],
+      ['Lead calculations', 'RL is not one of the ten signal electrodes used to calculate the standard 12 lead views.'],
+    ],
+  },
+};
 const MYOCARDIAL_PART_NAMES = /left atrium|left auricle|interventricular septum|fine apical trabeculations|wall of left ventricle|right atrium|right auricle|wall of right ventricle|coarse apical trabeculations|lateral wall of right atrium|posterolateral wall of left atrium|posterolateral wall of left ventricle|anterolateral wall of right ventricle|pectinate muscles/i;
 const ATRIAL_BUNDLE_SPEED_M_S = 1.0;
 const ATRIAL_MYOCARDIUM_SPEED_M_S = 0.4;
@@ -451,6 +578,7 @@ function createECGLeadOverlay(root, landmarks) {
     sprite.position.copy(end);
     sprite.scale.set(labelHeight * 6.6, labelHeight * 3.3, 1);
     sprite.renderOrder = ECG_LABEL_RENDER_ORDER;
+    sprite.userData.ecgLeadName = name;
     group.add(sprite);
   };
   // Use skin-projected RA/LA sites over the trapezoid ligaments and lower-torso RL/LL sites.
@@ -517,6 +645,7 @@ function createECGLeadOverlay(root, landmarks) {
     leadLabel.scale.set(labelHeight * 6.6, labelHeight * 3.3, 1);
     leadLabel.renderOrder = ECG_LABEL_RENDER_ORDER;
     leadLabel.name = `Derived limb lead label ${name}`;
+    leadLabel.userData.ecgLeadName = name;
     group.add(leadLabel);
   };
   if (limbPositions.RA && limbPositions.LA && limbPositions.LL) {
@@ -1712,6 +1841,7 @@ function updateSelectionHighlight() {
 
 function selectNode(object) {
   selectedNode = object;
+  selectedLead = null;
   clearSelectionHighlight();
   selectionBox = new THREE.Group();
   selectionBox.name = 'Selected mesh surface highlight';
@@ -1766,8 +1896,18 @@ function selectNode(object) {
   renderTree(ui.search.value);
 }
 
+function selectECGLead(name) {
+  if (!ECG_LEAD_DETAILS[name]) return;
+  selectedNode = null;
+  selectedLead = name;
+  clearSelectionHighlight();
+  updateInspector(null);
+  renderTree(ui.search.value);
+}
+
 function deselectNode() {
   selectedNode = null;
+  selectedLead = null;
   clearSelectionHighlight();
   updateInspector(null);
   renderTree(ui.search.value);
@@ -1775,6 +1915,11 @@ function deselectNode() {
 
 function updateInspector(object) {
   if (!object) {
+    if (selectedLead) {
+      renderECGLeadInspector(selectedLead);
+      return;
+    }
+    ui.inspectorContent.classList.remove('lead-inspector');
     ui.inspectorEmpty.hidden = false;
     ui.inspectorContent.hidden = true;
     ui.selectedCrumb.textContent = 'View';
@@ -1783,6 +1928,7 @@ function updateInspector(object) {
     ui.toggle.disabled = true;
     return;
   }
+  ui.inspectorContent.classList.remove('lead-inspector');
   ui.inspectorEmpty.hidden = true;
   ui.inspectorContent.hidden = false;
   const entry = allNodes.find((item) => item.object === object);
@@ -1804,6 +1950,42 @@ function updateInspector(object) {
   ui.selectedCrumb.textContent = name;
   el('hud-structure').textContent = name;
   ui.hud.hidden = false;
+}
+
+function renderECGLeadInspector(name) {
+  const detail = ECG_LEAD_DETAILS[name];
+  if (!detail) return;
+  ui.inspectorEmpty.hidden = true;
+  ui.inspectorContent.hidden = false;
+  ui.inspectorContent.classList.add('lead-inspector');
+  ui.selectedName.textContent = `Lead ${name}`;
+  ui.selectedType.textContent = detail.kind;
+  ui.selectedId.textContent = '';
+  ui.selectedId.title = '';
+  ui.selectedPath.textContent = 'Standard 12-lead ECG · Electrical viewpoint';
+  ui.geometry.textContent = '—';
+  ui.triangles.textContent = '—';
+  ui.materials.textContent = '—';
+  ui.isolate.disabled = true;
+  ui.toggle.disabled = true;
+  ui.selectedCrumb.textContent = `Lead ${name}`;
+  el('hud-structure').textContent = `Lead ${name}`;
+  ui.hud.hidden = false;
+
+  const container = el('structure-description');
+  container.replaceChildren();
+  container.hidden = false;
+  for (const [sectionTitle, sectionText] of detail.sections) {
+    const section = document.createElement('section');
+    section.className = 'description-section';
+    const heading = document.createElement('h4');
+    heading.textContent = sectionTitle;
+    const text = document.createElement('p');
+    text.className = 'description-text';
+    text.textContent = sectionText;
+    section.append(heading, text);
+    container.append(section);
+  }
 }
 
 function renderStructureDescription(object, entry, name) {
@@ -2183,6 +2365,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   nodeMap = new Map(allNodes.map((entry) => [entry.id, entry.object]));
   collapsedGroups = new Set(allNodes.filter((entry) => !entry.isMesh && entry.object.children.length > 0).map((entry) => entry.id));
   selectedNode = null;
+  selectedLead = null;
   updateInspector(null);
   fitModel(loadedRoot);
   freezeStaticModelTransforms(loadedRoot);
@@ -2618,6 +2801,14 @@ canvas.addEventListener('pointerup', (event) => {
   const rect = canvas.getBoundingClientRect();
   pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
+  if (ecgLeadOverlay?.visible) {
+    const leadLabelHit = raycaster.intersectObject(ecgLeadOverlay, true)
+      .find((hit) => hit.object.userData?.ecgLeadName);
+    if (leadLabelHit) {
+      selectECGLead(leadLabelHit.object.userData.ecgLeadName);
+      return;
+    }
+  }
   const visibleHit = findNearestStructureHit();
   if (visibleHit) selectNode(visibleHit.object);
   else deselectNode();
@@ -2770,7 +2961,7 @@ viewport.addEventListener('dragleave', () => viewport.classList.remove('dragging
 viewport.addEventListener('drop', async (event) => { event.preventDefault(); viewport.classList.remove('dragging'); await loadFiles(event.dataTransfer?.files); });
 document.addEventListener('keydown', (event) => {
   if (event.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) { event.preventDefault(); ui.search.focus(); }
-  if (event.key === 'Escape') { ui.search.value = ''; renderTree(''); if (selectedNode) { selectedNode = null; clearSelectionHighlight(); updateInspector(null); renderTree(''); } }
+  if (event.key === 'Escape') { ui.search.value = ''; renderTree(''); if (selectedNode || selectedLead) deselectNode(); }
   if (event.key.toLowerCase() === 'r' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) resetCamera();
 });
 const workspace = document.querySelector('.workspace');

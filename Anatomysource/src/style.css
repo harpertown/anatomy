@@ -219,6 +219,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .property-list strong { color: #d1d7d2; font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; }
 .selection-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .selection-actions .button { min-width: 0; padding-right: 7px; padding-left: 7px; }
+.lead-inspector .selection-actions, .lead-inspector .property-list { display: none; }
+.lead-inspector .selected-path { margin-top: 5px; }
 .structure-description { margin-top: 19px; padding-top: 15px; border-top: 1px solid var(--line-soft); }
 .structure-description[hidden] { display: none; }
 .description-section + .description-section { margin-top: 14px; }
