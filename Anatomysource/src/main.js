@@ -191,6 +191,10 @@ scene.add(grid);
 
 let wasm;
 let modelGroup = null;
+let activeHeartRoot = null;
+let activeHeartModelId = '';
+let ecgTorsoContextPromise = null;
+let ecgTorsoContextEligible = false;
 let loadedRoot = null;
 let modelFileName = '';
 let allNodes = [];
@@ -200,6 +204,7 @@ let selectionHighlightSources = [];
 let toastTimer = 0;
 let nodeMap = new Map();
 let libraryModels = [];
+let loadedLibraryModels = [];
 let collapsedGroups = new Set();
 let mixer = null;
 let activeAnimationRoot = null;
@@ -227,6 +232,7 @@ const depolarizationFront = new THREE.Color('#ffe052');
 // Approximate adult cardiac activation timing for this educational map.
 // Calibrate model units to an adult heart height instead of assuming the GLB's scale.
 const REFERENCE_HEART_HEIGHT_METERS = 0.12;
+const ECG_LABEL_RENDER_ORDER = 1000;
 const MYOCARDIAL_PART_NAMES = /left atrium|left auricle|interventricular septum|fine apical trabeculations|wall of left ventricle|right atrium|right auricle|wall of right ventricle|coarse apical trabeculations|lateral wall of right atrium|posterolateral wall of left atrium|posterolateral wall of left ventricle|anterolateral wall of right ventricle|pectinate muscles/i;
 const ATRIAL_BUNDLE_SPEED_M_S = 1.0;
 const ATRIAL_MYOCARDIUM_SPEED_M_S = 0.4;
@@ -257,6 +263,46 @@ async function loadECGLandmarks(modelId) {
   const data = await ecgLandmarksPromise;
   const sexModel = modelId?.startsWith('female-2024') ? 'female' : 'male';
   return data.models?.[sexModel] || null;
+}
+
+async function loadECGTorsoContext(modelId) {
+  if (!modelId?.endsWith('-heart')) return null;
+  const sexModel = modelId.startsWith('female-2024') ? 'female' : 'male';
+  const response = await fetch(`/models/catalog/${sexModel}-2024-integumentary-system.glb`);
+  if (!response.ok) throw new Error('The matching torso skin model is unavailable.');
+  const gltf = await new GLTFLoader().parseAsync(await response.arrayBuffer(), `${window.location.origin}/models/catalog/`);
+  const sourceRoot = gltf.scene;
+  sourceRoot.updateMatrixWorld(true);
+  const context = new THREE.Group();
+  context.name = 'ECG torso skin context';
+  context.userData.excludeFromDepolarizationShell = true;
+  const skinName = /^(Skin \((?:Thorax|Back|Abdomen|Neck|Shoulder|(?:Superior|Inferior) (?:Medial|Lateral) Quadrant of Breast);)/i;
+  sourceRoot.traverse((object) => {
+    if (!object.isMesh) return;
+    const name = object.userData?.formeDisplayName || object.name || '';
+    if (!skinName.test(name)) return;
+    const geometry = object.geometry.clone();
+    // Both app GLBs are authored in the same model coordinate space. Keep
+    // this geometry in that local space; modelGroup applies the viewer fit.
+    geometry.applyMatrix4(object.matrixWorld);
+    const skin = new THREE.Mesh(
+      geometry,
+      new THREE.MeshBasicMaterial({
+        color: '#a9c1c7',
+        transparent: true,
+        opacity: 0.13,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    );
+    skin.name = `ECG placement context · ${name}`;
+    skin.userData.excludeFromDepolarizationShell = true;
+    skin.raycast = () => {};
+    skin.renderOrder = 1;
+    context.add(skin);
+  });
+  return context.children.length ? context : null;
 }
 
 function getMyocardialBounds(root) {
@@ -309,11 +355,15 @@ function createECGLeadOverlay(root, landmarks) {
       new THREE.CylinderGeometry(guideRadius, guideRadius, delta.length(), 8),
       new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.88, depthTest: false, depthWrite: false, toneMapped: false }),
     );
-    guide.position.copy(start).add(end).multiplyScalar(0.5);
+    // Anchor the cylinder at the electrode label: its local -Y end points
+    // inward, so animation can change only its length without moving it.
+    guide.geometry.translate(0, -delta.length() * 0.5, 0);
+    guide.position.copy(end);
     guide.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
     guide.name = name;
     guide.renderOrder = 8;
     group.add(guide);
+    return { guide, baseLength: Math.max(delta.length(), 1e-6) };
   };
   const label = (name, end, type, accent = '#82c9ca') => {
     const labelCanvas = document.createElement('canvas');
@@ -334,38 +384,102 @@ function createECGLeadOverlay(root, landmarks) {
     context.fillText(name, 96, 48);
     const texture = new THREE.CanvasTexture(labelCanvas);
     texture.colorSpace = THREE.SRGBColorSpace;
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false, depthWrite: false, toneMapped: false }));
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      // Lead labels are annotations, so keep them legible through anatomy,
+      // electrode guides, and other transparent overlays.
+      depthTest: false,
+      depthFunc: THREE.LessEqualDepth,
+      depthWrite: false,
+      toneMapped: false,
+    }));
     sprite.position.copy(end);
     sprite.scale.set(labelHeight * 6.6, labelHeight * 3.3, 1);
-    sprite.renderOrder = 9;
+    sprite.renderOrder = ECG_LABEL_RENDER_ORDER;
     group.add(sprite);
   };
-  // In the heart-only scene, show the four limb electrode directions around
-  // the myocardium as labeled schematic endpoints.
+  // Use skin-projected RA/LA sites over the trapezoid ligaments and lower-torso RL/LL sites.
   const limbElectrodes = [
-    ['RA', -0.82, 0.52, '#ffca58'],
-    ['LA', 0.82, 0.52, '#44e2cf'],
-    ['RL', -0.40, -0.82, '#ff7484'],
-    ['LL', 0.40, -0.82, '#bd9bff'],
+    ['RA', -1, 1, '#ffca58'],
+    ['LA', 1, 1, '#44e2cf'],
+    ['RL', -1, -1, '#ff7484'],
+    ['LL', 1, -1, '#bd9bff'],
   ];
+  const limbPositions = {};
   for (const [name, xDirection, yDirection, color] of limbElectrodes) {
-    const end = center.clone().add(new THREE.Vector3(xDirection * radius, yDirection * radius, 0));
-    addGuide(center, end, color, `Schematic limb electrode guide ${name}`);
+    const modelPosition = landmarks?.limbElectrodes?.[name];
+    const end = modelPosition
+      ? new THREE.Vector3(...modelPosition)
+      : center.clone().add(new THREE.Vector3(xDirection * 0.72 * radius, yDirection * 0.72 * radius, 0));
+    limbPositions[name] = end;
     const marker = new THREE.Mesh(
       new THREE.SphereGeometry(Math.max(labelHeight * 0.12, 0.012), 12, 8),
-      new THREE.MeshBasicMaterial({ color, toneMapped: false, depthTest: false, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ color, toneMapped: false, depthTest: true, depthWrite: false }),
     );
     marker.name = `Limb electrode ${name}`;
     marker.position.copy(end);
     marker.renderOrder = 10;
     group.add(marker);
-    label(name, end.clone().add(new THREE.Vector3(Math.sign(xDirection) * labelHeight * 0.32, Math.sign(yDirection) * labelHeight * 0.2, 0)), 'limb', color);
+    label(name, end, 'limb', color);
+  }
+
+  // Einthoven's triangle and the three augmented limb leads. Each segment is
+  // anchored to the actual electrode markers; RL is only the recording ground.
+  const midpoint = (a, b) => a.clone().add(b).multiplyScalar(0.5);
+  const leadRadius = Math.max(labelHeight * 0.035, 0.006);
+  const limbLead = (name, start, end, color, labelOffset = new THREE.Vector3()) => {
+    const delta = end.clone().sub(start);
+    const line = new THREE.Mesh(
+      new THREE.CylinderGeometry(leadRadius, leadRadius, delta.length(), 8),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.94, depthTest: false, depthWrite: false, toneMapped: false }),
+    );
+    line.position.copy(start).add(end).multiplyScalar(0.5);
+    line.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
+    line.name = `Derived limb lead ${name}`;
+    line.renderOrder = 8;
+    group.add(line);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 72;
+    const context = canvas.getContext('2d');
+    context.fillStyle = 'rgba(7,18,33,.98)';
+    context.beginPath();
+    context.roundRect(4, 4, 120, 64, 12);
+    context.fill();
+    context.strokeStyle = color;
+    context.lineWidth = 5;
+    context.stroke();
+    context.fillStyle = '#fff';
+    context.font = '700 42px system-ui, sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(name, 64, 36);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    const leadLabel = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false, depthWrite: false, toneMapped: false }));
+    leadLabel.position.copy(start).add(end).multiplyScalar(0.5).add(labelOffset);
+    leadLabel.scale.set(labelHeight * 6.6, labelHeight * 3.3, 1);
+    leadLabel.renderOrder = ECG_LABEL_RENDER_ORDER;
+    leadLabel.name = `Derived limb lead label ${name}`;
+    group.add(leadLabel);
+  };
+  if (limbPositions.RA && limbPositions.LA && limbPositions.LL) {
+    const { RA, LA, LL } = limbPositions;
+    limbLead('I', RA, LA, '#63d9d2', new THREE.Vector3(0, labelHeight * 0.24, 0));
+    limbLead('II', RA, LL, '#ffd071', new THREE.Vector3(-labelHeight * 0.18, 0, 0));
+    limbLead('III', LA, LL, '#a9a0ff', new THREE.Vector3(labelHeight * 0.18, 0, 0));
+    limbLead('aVR', midpoint(LA, LL), RA, '#ff9b83', new THREE.Vector3(-labelHeight * 0.38, 0, 0));
+    limbLead('aVL', midpoint(RA, LL), LA, '#7eb7ff', new THREE.Vector3(labelHeight * 0.38, 0, 0));
+    limbLead('aVF', midpoint(RA, LA), LL, '#c3dc82', new THREE.Vector3(0, -labelHeight * 0.28, 0));
   }
 
   const rootInverse = new THREE.Matrix4().copy(root.matrixWorld).invert();
   const meshToRoot = new THREE.Matrix4();
   const vertex = new THREE.Vector3();
   const myocardialPositions = [];
+  const myocardialMeshes = [];
   root.traverse((object) => {
     if (!object.isMesh) return;
     let myocardial = false;
@@ -376,6 +490,7 @@ function createECGLeadOverlay(root, landmarks) {
       }
     }
     if (!myocardial) return;
+    myocardialMeshes.push(object);
     const position = object.geometry?.getAttribute('position');
     if (!position) return;
     meshToRoot.multiplyMatrices(rootInverse, object.matrixWorld);
@@ -384,24 +499,75 @@ function createECGLeadOverlay(root, landmarks) {
       myocardialPositions.push(vertex.x, vertex.y, vertex.z);
     }
   });
-  for (const [name, point] of Object.entries(landmarks?.chestElectrodes || {})) {
-    const end = new THREE.Vector3(...point);
+  const surfaceRaycaster = new THREE.Raycaster();
+  function bindAnimatedSurfaceHit(hit) {
+    if (!hit?.face || !hit.object.morphTargetInfluences?.length) return null;
+    const mesh = hit.object;
+    const meshToRoot = rootInverse.clone().multiply(mesh.matrixWorld);
+    const indices = [hit.face.a, hit.face.b, hit.face.c];
+    const a = new THREE.Vector3();
+    const b = new THREE.Vector3();
+    const c = new THREE.Vector3();
+    mesh.getVertexPosition(indices[0], a).applyMatrix4(meshToRoot);
+    mesh.getVertexPosition(indices[1], b).applyMatrix4(meshToRoot);
+    mesh.getVertexPosition(indices[2], c).applyMatrix4(meshToRoot);
+    const rootPoint = root.worldToLocal(hit.point.clone());
+    const barycentric = new THREE.Triangle(a, b, c).getBarycoord(rootPoint, new THREE.Vector3());
+    if (!barycentric || ![barycentric.x, barycentric.y, barycentric.z].every(Number.isFinite)) return null;
+    return { mesh, meshToRoot, indices, barycentric };
+  }
+  const animatedSurfaceGuides = [];
+  const chestElectrodePoints = Object.fromEntries(
+    Object.entries(landmarks?.chestElectrodes || {}).map(([name, point]) => {
+      const position = new THREE.Vector3(...point);
+      if (name === 'V1' || name === 'V2') position.y += labelHeight * 1.65;
+      if (name === 'V6') position.y += labelHeight * 9.9;
+      return [name, position];
+    }),
+  );
+  if (chestElectrodePoints.V4 && chestElectrodePoints.V6 && chestElectrodePoints.V5) {
+    chestElectrodePoints.V5 = chestElectrodePoints.V4.clone().lerp(chestElectrodePoints.V6, 0.5);
+  }
+  for (const [name, end] of Object.entries(chestElectrodePoints)) {
     let nearest = center;
+
+    // Aim from the skin electrode toward the heart center and use the first
+    // myocardial triangle hit, so every guide terminates on the heart surface.
+    const worldOrigin = root.localToWorld(end.clone());
+    const worldCenter = root.localToWorld(center.clone());
+    const toCenter = worldCenter.sub(worldOrigin);
+    surfaceRaycaster.set(worldOrigin, toCenter.clone().normalize());
+    surfaceRaycaster.near = 0;
+    surfaceRaycaster.far = toCenter.length();
+    const surfaceHit = surfaceRaycaster.intersectObjects(myocardialMeshes, false)[0];
+    if (surfaceHit) nearest = root.worldToLocal(surfaceHit.point.clone());
+
     let nearestDistance = Infinity;
-    for (let i = 0; i < myocardialPositions.length; i += 3) {
-      const dx = end.x - myocardialPositions[i];
-      const dy = end.y - myocardialPositions[i + 1];
-      const dz = end.z - myocardialPositions[i + 2];
-      const distance = dx * dx + dy * dy + dz * dz;
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearest = new THREE.Vector3(myocardialPositions[i], myocardialPositions[i + 1], myocardialPositions[i + 2]);
+    if (!surfaceHit) {
+      for (let i = 0; i < myocardialPositions.length; i += 3) {
+        const dx = end.x - myocardialPositions[i];
+        const dy = end.y - myocardialPositions[i + 1];
+        const dz = end.z - myocardialPositions[i + 2];
+        const distance = dx * dx + dy * dy + dz * dz;
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearest = new THREE.Vector3(myocardialPositions[i], myocardialPositions[i + 1], myocardialPositions[i + 2]);
+        }
       }
     }
-    addGuide(nearest, end, 0xffd071, `Chest electrode guide ${name}`);
+    const guide = addGuide(nearest, end, 0xffd071, `Chest electrode guide ${name}`);
+    const surfaceBinding = bindAnimatedSurfaceHit(surfaceHit);
+    if (surfaceBinding) {
+      animatedSurfaceGuides.push({
+        ...guide,
+        surfaceBinding,
+        electrodePoint: end.clone(),
+        inwardDirection: nearest.clone().sub(end).normalize(),
+      });
+    }
     const marker = new THREE.Mesh(
       new THREE.SphereGeometry(Math.max(labelHeight * 0.12, 0.012), 10, 8),
-      new THREE.MeshBasicMaterial({ color: 0xffdf9e, toneMapped: false, depthTest: false, depthWrite: false }),
+      new THREE.MeshBasicMaterial({ color: 0xffdf9e, toneMapped: false, depthTest: true, depthWrite: false }),
     );
     marker.name = `Chest electrode ${name}`;
     marker.position.copy(end);
@@ -409,6 +575,43 @@ function createECGLeadOverlay(root, landmarks) {
     group.add(marker);
     label(name, end, 'chest');
   }
+  group.userData.updateAnimatedSurfaceGuides = () => {
+    const a = new THREE.Vector3();
+    const b = new THREE.Vector3();
+    const c = new THREE.Vector3();
+    const surfacePoint = new THREE.Vector3();
+    const visibleMyocardialMeshes = myocardialMeshes.filter((candidate) => {
+      for (let parent = candidate; parent; parent = parent.parent) {
+        if (!parent.visible) return false;
+        if (parent === root) break;
+      }
+      return true;
+    });
+    for (const { guide, baseLength, surfaceBinding, electrodePoint, inwardDirection } of animatedSurfaceGuides) {
+      const { mesh, meshToRoot, indices, barycentric } = surfaceBinding;
+      mesh.getVertexPosition(indices[0], a).applyMatrix4(meshToRoot);
+      mesh.getVertexPosition(indices[1], b).applyMatrix4(meshToRoot);
+      mesh.getVertexPosition(indices[2], c).applyMatrix4(meshToRoot);
+      surfacePoint.copy(a).multiplyScalar(barycentric.x)
+        .addScaledVector(b, barycentric.y)
+        .addScaledVector(c, barycentric.z);
+      const worldOrigin = root.localToWorld(electrodePoint.clone());
+      const maxLength = baseLength * 1.35;
+      const worldLimit = root.localToWorld(electrodePoint.clone().addScaledVector(inwardDirection, maxLength));
+      const rayDelta = worldLimit.sub(worldOrigin);
+      surfaceRaycaster.set(worldOrigin, rayDelta.clone().normalize());
+      surfaceRaycaster.near = 0;
+      surfaceRaycaster.far = rayDelta.length();
+      const animatedHit = surfaceRaycaster.intersectObjects(visibleMyocardialMeshes, false)[0];
+      const surfaceLength = animatedHit
+        ? root.worldToLocal(animatedHit.point.clone()).sub(electrodePoint).dot(inwardDirection)
+        : Infinity;
+      const projectedLength = surfacePoint.clone().sub(electrodePoint).dot(inwardDirection);
+      const usableHit = animatedHit && surfaceLength > 0 && surfaceLength <= maxLength;
+      const length = Math.max(Math.min(usableHit ? surfaceLength : projectedLength, maxLength), 1e-6);
+      guide.scale.y = length / baseLength;
+    }
+  };
   return group;
 }
 
@@ -1532,18 +1735,52 @@ function fitModel(root = loadedRoot) {
   updateSelectionHighlight();
 }
 
-function frameObject(object) {
+function captureViewerPose() {
+  if (!loadedRoot || !modelGroup) return null;
+  return {
+    cameraPosition: camera.position.clone(),
+    cameraUp: camera.up.clone(),
+    cameraNear: camera.near,
+    cameraFar: camera.far,
+    cameraZoom: camera.zoom,
+    target: controls.target.clone(),
+    modelPosition: modelGroup.position.clone(),
+    modelScale: modelGroup.scale.clone(),
+  };
+}
+
+function restoreViewerPose(pose) {
+  if (!pose || !loadedRoot || !modelGroup) return;
+  modelGroup.position.copy(pose.modelPosition);
+  modelGroup.scale.copy(pose.modelScale);
+  modelGroup.updateMatrixWorld(true);
+  camera.position.copy(pose.cameraPosition);
+  camera.up.copy(pose.cameraUp);
+  camera.near = pose.cameraNear;
+  camera.far = pose.cameraFar;
+  camera.zoom = pose.cameraZoom;
+  camera.updateProjectionMatrix();
+  controls.target.copy(pose.target);
+  controls.update();
+}
+
+function frameObject(object, preferredDirection = null, { distanceScale = 1 } = {}) {
   if (!object) return;
   object.updateWorldMatrix(true, true);
   const bounds = new THREE.Box3().setFromObject(object);
   if (bounds.isEmpty()) return;
 
+  frameBounds(bounds, preferredDirection, distanceScale);
+}
+
+function frameBounds(bounds, preferredDirection = null, distanceScale = 1) {
   const center = bounds.getCenter(new THREE.Vector3());
   const sphere = bounds.getBoundingSphere(new THREE.Sphere());
   const verticalHalfFov = THREE.MathUtils.degToRad(camera.fov * 0.5);
   const horizontalHalfFov = Math.atan(Math.tan(verticalHalfFov) * Math.max(camera.aspect, 0.1));
-  const distance = Math.max(sphere.radius / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov)) * 0.94, 0.12);
-  const viewDirection = camera.position.clone().sub(controls.target).normalize();
+  const distance = Math.max(sphere.radius / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov)) * 0.94 * distanceScale, 0.12);
+  const viewDirection = preferredDirection?.clone()
+    || camera.position.clone().sub(controls.target).normalize();
   if (viewDirection.lengthSq() < 1e-6) viewDirection.set(0.84, 0.58, 1).normalize();
 
   controls.target.copy(center);
@@ -1577,7 +1814,7 @@ function isAncestor(ancestor, object) {
   return false;
 }
 
-function focusHeart() {
+function focusHeart({ frontView = false, distanceScale = 1 } = {}) {
   if (!loadedRoot) return;
   const heartTerms = /heart|cardiac|atri(?:um|a)|ventric(?:le|ular)|myocard|coronary|pericard/i;
   const matches = allNodes.filter((entry) => heartTerms.test(entry.name));
@@ -1596,8 +1833,49 @@ function focusHeart() {
     || matches.find((entry) => entry.isMesh)
     || matches[0];
   selectNode(preferred.object);
-  frameObject(preferred.object);
+  frameObject(preferred.object, frontView ? new THREE.Vector3(0, 0, 1) : null, { distanceScale });
   showToast('Heart centered in view.');
+}
+
+function hideECGFasciaLayers() {
+  if (!loadedRoot) return;
+  const fasciaNames = /^(?:Pectoral Fascia|Clavipectoral Fascia)(?:\s*\((?:Left|Right)\))?$/i;
+  let hidden = 0;
+  for (const entry of allNodes) {
+    if (!fasciaNames.test(entry.name.trim())) continue;
+    entry.object.visible = false;
+    hidden += 1;
+  }
+  if (hidden) {
+    renderTree(ui.search.value);
+    if (selectedNode && allNodes.some((entry) => !entry.object.visible && (entry.object === selectedNode || isAncestor(entry.object, selectedNode)))) {
+      deselectNode();
+    }
+  }
+}
+
+async function ensureECGSupportModels() {
+  if (!activeHeartModelId || !libraryModels.length) return true;
+  const sex = activeHeartModelId.startsWith('female-') ? 'female' : 'male';
+  const required = libraryModels.filter((model) =>
+    model.id.startsWith(`${sex}-2024-`) && /^(Skeletal System|Connective Tissue)$/i.test(model.system),
+  );
+  const loadedIds = new Set(loadedLibraryModels.map((model) => model.id));
+  const missing = required.filter((model) => !loadedIds.has(model.id));
+  if (!missing.length) return true;
+  if (ui.libraryLoad.disabled) {
+    showToast('Wait for the current model load to finish before opening ECG guides.', 'error');
+    return false;
+  }
+
+  const loaded = await appendLibraryModelsToScene(missing);
+  if (loaded) {
+    const requiredIds = new Set(required.map((model) => model.id));
+    for (const checkbox of ui.library.querySelectorAll('input[type="checkbox"]')) {
+      if (requiredIds.has(checkbox.value)) checkbox.checked = true;
+    }
+  }
+  return loaded && required.every((model) => loadedLibraryModels.some((entry) => entry.id === model.id));
 }
 
 async function parseModel(files) {
@@ -1627,7 +1905,7 @@ async function parseModel(files) {
   }
 }
 
-async function installLoadedScene({ root, displayName = '', catalogId = '', modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [] } = {}) {
+async function installLoadedScene({ root, displayName = '', catalogId = '', catalogModels = [], modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [] } = {}) {
   clearSelectionHighlight();
   if (modelGroup?.userData.blobUrls) modelGroup.userData.blobUrls.forEach(URL.revokeObjectURL);
   if (mixer && loadedRoot) {
@@ -1647,6 +1925,11 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', mode
   }
   animationAction = null;
   animationPlaying = false;
+  activeHeartRoot = heartRoot;
+  activeHeartModelId = heartModelId;
+  loadedLibraryModels = catalogModels;
+  ecgTorsoContextPromise = null;
+  ecgTorsoContextEligible = false;
   conductionOverlay = null;
   ecgLeadOverlay = null;
   conductionLines = [];
@@ -1691,6 +1974,8 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', mode
     let ecgModel = null;
     try { ecgModel = await loadECGLandmarks(heartModelId); }
     catch (error) { console.warn('Using standard ECG lead axes without chest electrode markers.', error); }
+    const integumentaryAlreadyLoaded = allNodes.some((entry) => /Integumentary System/i.test(entry.name));
+    ecgTorsoContextEligible = !integumentaryAlreadyLoaded;
     conductionOverlay = createConductionOverlay(heartRoot, nodeModel);
     depolarizationShell = createDepolarizationShell(heartRoot);
     modelGroup.add(depolarizationShell);
@@ -1735,6 +2020,7 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
       root: gltf.scene,
       displayName: displayName || modelFile.name,
       catalogId,
+      catalogModels: libraryModels.filter((model) => model.id === catalogId),
       animations: gltf.animations || [],
       heartRoot,
       heartModelId: heartRoot ? catalogId : '',
@@ -1820,14 +2106,16 @@ async function fetchModelBlob(url, onProgress, model = null) {
   return new Blob(blobs, { type: 'model/gltf-binary' });
 }
 
-async function loadSelectedLibraryModels(models = selectedLibraryModels()) {
-  if (ui.libraryLoad.disabled) return;
+async function loadSelectedLibraryModels(requestedModels = null) {
+  if (ui.libraryLoad.disabled) return false;
+  const models = Array.isArray(requestedModels) ? requestedModels : selectedLibraryModels();
   if (!models.length) {
     showToast('Select one or more offline systems first.', 'error');
-    return;
+    return false;
   }
   ui.libraryLoad.disabled = true;
   ui.emptyModelLoad.disabled = true;
+  const viewerPose = captureViewerPose();
   try {
     setStatus(`Loading ${models.length} offline model${models.length === 1 ? '' : 's'}…`);
     const loaded = [];
@@ -1865,16 +2153,86 @@ async function loadSelectedLibraryModels(models = selectedLibraryModels()) {
     await installLoadedScene({
       root: combined,
       displayName,
+      catalogModels: models,
       modelCount: models.length,
       animations: heartModel?.animations || [],
       heartRoot: heartModel?.root || null,
       heartModelId: heartModel?.model.id || '',
       blobUrls: loaded.flatMap(({ blobUrls }) => blobUrls),
     });
+    restoreViewerPose(viewerPose);
+    return true;
   } catch (error) {
     setStatus('Could not load selected models');
     showToast(error?.message || 'The selected offline models could not be loaded.', 'error');
     clearModelLoadProgress();
+    return false;
+  } finally {
+    clearModelLoadProgress();
+    ui.libraryLoad.disabled = false;
+    ui.emptyModelLoad.disabled = false;
+  }
+}
+
+async function appendLibraryModelsToScene(models) {
+  if (!loadedRoot || !modelGroup || ui.libraryLoad.disabled) return false;
+  const additions = models.filter((model) => !loadedLibraryModels.some((loaded) => loaded.id === model.id));
+  if (!additions.length) return true;
+  ui.libraryLoad.disabled = true;
+  ui.emptyModelLoad.disabled = true;
+  const prepared = [];
+  try {
+    for (const [index, model] of additions.entries()) {
+      setStatus(`Adding ${model.label} (${index + 1}/${additions.length})…`);
+      setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${additions.length}`, (index / additions.length) * 100);
+      const blob = await fetchModelBlob(`/models/${model.file}`, (fraction) => {
+        setModelLoadProgress(
+          `Downloading ${model.system} · ${index + 1} of ${additions.length}`,
+          fraction === null ? null : ((index + fraction * 0.7) / additions.length) * 100,
+        );
+      }, model);
+      const file = new File([blob], `${model.id}.glb`, { type: 'model/gltf-binary' });
+      setModelLoadProgress(`Building meshes · ${model.system} · ${index + 1} of ${additions.length}`);
+      const parsed = await parseModel([file]);
+      const root = parsed.gltf.scene;
+      root.name = model.system;
+      setModelLoadProgress(`Applying materials · ${model.system} · ${index + 1} of ${additions.length}`);
+      await applySourceMaterials(root);
+      prepared.push({ model, root, blobUrls: parsed.blobUrls });
+    }
+
+    for (const { root } of prepared) loadedRoot.add(root);
+    loadedLibraryModels = [...loadedLibraryModels, ...prepared.map(({ model }) => model)];
+    modelGroup.userData.blobUrls ||= [];
+    modelGroup.userData.blobUrls.push(...prepared.flatMap(({ blobUrls }) => blobUrls));
+    allNodes = collectNodes(loadedRoot);
+    nodeMap = new Map(allNodes.map((entry) => [entry.id, entry.object]));
+    for (const entry of allNodes) {
+      if (!entry.isMesh && entry.object.children.length) collapsedGroups.add(entry.id);
+    }
+    const displayName = loadedLibraryModels.map((model) => model.label).join(' + ');
+    modelFileName = displayName;
+    ui.modelTitle.textContent = displayName;
+    ui.source.textContent = displayName;
+    const facts = countMeshFacts(loadedRoot);
+    ui.meshSummary.textContent = `${facts.meshes.toLocaleString()} meshes · ${facts.triangles.toLocaleString()} triangles`;
+    renderTree(ui.search.value);
+    if (selectedNode) updateInspector(selectedNode);
+    setStatus(`${loadedLibraryModels.length} models loaded`);
+    showToast(`Added ${additions.map((model) => model.system).join(' and ')} for ECG placement.`);
+    return true;
+  } catch (error) {
+    for (const { root, blobUrls } of prepared) {
+      root.traverse((object) => {
+        object.geometry?.dispose?.();
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        materials.forEach((material) => material?.dispose?.());
+      });
+      blobUrls.forEach(URL.revokeObjectURL);
+    }
+    showToast(error?.message || 'The ECG support models could not be added.', 'error');
+    setStatus('Could not add ECG support models');
+    return false;
   } finally {
     clearModelLoadProgress();
     ui.libraryLoad.disabled = false;
@@ -1958,6 +2316,7 @@ function render(frameTime = performance.now()) {
   const delta = Math.min(Math.max((frameTime - previousFrameTime) / 1000, 0), 0.05);
   previousFrameTime = frameTime;
   mixer?.update(delta);
+  if (ecgLeadOverlay?.visible) ecgLeadOverlay.userData.updateAnimatedSurfaceGuides?.();
   updateConductionOverlay(delta);
   updateSelectionHighlight();
   renderer.render(scene, camera);
@@ -1966,6 +2325,13 @@ function render(frameTime = performance.now()) {
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let pointerStart = null;
+function isEffectivelyVisible(object, root) {
+  for (let parent = object; parent; parent = parent.parent) {
+    if (!parent.visible) return false;
+    if (parent === root) return true;
+  }
+  return false;
+}
 canvas.addEventListener('pointerdown', (event) => { pointerStart = { x: event.clientX, y: event.clientY }; });
 canvas.addEventListener('pointerup', (event) => {
   if (!loadedRoot || !pointerStart) return;
@@ -1976,12 +2342,13 @@ canvas.addEventListener('pointerup', (event) => {
   pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
   const hits = raycaster.intersectObject(loadedRoot, true);
-  if (hits.length) selectNode(hits[0].object);
+  const visibleHit = hits.find((hit) => isEffectivelyVisible(hit.object, loadedRoot));
+  if (visibleHit) selectNode(visibleHit.object);
   else deselectNode();
 });
 
 ui.input.addEventListener('change', async () => { await loadFiles(ui.input.files); ui.input.value = ''; });
-ui.libraryLoad.addEventListener('click', loadSelectedLibraryModels);
+ui.libraryLoad.addEventListener('click', () => loadSelectedLibraryModels());
 ui.emptyModelLoad.addEventListener('click', () => {
   const selected = libraryModels.find((model) => model.id === ui.emptyModelPicker.value);
   if (selected) loadSelectedLibraryModels([selected]);
@@ -2005,11 +2372,41 @@ ui.depolarization.addEventListener('click', () => {
   lastDepolarizationPhase = -1;
   ui.depolarization.setAttribute('aria-pressed', String(depolarizationShell.visible));
 });
-ui.ecg.addEventListener('click', () => {
-  if (!ecgLeadOverlay) return;
+ui.ecg.addEventListener('click', async () => {
   const active = ui.ecg.getAttribute('aria-pressed') !== 'true';
-  ecgLeadOverlay.visible = active;
-  ui.ecg.setAttribute('aria-pressed', String(active));
+  if (!active) {
+    if (ecgLeadOverlay) ecgLeadOverlay.visible = false;
+    ui.ecg.setAttribute('aria-pressed', 'false');
+    return;
+  }
+  if (!ecgLeadOverlay || !activeHeartRoot) return;
+
+  ui.ecg.disabled = true;
+  try {
+    if (!await ensureECGSupportModels()) return;
+    hideECGFasciaLayers();
+
+    const targetOverlay = ecgLeadOverlay;
+    if (ecgTorsoContextEligible && !ecgTorsoContextPromise) {
+      ecgTorsoContextPromise = loadECGTorsoContext(activeHeartModelId)
+        .then((context) => {
+          if (context && ecgLeadOverlay === targetOverlay) targetOverlay.add(context);
+          return context;
+        })
+        .catch((error) => {
+          ecgTorsoContextPromise = null;
+          console.warn('ECG guides will use the model-registered positions without a torso surface context.', error);
+          return null;
+        });
+      await ecgTorsoContextPromise;
+    }
+
+    if (ecgLeadOverlay) ecgLeadOverlay.visible = true;
+    ui.ecg.setAttribute('aria-pressed', 'true');
+    focusHeart({ frontView: true, distanceScale: 1.45 });
+  } finally {
+    ui.ecg.disabled = !ecgLeadOverlay;
+  }
 });
 ui.animation.addEventListener('click', () => {
   if (!animationAction) return;
@@ -2041,7 +2438,23 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') { ui.search.value = ''; renderTree(''); if (selectedNode) { selectedNode = null; clearSelectionHighlight(); updateInspector(null); renderTree(''); } }
   if (event.key.toLowerCase() === 'r' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) resetCamera();
 });
-el('collapse-left').addEventListener('click', () => document.querySelector('.workspace').classList.toggle('tree-collapsed'));
+const workspace = document.querySelector('.workspace');
+function setSidebarCollapsed(side, collapsed) {
+  const isLeft = side === 'left';
+  const className = isLeft ? 'tree-collapsed' : 'inspector-collapsed';
+  const button = el(isLeft ? 'collapse-left' : 'collapse-inspector');
+  const panelName = isLeft ? 'model library' : 'inspector';
+  workspace.classList.toggle(className, collapsed);
+  button.title = `${collapsed ? 'Show' : 'Hide'} ${panelName}`;
+  button.setAttribute('aria-label', button.title);
+  button.setAttribute('aria-expanded', String(!collapsed));
+}
+el('collapse-left').addEventListener('click', () => {
+  setSidebarCollapsed('left', !workspace.classList.contains('tree-collapsed'));
+});
+el('collapse-inspector').addEventListener('click', () => {
+  setSidebarCollapsed('right', !workspace.classList.contains('inspector-collapsed'));
+});
 
 const resizeObserver = new ResizeObserver(resize);
 resizeObserver.observe(el('viewport-wrap'));

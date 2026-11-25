@@ -5,6 +5,7 @@ import struct
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+V1_V2_SUPERIOR_OFFSET = 0.18
 
 
 def multiply(a, b):
@@ -100,6 +101,7 @@ def extract_sex(sex):
     prefix = f'{sex}-2024'
     skeleton = named_meshes(ROOT / 'public/models/catalog' / f'{prefix}-skeletal-system.glb')
     chest = named_meshes(ROOT / 'public/models/catalog' / f'{prefix}-muscular-system.glb')
+    connective = named_meshes(ROOT / 'public/models/catalog' / f'{prefix}-connective-tissue.glb')
     by_name = {}
     for name, points in skeleton:
         by_name.setdefault(name.lower(), []).append(points)
@@ -111,12 +113,24 @@ def extract_sex(sex):
     sternum_low, sternum_high = bounds(sternum)
     rib4 = [front_centroid(group) for group in get('Fourth Rib')]
     rib5 = [front_centroid(group) for group in get('Fifth Rib')]
-    fourth_space_y = (sum(point[1] for point in rib4 + rib5) / len(rib4 + rib5))
-    fifth_rib_y = sum(point[1] for point in rib5) / len(rib5)
+    rib6 = [front_centroid(group) for group in get('Sixth Rib')]
+    fourth_space_y = sum(point[1] for point in rib4 + rib5) / len(rib4 + rib5)
+    fifth_space_y = sum(point[1] for point in rib5 + rib6) / len(rib5 + rib6)
+    v1_v2_y = fourth_space_y + V1_V2_SUPERIOR_OFFSET
     clavicles = get('Clavicle')
     left_clavicle = max(clavicles, key=lambda group: sum(point[0] for point in group) / len(group))
     clavicle_low, clavicle_high = bounds(left_clavicle)
     midclavicular_x = (clavicle_low[0] + clavicle_high[0]) / 2
+    clavicle_at_midline = [point for point in left_clavicle if abs(point[0] - midclavicular_x) <= 0.35]
+    infraclavicular_y = min(point[1] for point in clavicle_at_midline) - 1.2
+    trapezoid_centers = []
+    for name, points in connective:
+        if name.lower() == 'trapezoid ligament':
+            trapezoid_centers.append(tuple(sum(point[axis] for point in points) / len(points) for axis in range(3)))
+    if len(trapezoid_centers) < 2:
+        raise ValueError(f'{sex} connective-tissue model is missing paired trapezoid ligaments')
+    right_trapezoid = min(trapezoid_centers, key=lambda point: point[0])
+    left_trapezoid = max(trapezoid_centers, key=lambda point: point[0])
 
     chest_by_name = {}
     for name, points in chest:
@@ -129,26 +143,33 @@ def extract_sex(sex):
 
     right_sternal_x = sternum_low[0] - 0.08
     left_sternal_x = sternum_high[0] + 0.08
-    v1 = (right_sternal_x, fourth_space_y, nearest_front_surface_z(right_pectoral, right_sternal_x, fourth_space_y))
-    v2 = (left_sternal_x, fourth_space_y, nearest_front_surface_z(left_pectoral, left_sternal_x, fourth_space_y))
-    v4 = (midclavicular_x, fifth_rib_y, nearest_front_surface_z(left_pectoral, midclavicular_x, fifth_rib_y))
-    # V3 lies halfway between V2 and V4. V5 follows the pectoralis anterior
-    # axillary fold; V6 follows the lateral chest wall represented by serratus.
+    v1 = (right_sternal_x, v1_v2_y, nearest_front_surface_z(right_pectoral, right_sternal_x, v1_v2_y))
+    v2 = (left_sternal_x, v1_v2_y, nearest_front_surface_z(left_pectoral, left_sternal_x, v1_v2_y))
+    v4 = (midclavicular_x, fifth_space_y, nearest_front_surface_z(left_pectoral, midclavicular_x, fifth_space_y))
+    # V3 lies halfway between V2 and V4. V6 follows the lateral chest wall
+    # represented by serratus. V5 is seeded halfway between V4 and V6; the
+    # projection step places it halfway along the actual horizontal skin path.
+    # Use the fifth intercostal space between ribs 5 and 6, not the rib-5 center.
     v3 = tuple((v2[i] + v4[i]) / 2 for i in range(3))
-    pectoral_level = [p for p in left_pectoral if abs(p[1] - fifth_rib_y) <= 0.55 and p[2] > 0.5]
-    v5_x = max(p[0] for p in pectoral_level)
-    v5 = (v5_x, fifth_rib_y, nearest_front_surface_z(left_pectoral, v5_x, fifth_rib_y))
-    serratus_level = [p for p in left_serratus if abs(p[1] - fifth_rib_y) <= 0.55]
+    serratus_level = [p for p in left_serratus if abs(p[1] - fifth_space_y) <= 0.55]
     v6_x = max(p[0] for p in serratus_level)
-    v6 = (v6_x, fifth_rib_y, nearest_front_surface_z(left_serratus, v6_x, fifth_rib_y))
+    v6 = (v6_x, fifth_space_y, nearest_front_surface_z(left_serratus, v6_x, fifth_space_y))
+    v5 = tuple((v4[i] + v6[i]) / 2 for i in range(3))
 
     return {
-        'sourceModels': [f'{prefix}-skeletal-system.glb', f'{prefix}-muscular-system.glb'],
+        'sourceModels': [f'{prefix}-skeletal-system.glb', f'{prefix}-muscular-system.glb', f'{prefix}-connective-tissue.glb'],
         'references': {
             'sternalBordersX': [sternum_low[0], sternum_high[0]],
             'fourthIntercostalY': fourth_space_y,
-            'fifthIntercostalY': fifth_rib_y,
+            'v1V2LevelY': v1_v2_y,
+            'v1V2SuperiorOffset': V1_V2_SUPERIOR_OFFSET,
+            'fifthIntercostalY': fifth_space_y,
             'leftMidclavicularX': midclavicular_x,
+            'infraclavicularY': infraclavicular_y,
+            'trapezoidLigamentCenters': {
+                'RA': list(right_trapezoid),
+                'LA': list(left_trapezoid),
+            },
         },
         'chestElectrodes': {name: list(point) for name, point in zip(('V1', 'V2', 'V3', 'V4', 'V5', 'V6'), (v1, v2, v3, v4, v5, v6))},
     }
@@ -160,6 +181,11 @@ for model in output['models'].values():
         for axis in range(3):
             point[axis] = round(point[axis], 4)
     for name, point in model['references'].items():
-        model['references'][name] = [round(axis, 4) for axis in point] if isinstance(point, list) else round(point, 4)
+        if isinstance(point, dict):
+            model['references'][name] = {key: [round(axis, 4) for axis in value] for key, value in point.items()}
+        elif isinstance(point, list):
+            model['references'][name] = [round(axis, 4) for axis in point]
+        else:
+            model['references'][name] = round(point, 4)
 (ROOT / 'public/models/ecg-landmarks.json').write_text(json.dumps(output, indent=2) + '\n')
 print('Wrote public/models/ecg-landmarks.json from skeletal and muscular GLBs.')

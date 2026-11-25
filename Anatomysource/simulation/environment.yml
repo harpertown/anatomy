@@ -1,0 +1,15 @@
+name: forme-ep
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - fenics-dolfinx=0.10.0
+  - fenicsx-beat=0.6.4
+  - cardiac-geometriesx=0.5.2
+  - gotranx=2.9.0
+  - io4dolfinx=2.2.0
+  - meshio=5.3.5
+  - pyvista=0.49.2
+  - numpy
+  - scipy
+  - matplotlib

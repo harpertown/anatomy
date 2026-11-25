@@ -3,7 +3,9 @@
     "male": {
       "sourceModels": [
         "male-2024-skeletal-system.glb",
-        "male-2024-muscular-system.glb"
+        "male-2024-muscular-system.glb",
+        "male-2024-connective-tissue.glb",
+        "male-2024-integumentary-system.glb"
       ],
       "references": {
         "sternalBordersX": [
@@ -11,46 +13,148 @@
           1.0839
         ],
         "fourthIntercostalY": 4.601,
-        "fifthIntercostalY": 3.9061,
-        "leftMidclavicularX": 3.6278
+        "v1V2LevelY": 4.781,
+        "v1V2SuperiorOffset": 0.18,
+        "fifthIntercostalY": 3.2024,
+        "leftMidclavicularX": 3.6278,
+        "infraclavicularY": 8.7956,
+        "trapezoidLigamentCenters": {
+          "RA": [
+            -5.3611,
+            10.0137,
+            -1.453
+          ],
+          "LA": [
+            5.3611,
+            10.0137,
+            -1.453
+          ]
+        }
       },
       "chestElectrodes": {
         "V1": [
+          -1.01286,
+          4.74937,
+          4.08241
+        ],
+        "V2": [
+          1.06057,
+          4.72319,
+          4.02405
+        ],
+        "V3": [
+          2.34418,
+          3.9628,
+          3.75578
+        ],
+        "V4": [
+          3.6278,
+          3.2024,
+          3.4875
+        ],
+        "V5": [
+          5.25789,
+          3.2024,
+          1.73077
+        ],
+        "V6": [
+          5.78291,
+          3.2024,
+          -0.65431
+        ]
+      },
+      "chestElectrodeReference": {
+        "V1": [
           -1.1569,
-          4.601,
+          4.781,
           3.7454
         ],
         "V2": [
           1.1639,
-          4.601,
+          4.781,
           3.7454
         ],
         "V3": [
           2.3958,
-          4.2536,
-          3.6911
+          3.9917,
+          3.6077
         ],
         "V4": [
           3.6278,
-          3.9061,
-          3.6367
+          3.2024,
+          3.47
         ],
         "V5": [
-          5.4081,
-          3.9061,
-          2.9067
+          4.6475,
+          3.2024,
+          1.3970500000000001
         ],
         "V6": [
-          5.6663,
-          3.9061,
-          -0.2659
+          5.6672,
+          3.2024,
+          -0.6759
         ]
+      },
+      "limbElectrodes": {
+        "RA": [
+          -5.57681,
+          10.93561,
+          -0.74521
+        ],
+        "LA": [
+          5.61009,
+          10.81692,
+          -0.70849
+        ],
+        "RL": [
+          -4.23196,
+          -7.75714,
+          2.3906
+        ],
+        "LL": [
+          4.25975,
+          -7.78061,
+          2.41148
+        ]
+      },
+      "electrodeProjection": {
+        "surfaceModel": "male-2024-integumentary-system.glb",
+        "method": "native GLB surface triangles; V5 surface midpoint and V6 constrained to the V4 horizontal plane",
+        "V3Placement": "3D coordinate midpoint between V2 and V4",
+        "V5Placement": "surface-path midpoint between V4 and V6 at the V4 horizontal level",
+        "V4ToV6SurfacePathLengthModelUnits": 4.95245,
+        "limbElectrodeRegions": {
+          "RA": "right upper chest skin over the trapezoid ligament",
+          "LA": "left upper chest skin over the trapezoid ligament",
+          "RL": "right lower torso near the iliac crest",
+          "LL": "left lower torso near the iliac crest"
+        },
+        "V4HorizontalPlane": {
+          "modelY": 3.2024,
+          "skeletonFifthIntercostalY": 3.2024,
+          "offsetFromSkeletonReference": 0.0
+        },
+        "maximumSeedDistanceModelUnits": 1.1821,
+        "seedDistancesModelUnits": {
+          "V1": 0.3679,
+          "V2": 0.3028,
+          "V3": 0.333374766489293,
+          "V4": 0.0175,
+          "V5": 0.6957,
+          "V6": 0.1177,
+          "RA": 1.1821,
+          "LA": 1.1231,
+          "RL": 0.1358,
+          "LL": 0.0992
+        }
       }
     },
     "female": {
       "sourceModels": [
         "female-2024-skeletal-system.glb",
-        "female-2024-muscular-system.glb"
+        "female-2024-muscular-system.glb",
+        "female-2024-connective-tissue.glb",
+        "female-2024-integumentary-system.glb"
       ],
       "references": {
         "sternalBordersX": [
@@ -58,40 +162,140 @@
           1.0148
         ],
         "fourthIntercostalY": 4.8202,
-        "fifthIntercostalY": 4.114,
-        "leftMidclavicularX": 3.3038
+        "v1V2LevelY": 5.0002,
+        "v1V2SuperiorOffset": 0.18,
+        "fifthIntercostalY": 3.2879,
+        "leftMidclavicularX": 3.3038,
+        "infraclavicularY": 8.5197,
+        "trapezoidLigamentCenters": {
+          "RA": [
+            -4.8252,
+            9.8323,
+            -1.522
+          ],
+          "LA": [
+            4.8252,
+            9.8323,
+            -1.522
+          ]
+        }
       },
       "chestElectrodes": {
         "V1": [
-          -1.0879,
-          4.8202,
-          3.161
+          -0.78633,
+          5.1379,
+          3.5727
         ],
         "V2": [
-          1.0948,
-          4.8202,
-          3.161
+          0.7906,
+          5.13897,
+          3.57529
         ],
         "V3": [
-          2.1993,
-          4.4671,
-          3.0548
+          2.0472,
+          4.21343,
+          4.31104
         ],
         "V4": [
           3.3038,
-          4.114,
-          2.9487
+          3.2879,
+          5.04678
         ],
         "V5": [
-          5.0963,
-          4.114,
-          1.6984
+          5.32259,
+          3.2879,
+          2.56162
         ],
         "V6": [
-          5.3558,
-          4.114,
-          -0.5875
+          5.68707,
+          3.2879,
+          -0.91446
         ]
+      },
+      "chestElectrodeReference": {
+        "V1": [
+          -1.0879,
+          5.0002,
+          3.1314
+        ],
+        "V2": [
+          1.0948,
+          5.0002,
+          3.1314
+        ],
+        "V3": [
+          2.1993,
+          4.144,
+          3.0225
+        ],
+        "V4": [
+          3.3038,
+          3.2879,
+          2.9135
+        ],
+        "V5": [
+          4.35195,
+          3.2879,
+          0.9829
+        ],
+        "V6": [
+          5.4001,
+          3.2879,
+          -0.9477
+        ]
+      },
+      "limbElectrodes": {
+        "RA": [
+          -4.9564,
+          10.10003,
+          -0.8197
+        ],
+        "LA": [
+          4.79952,
+          10.16651,
+          -0.70737
+        ],
+        "RL": [
+          -4.21236,
+          -7.78034,
+          2.2194
+        ],
+        "LL": [
+          4.21236,
+          -7.78034,
+          2.2194
+        ]
+      },
+      "electrodeProjection": {
+        "surfaceModel": "female-2024-integumentary-system.glb",
+        "method": "native GLB surface triangles; V5 surface midpoint and V6 constrained to the V4 horizontal plane",
+        "V3Placement": "3D coordinate midpoint between V2 and V4",
+        "V5Placement": "surface-path midpoint between V4 and V6 at the V4 horizontal level",
+        "V4ToV6SurfacePathLengthModelUnits": 7.03377,
+        "limbElectrodeRegions": {
+          "RA": "right upper chest skin over the trapezoid ligament",
+          "LA": "left upper chest skin over the trapezoid ligament",
+          "RL": "right lower torso near the iliac crest",
+          "LL": "left lower torso near the iliac crest"
+        },
+        "V4HorizontalPlane": {
+          "modelY": 3.2879,
+          "skeletonFifthIntercostalY": 3.2879,
+          "offsetFromSkeletonReference": 0.0
+        },
+        "maximumSeedDistanceModelUnits": 2.1333,
+        "seedDistancesModelUnits": {
+          "V1": 0.552,
+          "V2": 0.5557,
+          "V3": 0.38975200061974813,
+          "V4": 2.1333,
+          "V5": 1.8532,
+          "V6": 0.2889,
+          "RA": 0.763,
+          "LA": 0.8809,
+          "RL": 0.2946,
+          "LL": 0.2946
+        }
       }
     }
   }

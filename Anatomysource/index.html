@@ -15,7 +15,7 @@
           <a class="brand sidebar-brand" href="https://itsadam.tech" aria-label="Adam home"><span class="brand-copy"><strong>adam.</strong></span></a>
           <input id="model-input" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2" multiple hidden />
           <section class="library-picker" aria-labelledby="library-title">
-            <div class="library-heading"><h2 id="library-title">Model library</h2><button id="collapse-left" class="icon-button quiet" title="Hide model library" aria-label="Hide model library"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button></div>
+            <div class="library-heading"><h2 id="library-title">Model library</h2><button id="collapse-left" class="icon-button quiet" title="Hide model library" aria-label="Hide model library" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button></div>
             <div id="model-library" class="model-checklist" role="group" aria-label="Choose anatomy systems" aria-busy="true">
               <p class="library-loading">Loading bundled models…</p>
             </div>
@@ -76,7 +76,7 @@
         </section>
 
         <aside class="panel inspector-panel" aria-label="Selected structure details">
-          <div class="panel-heading inspector-heading"><div><p class="eyebrow">Inspector</p><h2>Details</h2></div><span class="inspector-dot"></span></div>
+          <div class="panel-heading inspector-heading"><div><p class="eyebrow">Inspector</p><h2>Details</h2></div><button id="collapse-inspector" class="icon-button quiet" type="button" title="Hide inspector" aria-label="Hide inspector" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button></div>
           <div id="inspector-empty" class="inspector-empty"><div class="target-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10.5"/><circle cx="16" cy="16" r="4.2"/><path d="M16 2v5m0 18v5M2 16h5m18 0h5"/></svg></div><strong>Select a structure</strong><p>Choose a part in the model or scene tree to inspect its name and geometry.</p></div>
           <div id="inspector-content" class="inspector-content" hidden>
             <div class="selected-type"><span class="type-swatch"></span><span id="selected-type-label">Mesh</span><span id="selected-id" class="object-id"></span></div>
