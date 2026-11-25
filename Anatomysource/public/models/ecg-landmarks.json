@@ -1,0 +1,98 @@
+{
+  "models": {
+    "male": {
+      "sourceModels": [
+        "male-2024-skeletal-system.glb",
+        "male-2024-muscular-system.glb"
+      ],
+      "references": {
+        "sternalBordersX": [
+          -1.0769,
+          1.0839
+        ],
+        "fourthIntercostalY": 4.601,
+        "fifthIntercostalY": 3.9061,
+        "leftMidclavicularX": 3.6278
+      },
+      "chestElectrodes": {
+        "V1": [
+          -1.1569,
+          4.601,
+          3.7454
+        ],
+        "V2": [
+          1.1639,
+          4.601,
+          3.7454
+        ],
+        "V3": [
+          2.3958,
+          4.2536,
+          3.6911
+        ],
+        "V4": [
+          3.6278,
+          3.9061,
+          3.6367
+        ],
+        "V5": [
+          5.4081,
+          3.9061,
+          2.9067
+        ],
+        "V6": [
+          5.6663,
+          3.9061,
+          -0.2659
+        ]
+      }
+    },
+    "female": {
+      "sourceModels": [
+        "female-2024-skeletal-system.glb",
+        "female-2024-muscular-system.glb"
+      ],
+      "references": {
+        "sternalBordersX": [
+          -1.0079,
+          1.0148
+        ],
+        "fourthIntercostalY": 4.8202,
+        "fifthIntercostalY": 4.114,
+        "leftMidclavicularX": 3.3038
+      },
+      "chestElectrodes": {
+        "V1": [
+          -1.0879,
+          4.8202,
+          3.161
+        ],
+        "V2": [
+          1.0948,
+          4.8202,
+          3.161
+        ],
+        "V3": [
+          2.1993,
+          4.4671,
+          3.0548
+        ],
+        "V4": [
+          3.3038,
+          4.114,
+          2.9487
+        ],
+        "V5": [
+          5.0963,
+          4.114,
+          1.6984
+        ],
+        "V6": [
+          5.3558,
+          4.114,
+          -0.5875
+        ]
+      }
+    }
+  }
+}

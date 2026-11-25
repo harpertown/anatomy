@@ -1,0 +1,41 @@
+{
+  "authority": "read-only capture from the running Complete Anatomy app",
+  "captureContext": "Models screen; arterial layer enabled; Epicardial Adipose Tissue selected and hidden",
+  "lightsBuffer": {
+    "directionalLights": [
+      { "direction": [-0.586517, 0.732959, 0.344628], "color": [1.8, 1.8, 1.8] },
+      { "direction": [0.710924, 0.015361, 0.703101], "color": [0.5, 0.5, 0.5] },
+      { "direction": [0.930026, -0.075524, -0.359650], "color": [1.3, 1.3, 1.3] }
+    ],
+    "ambientColor": [0.4, 0.4, 0.4],
+    "iblRotationMatrix": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+  },
+  "postEffectsBuffer": {
+    "exposure": null,
+    "uniformBinding": 0,
+    "shaderSource": "Resources/hdr-pipeline.json: post_effects_buffer -> PostEffectsData; applies 1-exp(-color*exposure), then pow(color, invGamma).",
+    "note": "The live scalar is still uncaptured. A read-only process scan found no CPU-visible invGamma signature; capture through the native post-process buffer path is still needed."
+  },
+  "iblRuntime": {
+    "shaderSource": "Resources/shaders/glsl/PBRLighting.inc.glsl samples irradiance_texture, environment_texture, and brdfLUT_texture directly.",
+    "payloads": [
+      "cape_hill_diffuse_rgba16f.bin",
+      "cape_hill_specular_rgba16f.bin",
+      "cape_hill_brdf_rg16f.bin"
+    ],
+    "note": "IBL_HARD_CORRECTION_LEVEL appears in IBL.inc.glsl's prefilter/bake routines. The viewer consumes the app's stored, prefiltered IBL payloads, so this bake-time macro is already reflected in those textures and is not a missing live runtime uniform."
+  },
+  "viewerEstimates": {
+    "exposure": 0.85,
+    "overlayVisibility": 0,
+    "note": "Exposure remains an estimate. Overlay zero is supported by the captured ordinary-scene material samples below; each sample is tied to a buffer offset, not a recovered material ID."
+  },
+  "ordinarySceneMaterialBufferSamples": [
+    { "bufferOffset": 403456, "metallic": 0, "roughness": 0.07999, "reflectance": 0.28284, "overlayVisibility": 0, "normalsIntensity": [1, 1] },
+    { "bufferOffset": 208384, "metallic": 0, "roughness": 0.13, "reflectance": 0.5, "overlayVisibility": 0 }
+  ],
+  "painToolMaterialBufferSample": {
+    "overlayVisibility": 0.96676,
+    "note": "A separate tool-state sample. It is not used as an ordinary-scene default."
+  }
+}

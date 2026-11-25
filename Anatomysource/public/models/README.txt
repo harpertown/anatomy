@@ -1,0 +1,4 @@
+heart.glb is the converted Heart cluster from the installed Male 2024 model.
+The catalog.json manifest lists 28 offline heart and body-system models for the viewer, including separate complete arterial and venous trees for both model sets. The Nervous System models are included as complete standalone systems.
+The standalone Arteries, Veins, and Nervous System models include the app's original albedo and normal maps, decoded into local PNGs for Three.js. Their converter mappings are in textures/*-materials.json. The heart has its own original and generated tissue maps and preserves its nested source cluster hierarchy plus the 31-frame morph cycle.
+The conduction overlay uses the original Sinuatrial Node and Atrioventricular Node meshes and positions extracted from each Nervous System model; its connecting surface routes remain illustrative.

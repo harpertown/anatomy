@@ -1,0 +1,16 @@
+{
+  "name": "anatomy-wasm-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build:wasm": "emcc src/wasm/mesh_core.c -O3 -sSTANDALONE_WASM=1 -Wl,--no-entry -Wl,--export=compute_fit -Wl,--export-memory -o public/mesh-core.wasm",
+    "build": "npm run build:wasm && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "three": "latest",
+    "vite": "latest"
+  }
+}

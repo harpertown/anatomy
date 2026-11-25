@@ -1,0 +1,44 @@
+{
+  "source": "cape_hill.iblenv",
+  "byteOrder": "little-endian",
+  "formatIds": {
+    "rgba16f": 51,
+    "rg16f": 23
+  },
+  "diffuse": {
+    "file": "cape_hill_diffuse_rgba16f.bin",
+    "size": 128,
+    "faces": 6,
+    "format": "rgba16f"
+  },
+  "specular": {
+    "file": "cape_hill_specular_rgba16f.bin",
+    "baseSize": 512,
+    "faces": 6,
+    "format": "rgba16f",
+    "mipSizes": [
+      512,
+      256,
+      128,
+      64,
+      32,
+      16
+    ],
+    "lodScale": 5
+  },
+  "brdf": {
+    "file": "cape_hill_brdf_rg16f.bin",
+    "width": 256,
+    "height": 256,
+    "channels": 2,
+    "format": "rg16f"
+  },
+  "faceOrder": [
+    "+X",
+    "-X",
+    "+Y",
+    "-Y",
+    "+Z",
+    "-Z"
+  ]
+}
