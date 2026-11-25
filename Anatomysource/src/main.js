@@ -559,16 +559,37 @@ function createECGLeadOverlay(root, landmarks) {
     const mesh = hit.object;
     const meshToRoot = rootInverse.clone().multiply(mesh.matrixWorld);
     const indices = [hit.face.a, hit.face.b, hit.face.c];
-    const a = new THREE.Vector3();
-    const b = new THREE.Vector3();
-    const c = new THREE.Vector3();
-    mesh.getVertexPosition(indices[0], a).applyMatrix4(meshToRoot);
-    mesh.getVertexPosition(indices[1], b).applyMatrix4(meshToRoot);
-    mesh.getVertexPosition(indices[2], c).applyMatrix4(meshToRoot);
+    const position = mesh.geometry.getAttribute('position');
+    const basePositions = new Float32Array(9);
+    for (let vertexIndex = 0; vertexIndex < 3; vertexIndex += 1) {
+      const index = indices[vertexIndex];
+      basePositions[vertexIndex * 3] = position.getX(index);
+      basePositions[vertexIndex * 3 + 1] = position.getY(index);
+      basePositions[vertexIndex * 3 + 2] = position.getZ(index);
+    }
+    const morphAttributes = mesh.geometry.morphAttributes.position || [];
+    const morphDeltas = morphAttributes.map((attribute) => {
+      const deltas = new Float32Array(9);
+      for (let vertexIndex = 0; vertexIndex < 3; vertexIndex += 1) {
+        const index = indices[vertexIndex];
+        const offset = vertexIndex * 3;
+        const baseX = basePositions[offset];
+        const baseY = basePositions[offset + 1];
+        const baseZ = basePositions[offset + 2];
+        deltas[offset] = mesh.geometry.morphTargetsRelative ? attribute.getX(index) : attribute.getX(index) - baseX;
+        deltas[offset + 1] = mesh.geometry.morphTargetsRelative ? attribute.getY(index) : attribute.getY(index) - baseY;
+        deltas[offset + 2] = mesh.geometry.morphTargetsRelative ? attribute.getZ(index) : attribute.getZ(index) - baseZ;
+      }
+      return deltas;
+    });
+    const binding = { mesh, meshToRoot, basePositions, morphDeltas };
+    const a = getAnimatedTriangleVertex(binding, 0, new THREE.Vector3());
+    const b = getAnimatedTriangleVertex(binding, 1, new THREE.Vector3());
+    const c = getAnimatedTriangleVertex(binding, 2, new THREE.Vector3());
     const rootPoint = root.worldToLocal(hit.point.clone());
     const barycentric = new THREE.Triangle(a, b, c).getBarycoord(rootPoint, new THREE.Vector3());
     if (!barycentric || ![barycentric.x, barycentric.y, barycentric.z].every(Number.isFinite)) return null;
-    return { mesh, meshToRoot, indices, barycentric };
+    return { ...binding, barycentric };
   }
   const animatedSurfaceGuides = [];
   const chestElectrodePoints = Object.fromEntries(
@@ -631,62 +652,55 @@ function createECGLeadOverlay(root, landmarks) {
     label(name, end, 'chest');
   }
   let lastGuideUpdateTime = 0;
-  let lastGuideRaycastTime = -Infinity;
   const guideVertexA = new THREE.Vector3();
   const guideVertexB = new THREE.Vector3();
   const guideVertexC = new THREE.Vector3();
   const guideSurfacePoint = new THREE.Vector3();
-  const guideWorldOrigin = new THREE.Vector3();
-  const guideWorldLimit = new THREE.Vector3();
+  const guideRay = new THREE.Ray();
+  const guideRayHit = new THREE.Vector3();
+  function getAnimatedTriangleVertex(binding, vertexIndex, target) {
+    const offset = vertexIndex * 3;
+    let x = binding.basePositions[offset];
+    let y = binding.basePositions[offset + 1];
+    let z = binding.basePositions[offset + 2];
+    const weights = binding.mesh.morphTargetInfluences;
+    for (let morphIndex = 0; morphIndex < binding.morphDeltas.length; morphIndex += 1) {
+      const weight = weights[morphIndex] || 0;
+      if (!weight) continue;
+      const delta = binding.morphDeltas[morphIndex];
+      x += delta[offset] * weight;
+      y += delta[offset + 1] * weight;
+      z += delta[offset + 2] * weight;
+    }
+    return target.set(x, y, z).applyMatrix4(binding.meshToRoot);
+  }
   group.userData.updateAnimatedSurfaceGuides = (frameTime = performance.now()) => {
-    // Correct the triangle-projection estimate against the true ray/surface
-    // intersection at 5 Hz. This keeps the endpoints on the animated heart
-    // without paying for six mesh-wide raycasts on every rendered frame.
-    const shouldRaycast = frameTime - lastGuideRaycastTime >= 1000 / 5;
-    const visibleMyocardialMeshes = shouldRaycast ? myocardialMeshes.filter((candidate) => {
-      for (let parent = candidate; parent; parent = parent.parent) {
-        if (!parent.visible) return false;
-        if (parent === root) break;
-      }
-      return true;
-    }) : null;
+    // Each guide keeps the triangle hit when it was created. Rebuild only
+    // that triangle from its cached morph deltas, then intersect the fixed
+    // electrode ray with it. This follows the beat without scanning the
+    // myocardial meshes or calling Mesh.getVertexPosition every frame.
     const deltaSeconds = lastGuideUpdateTime ? Math.min((frameTime - lastGuideUpdateTime) / 1000, 0.05) : 1 / 60;
     const blend = 1 - Math.exp(-deltaSeconds * 24);
     for (const { guide, baseLength, surfaceBinding, electrodePoint, inwardDirection } of animatedSurfaceGuides) {
-      const { mesh, meshToRoot, indices, barycentric } = surfaceBinding;
-      mesh.getVertexPosition(indices[0], guideVertexA).applyMatrix4(meshToRoot);
-      mesh.getVertexPosition(indices[1], guideVertexB).applyMatrix4(meshToRoot);
-      mesh.getVertexPosition(indices[2], guideVertexC).applyMatrix4(meshToRoot);
+      const { barycentric } = surfaceBinding;
+      getAnimatedTriangleVertex(surfaceBinding, 0, guideVertexA);
+      getAnimatedTriangleVertex(surfaceBinding, 1, guideVertexB);
+      getAnimatedTriangleVertex(surfaceBinding, 2, guideVertexC);
       guideSurfacePoint.copy(guideVertexA).multiplyScalar(barycentric.x)
         .addScaledVector(guideVertexB, barycentric.y)
         .addScaledVector(guideVertexC, barycentric.z);
       const maxLength = baseLength * 1.35;
       const projectedLength = guideSurfacePoint.sub(electrodePoint).dot(inwardDirection);
-      // Keep the ray anchored at the electrode and update only its length as
-      // the heart morphs. The initial raycast bound this exact surface
-      // triangle; projecting its animated position onto the fixed ray avoids
-      // repeatedly raycasting every myocardial mesh while the ECG guides are
-      // active. A low-frequency correction keeps the line on the true surface.
-      if (shouldRaycast) {
-        const worldOrigin = root.localToWorld(guideWorldOrigin.copy(electrodePoint));
-        const worldLimit = root.localToWorld(guideWorldLimit.copy(electrodePoint).addScaledVector(inwardDirection, maxLength));
-        const rayDelta = worldLimit.sub(worldOrigin);
-        const rayLength = rayDelta.length();
-        surfaceRaycaster.set(worldOrigin, rayDelta.normalize());
-        surfaceRaycaster.near = 0;
-        surfaceRaycaster.far = rayLength;
-        const hit = surfaceRaycaster.intersectObjects(visibleMyocardialMeshes, false)[0];
-        const surfaceLength = hit
-          ? root.worldToLocal(hit.point).sub(electrodePoint).dot(inwardDirection)
-          : projectedLength;
-        guide.userData.targetLength = Math.max(Math.min(surfaceLength, maxLength), 1e-6);
-      } else {
-        guide.userData.targetLength = Math.max(Math.min(projectedLength, maxLength), 1e-6);
-      }
+      guideRay.origin.copy(electrodePoint);
+      guideRay.direction.copy(inwardDirection);
+      const surfaceHit = guideRay.intersectTriangle(guideVertexA, guideVertexB, guideVertexC, false, guideRayHit);
+      const surfaceLength = surfaceHit
+        ? surfaceHit.sub(electrodePoint).dot(inwardDirection)
+        : projectedLength;
+      guide.userData.targetLength = Math.max(Math.min(surfaceLength, maxLength), 1e-6);
       const currentLength = guide.scale.y * baseLength;
       guide.scale.y = THREE.MathUtils.lerp(currentLength, guide.userData.targetLength, blend) / baseLength;
     }
-    if (shouldRaycast) lastGuideRaycastTime = frameTime;
     lastGuideUpdateTime = frameTime;
   };
   return group;
