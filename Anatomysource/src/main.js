@@ -1869,27 +1869,43 @@ function clearModelLoadProgress() {
   ui.modelLoadTrack.setAttribute('aria-valuenow', '0');
 }
 
-async function fetchModelBlob(url, onProgress) {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`Could not load ${url.split('/').pop()}.`);
-  const total = Number(response.headers.get('content-length')) || 0;
-  if (!response.body?.getReader) {
-    const blob = await response.blob();
-    onProgress(total ? 1 : null);
-    return blob;
-  }
-  const reader = response.body.getReader();
-  const chunks = [];
-  let received = 0;
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    chunks.push(value);
-    received += value.byteLength;
-    onProgress(total ? Math.min(received / total, 1) : null);
+async function fetchModelBlob(url, onProgress, model = null) {
+  const files = model?.chunks?.length
+    ? model.chunks.map((path) => `/models/${path}`)
+    : [url];
+  const expectedBytes = model?.fileSizeBytes || 0;
+  const blobs = [];
+  let completedBytes = 0;
+  for (const [fileIndex, fileUrl] of files.entries()) {
+    const response = await fetch(fileUrl);
+    if (!response.ok) throw new Error(`Could not load ${fileUrl.split('/').pop()}.`);
+    const fileBytes = Number(response.headers.get('content-length')) || 0;
+    const totalBytes = expectedBytes || fileBytes;
+    if (!response.body?.getReader) {
+      const blob = await response.blob();
+      blobs.push(blob);
+      completedBytes += blob.size;
+      onProgress(totalBytes ? Math.min(completedBytes / totalBytes, 1) : (fileIndex + 1) / files.length);
+      continue;
+    }
+    const reader = response.body.getReader();
+    const parts = [];
+    let receivedBytes = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      parts.push(value);
+      receivedBytes += value.byteLength;
+      const progress = totalBytes
+        ? (completedBytes + receivedBytes) / totalBytes
+        : (fileIndex + receivedBytes / (fileBytes || receivedBytes)) / files.length;
+      onProgress(Math.min(progress, 1));
+    }
+    blobs.push(new Blob(parts));
+    completedBytes += receivedBytes;
   }
   onProgress(1);
-  return new Blob(chunks, { type: response.headers.get('content-type') || 'model/gltf-binary' });
+  return new Blob(blobs, { type: 'model/gltf-binary' });
 }
 
 async function loadSelectedLibraryModels() {
@@ -1911,7 +1927,7 @@ async function loadSelectedLibraryModels() {
           `Downloading ${model.system} · ${index + 1} of ${models.length}`,
           fraction === null ? null : ((index + fraction * 0.7) / models.length) * 100,
         );
-      });
+      }, model);
       const file = new File([blob], `${model.id}.glb`, { type: 'model/gltf-binary' });
       setModelLoadProgress(`Building meshes · ${model.system} · ${index + 1} of ${models.length}`);
       const parsed = await parseModel([file]);

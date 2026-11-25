@@ -1,8 +1,8 @@
 {
 	"name": "anatomy",
-	"description": "Build a full-stack web application with React Router 7.",
+	"description": "Offline-first interactive anatomy viewer.",
 	"cloudflare": {
-		"label": "React Router Framework Starter",
+		"label": "Anatomy Viewer",
 		"products": [
 			"Workers"
 		],
@@ -37,7 +37,7 @@
 	"scripts": {
 		"build": "npm --prefix Anatomysource run build:viewer",
 		"cf-typegen": "wrangler types && react-router typegen",
-		"check": "tsc && react-router build && wrangler deploy --dry-run",
+		"check": "npm run build && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
 		"dev": "npm --prefix Anatomysource run dev",
 		"dev:router": "react-router dev",

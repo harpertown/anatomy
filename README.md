@@ -25,3 +25,7 @@ the WASM module from C, run `npm --prefix Anatomysource run build` (requires
 Emscripten).
 
 The original React Router starter can still be run with `npm run dev:router`.
+
+Cloudflare deployment uses the static viewer build in `Anatomysource/dist`.
+Large GLB models are split into files under Cloudflare's 25 MiB asset limit
+and joined in the browser when loaded. Run `npm run build` before `npm run deploy`.
