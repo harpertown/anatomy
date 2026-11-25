@@ -1516,7 +1516,7 @@ async function parseModel(files) {
   }
 }
 
-async function installLoadedScene({ root, displayName = '', catalogId = '', animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [] } = {}) {
+async function installLoadedScene({ root, displayName = '', catalogId = '', modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [] } = {}) {
   if (selectionBox) scene.remove(selectionBox);
   if (modelGroup?.userData.blobUrls) modelGroup.userData.blobUrls.forEach(URL.revokeObjectURL);
   if (mixer && loadedRoot) {
@@ -1603,7 +1603,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', anim
   ui.toggle.disabled = true;
   for (const id of ['fit-view', 'reset-view', 'show-all', 'export-image']) el(id).disabled = false;
   el('focus-heart').disabled = false;
-  setStatus(`Loaded ${displayName}`);
+  setStatus(`${modelCount} model${modelCount === 1 ? '' : 's'} loaded`);
   showToast(`Loaded ${displayName}.`);
   modelGroup.userData.blobUrls = blobUrls;
 }
@@ -1753,6 +1753,7 @@ async function loadSelectedLibraryModels() {
     await installLoadedScene({
       root: combined,
       displayName,
+      modelCount: models.length,
       animations: heartModel?.animations || [],
       heartRoot: heartModel?.root || null,
       heartModelId: heartModel?.model.id || '',
