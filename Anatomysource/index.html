@@ -17,9 +17,7 @@
           </span>
           <span class="brand-copy"><strong>adam.</strong><small>Anatomy viewer</small></span>
         </a>
-        <div class="topbar-center"><span class="privacy-dot"></span> Files stay on this device</div>
         <div class="topbar-actions">
-          <span id="wasm-status" class="status-chip"><i></i> WASM starting</span>
           <button id="export-image" class="icon-button" title="Save a viewport image" aria-label="Save viewport image" disabled>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3l1.2-2h7.6l1.2 2h3v11H4z"/><circle cx="12" cy="13" r="3.3"/></svg>
           </button>
@@ -69,8 +67,8 @@
               <button id="show-all" class="tool-button" disabled title="Show every structure"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg><span>Show all</span></button>
               <span class="tool-divider"></span>
               <button id="toggle-animation" class="tool-button animation-tool" disabled title="Play the heart cycle" aria-label="Play the heart cycle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Play beat</span></button>
-              <button id="toggle-conduction" class="tool-button conduction-tool" disabled title="Show cardiac conduction overlay; node meshes come from the bundled nervous system model" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.2-5 4.2 10 2.1-5H21"/><circle cx="9.2" cy="7" r="1"/><circle cx="15.5" cy="12" r="1"/></svg><span>Conduction</span></button>
-              <button id="toggle-depolarization" class="tool-button depolarization-tool" disabled title="Anatomy-guided activation map with approximate tissue timing. Yellow is the wavefront, red activated tissue, blue resting or recovered. Not a patient-specific voltage simulation." aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.5-8 5-11 8-11s5.5 3 8 11"/><path d="M4 20h16"/><path d="M12 5V2.5"/></svg><span>Depolarization</span></button>
+              <button id="toggle-conduction" class="tool-button conduction-tool" disabled title="Show cardiac conduction overlay" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.2-5 4.2 10 2.1-5H21"/><circle cx="9.2" cy="7" r="1"/><circle cx="15.5" cy="12" r="1"/></svg><span>Conduction</span></button>
+              <button id="toggle-depolarization" class="tool-button depolarization-tool" disabled title="Show cardiac depolarization overlay" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.5-8 5-11 8-11s5.5 3 8 11"/><path d="M4 20h16"/><path d="M12 5V2.5"/></svg><span>Depolarization</span></button>
               <button id="toggle-ecg" class="tool-button ecg-tool" disabled title="Show limb electrode guides in 3D" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M2.5 12h4l2.1-5 3.1 10 2.4-7 1.6 2h5.8"/></svg><span>ECG guides</span></button>
               <button id="focus-heart" class="tool-button heart-tool" disabled title="Show heart structures"><svg viewBox="0 0 24 24"><path d="M20.4 5.9a5 5 0 0 0-7.1 0L12 7.2l-1.3-1.3a5 5 0 0 0-7.1 7.1l8.4 8.1 8.4-8.1a5 5 0 0 0 0-7.1Z"/><path d="M4.2 12h4l1.7-3.1 3 6.2 1.9-3.1h5"/></svg><span>Heart focus</span></button>
             </div>
@@ -102,10 +100,9 @@
             <h3 id="selected-name">—</h3>
             <p id="selected-path" class="selected-path"></p>
             <div class="inspector-rule"></div>
+            <div class="selection-actions"><button id="isolate-selected" class="button button-outline" disabled>Isolate</button><button id="toggle-selected" class="button button-outline" disabled>Hide</button></div>
+            <div id="structure-description" class="structure-description" hidden></div>
             <div class="property-list"><div><span>Geometry</span><strong id="property-geometry">—</strong></div><div><span>Triangles</span><strong id="property-triangles">—</strong></div><div><span>Materials</span><strong id="property-materials">—</strong></div><div><span>Units</span><strong id="property-units">Not provided</strong></div></div>
-            <div class="inspector-rule"></div>
-            <div class="selection-actions"><button id="isolate-selected" class="button button-outline" disabled>Isolate structure</button><button id="toggle-selected" class="button button-plain" disabled>Hide structure</button></div>
-            <div class="info-note"><span class="note-mark">i</span><p>Geometry and units are read from the imported file. Names and measurements are not validated by this viewer.</p></div>
           </div>
           <div class="inspector-bottom"><span class="source-label">Source</span><span id="source-value">No file selected</span></div>
         </aside>

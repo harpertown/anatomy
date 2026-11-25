@@ -21,7 +21,6 @@ const ui = {
   modelTitle: el('model-title'),
   selectedCrumb: el('selected-crumb'),
   status: el('status-message'),
-  wasm: el('wasm-status'),
   meshSummary: el('mesh-summary'),
   emptyState: el('empty-state'),
   hud: el('viewport-hud'),
@@ -194,6 +193,7 @@ let modelFileName = '';
 let allNodes = [];
 let selectedNode = null;
 let selectionBox = null;
+let selectionHighlightSources = [];
 let toastTimer = 0;
 let nodeMap = new Map();
 let libraryModels = [];
@@ -216,6 +216,7 @@ let previousFrameTime = performance.now();
 const heartMaterials = new Map();
 const originalHeartTextures = new Map();
 let conductionNodeGeometryPromise;
+let structureDescriptionsPromise;
 let ecgLandmarksPromise;
 const depolarizationResting = new THREE.Color('#167bd4');
 const depolarizationActive = new THREE.Color('#ec253e');
@@ -1338,27 +1339,90 @@ function renderTree(query = '') {
   ui.tree.append(fragment);
 }
 
+function clearSelectionHighlight() {
+  if (!selectionBox) return;
+  scene.remove(selectionBox);
+  selectionBox.traverse((object) => object.material?.dispose?.());
+  selectionBox = null;
+  selectionHighlightSources = [];
+}
+
+function updateSelectionHighlight() {
+  if (!selectionBox) return;
+  for (const { source, overlay } of selectionHighlightSources) {
+    source.updateWorldMatrix(true, false);
+    overlay.matrix.copy(source.matrixWorld);
+    overlay.matrixWorldNeedsUpdate = true;
+    overlay.visible = true;
+    for (let parent = source; parent; parent = parent.parent) overlay.visible = overlay.visible && parent.visible;
+    if (source.morphTargetInfluences && overlay.morphTargetInfluences) {
+      for (let index = 0; index < source.morphTargetInfluences.length; index += 1) {
+        overlay.morphTargetInfluences[index] = source.morphTargetInfluences[index];
+      }
+    }
+    if (source.isInstancedMesh && overlay.isInstancedMesh) {
+      overlay.instanceMatrix.copy(source.instanceMatrix);
+      overlay.count = source.count;
+    }
+  }
+}
+
 function selectNode(object) {
   selectedNode = object;
-  if (selectionBox) scene.remove(selectionBox);
-  selectionBox = new THREE.BoxHelper(object, 0xe48a7d);
-  selectionBox.material.depthTest = false;
-  selectionBox.material.transparent = true;
-  selectionBox.material.opacity = 0.92;
+  clearSelectionHighlight();
+  selectionBox = new THREE.Group();
+  selectionBox.name = 'Selected mesh surface highlight';
   selectionBox.renderOrder = 10;
   scene.add(selectionBox);
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xe48a7d,
+    transparent: true,
+    opacity: object.isMesh || object.isSkinnedMesh || object.isInstancedMesh ? 0.34 : 0.13,
+    depthTest: !(object.isMesh || object.isSkinnedMesh || object.isInstancedMesh),
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  });
+  object.traverse((source) => {
+    if (!(source.isMesh || source.isSkinnedMesh || source.isInstancedMesh)) return;
+    const overlay = source.isInstancedMesh
+      ? new THREE.InstancedMesh(source.geometry, material, source.count)
+      : source.isSkinnedMesh
+        ? new THREE.SkinnedMesh(source.geometry, material)
+        : new THREE.Mesh(source.geometry, material);
+    if (source.isSkinnedMesh) {
+      overlay.bind(source.skeleton, source.bindMatrix);
+      overlay.bindMode = source.bindMode;
+      overlay.bindMatrixInverse.copy(source.bindMatrixInverse);
+    }
+    overlay.matrixAutoUpdate = false;
+    overlay.matrix.copy(source.matrixWorld);
+    overlay.matrixWorldNeedsUpdate = true;
+    overlay.frustumCulled = false;
+    if (source.morphTargetInfluences) {
+      overlay.morphTargetInfluences = source.morphTargetInfluences.slice();
+      overlay.morphTargetDictionary = source.morphTargetDictionary;
+    }
+    if (source.isInstancedMesh) {
+      overlay.instanceMatrix.copy(source.instanceMatrix);
+      overlay.count = source.count;
+    }
+    overlay.name = `Selection surface: ${source.name || source.type}`;
+    overlay.renderOrder = 10;
+    selectionBox.add(overlay);
+    selectionHighlightSources.push({ source, overlay });
+  });
+  selectionBox.visible = Boolean(object.visible);
+  updateSelectionHighlight();
   updateInspector(object);
   renderTree(ui.search.value);
 }
 
 function deselectNode() {
   selectedNode = null;
-  if (selectionBox) {
-    scene.remove(selectionBox);
-    selectionBox.geometry.dispose();
-    selectionBox.material.dispose();
-    selectionBox = null;
-  }
+  clearSelectionHighlight();
   updateInspector(null);
   renderTree(ui.search.value);
 }
@@ -1384,16 +1448,60 @@ function updateInspector(object) {
   ui.selectedId.textContent = sourceId ? `ID ${sourceId.slice(0, 8)}` : `#${object.id}`;
   ui.selectedId.title = sourceId || '';
   ui.selectedPath.textContent = entry?.path || name;
+  renderStructureDescription(object, entry, name);
   ui.geometry.textContent = `${facts.meshes} ${facts.meshes === 1 ? 'mesh' : 'meshes'}`;
   ui.triangles.textContent = facts.triangles.toLocaleString();
   ui.materials.textContent = String(facts.materialCount);
   ui.isolate.disabled = false;
   ui.toggle.disabled = false;
-  ui.toggle.textContent = object.visible ? 'Hide structure' : 'Show structure';
+  ui.toggle.textContent = object.visible ? 'Hide' : 'Show';
   ui.selectedCrumb.textContent = name;
   el('hud-structure').textContent = name;
   el('hud-triangles').textContent = `${facts.triangles.toLocaleString()} triangles`;
   ui.hud.hidden = false;
+}
+
+function renderStructureDescription(object, entry, name) {
+  const container = el('structure-description');
+  container.replaceChildren();
+  const sourceId = object.userData?.formeSourceId;
+  container.hidden = false;
+  const loading = document.createElement('p');
+  loading.className = 'description-loading';
+  loading.textContent = 'Loading description…';
+  container.append(loading);
+
+  if (!structureDescriptionsPromise) {
+    structureDescriptionsPromise = fetch('/models/structure-descriptions.json').then((response) => {
+      if (!response.ok) throw new Error('Descriptions are unavailable');
+      return response.json();
+    });
+  }
+
+  structureDescriptionsPromise.then((index) => {
+    if (selectedNode !== object) return;
+    const description = index[sourceId] || Object.values(index).find((item) => item.name === name);
+    container.replaceChildren();
+    if (!description?.sections?.length) {
+      container.hidden = true;
+      return;
+    }
+    for (const section of description.sections) {
+      const block = document.createElement('section');
+      block.className = 'description-section';
+      const heading = document.createElement('h4');
+      heading.textContent = section.name || 'Details';
+      const text = document.createElement('p');
+      text.className = 'description-text';
+      text.textContent = section.text;
+      block.append(heading, text);
+      container.append(block);
+    }
+  }).catch(() => {
+    if (selectedNode !== object) return;
+    container.hidden = true;
+    structureDescriptionsPromise = null;
+  });
 }
 
 function resetCamera() {
@@ -1430,7 +1538,7 @@ function fitModel(root = loadedRoot) {
   controls.minDistance = 0.12;
   controls.maxDistance = 35;
   controls.update();
-  if (selectionBox) selectionBox.update();
+  updateSelectionHighlight();
 }
 
 function showAll() {
@@ -1517,7 +1625,7 @@ async function parseModel(files) {
 }
 
 async function installLoadedScene({ root, displayName = '', catalogId = '', modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [] } = {}) {
-  if (selectionBox) scene.remove(selectionBox);
+  clearSelectionHighlight();
   if (modelGroup?.userData.blobUrls) modelGroup.userData.blobUrls.forEach(URL.revokeObjectURL);
   if (mixer && loadedRoot) {
     mixer.stopAllAction();
@@ -1568,7 +1676,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', mode
   modelFileName = displayName || 'Anatomy model';
   allNodes = collectNodes(loadedRoot);
   nodeMap = new Map(allNodes.map((entry) => [entry.id, entry.object]));
-  collapsedGroups = new Set(allNodes.filter((entry) => !entry.isMesh && entry.depth >= 2 && entry.object.children.length > 0).map((entry) => entry.id));
+  collapsedGroups = new Set(allNodes.filter((entry) => !entry.isMesh && entry.object.children.length > 0).map((entry) => entry.id));
   selectedNode = null;
   updateInspector(null);
   fitModel(loadedRoot);
@@ -1835,6 +1943,7 @@ function render(frameTime = performance.now()) {
   previousFrameTime = frameTime;
   mixer?.update(delta);
   updateConductionOverlay(delta);
+  updateSelectionHighlight();
   renderer.render(scene, camera);
 }
 
@@ -1923,7 +2032,7 @@ viewport.addEventListener('dragleave', () => viewport.classList.remove('dragging
 viewport.addEventListener('drop', async (event) => { event.preventDefault(); viewport.classList.remove('dragging'); await loadFiles(event.dataTransfer?.files); });
 document.addEventListener('keydown', (event) => {
   if (event.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) { event.preventDefault(); ui.search.focus(); }
-  if (event.key === 'Escape') { ui.search.value = ''; renderTree(''); if (selectedNode) { selectedNode = null; if (selectionBox) scene.remove(selectionBox); selectionBox = null; updateInspector(null); renderTree(''); } }
+  if (event.key === 'Escape') { ui.search.value = ''; renderTree(''); if (selectedNode) { selectedNode = null; clearSelectionHighlight(); updateInspector(null); renderTree(''); } }
   if (event.key.toLowerCase() === 'r' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) resetCamera();
 });
 el('collapse-left').addEventListener('click', () => document.querySelector('.workspace').classList.toggle('tree-collapsed'));
@@ -1934,12 +2043,8 @@ resizeObserver.observe(el('viewport-wrap'));
 await loadModelLibrary();
 try {
   wasm = await initWasm();
-  ui.wasm.classList.add('ready');
-  ui.wasm.innerHTML = '<i></i> WASM core ready';
   setStatus('Ready for a local model');
 } catch (error) {
-  ui.wasm.classList.add('error');
-  ui.wasm.innerHTML = '<i></i> WASM core missing';
   setStatus(error.message);
 }
 resize();
