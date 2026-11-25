@@ -3,18 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#101b26" />
+    <meta name="theme-color" content="#ebe9e5" />
     <meta name="description" content="A private, offline-first workspace for inspecting anatomy models." />
-    <title>Anatomy Workspace</title>
+    <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <title>Anatomy Viewer · Adam</title>
   </head>
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="#" aria-label="Anatomy Workspace home">
+        <a class="brand" href="https://itsadam.tech" aria-label="Adam home">
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 32 32"><path d="M16 27.2 5.5 17.1C-.4 10.8 8.7 2.7 16 9.3c7.3-6.6 16.4 1.5 10.5 7.8L16 27.2Z"/><path d="M16 9.3c-1.6 2.3-2.1 4.5-1.5 6.6.5 1.6 1.9 2.6 3.4 2.4 1.2-.2 2.1-1.2 2.3-2.5"/></svg>
           </span>
-          <span class="brand-copy"><strong>Forme</strong><small>Anatomy workspace</small></span>
+          <span class="brand-copy"><strong>adam.</strong><small>Anatomy viewer</small></span>
         </a>
         <div class="topbar-center"><span class="privacy-dot"></span> Files stay on this device</div>
         <div class="topbar-actions">
@@ -32,17 +33,13 @@
             <div><p class="eyebrow">Workspace</p><h1>Structure</h1></div>
             <button id="collapse-left" class="icon-button quiet" title="Toggle structure panel" aria-label="Toggle structure panel"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button>
           </div>
-          <button id="drop-zone" class="drop-zone" type="button">
-            <span class="drop-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4.5 15v4.5h15V15"/></svg></span>
-            <span><strong>Load an anatomy model</strong><small>GLB, or glTF with its files</small></span>
-          </button>
           <input id="model-input" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2" multiple hidden />
-          <label class="library-picker">
-            <span>OFFLINE MODEL LIBRARY</span>
-            <select id="model-library" aria-label="Choose offline anatomy models" multiple size="5">
-              <option value="">Loading bundled models…</option>
-            </select>
-            <small class="library-help">⌘/Ctrl-click systems to combine, then load them together.</small>
+          <section class="library-picker" aria-labelledby="library-title">
+            <h2 id="library-title">Offline model library</h2>
+            <div id="model-library" class="model-checklist" role="group" aria-label="Choose anatomy systems" aria-busy="true">
+              <p class="library-loading">Loading bundled models…</p>
+            </div>
+            <small class="library-help">Choose one or more systems to load together.</small>
             <button id="load-library-models" class="button button-outline library-load" type="button">Load selected models</button>
             <div id="model-load-progress" class="model-load-progress" hidden aria-live="polite">
               <div class="model-load-progress-label"><span id="model-load-label">Loading models…</span><span id="model-load-percent"></span></div>
@@ -50,7 +47,7 @@
                 <span id="model-load-fill" class="model-load-fill"></span>
               </div>
             </div>
-          </label>
+          </section>
           <div class="structure-title"><span>Scene tree</span><span id="node-count" class="count">0</span></div>
           <label class="search-box">
             <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m16 16 4 4"/></svg>
@@ -75,8 +72,7 @@
               <button id="toggle-animation" class="tool-button animation-tool" disabled title="Play the heart cycle" aria-label="Play the heart cycle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><span>Play beat</span></button>
               <button id="toggle-conduction" class="tool-button conduction-tool" disabled title="Show cardiac conduction overlay; node meshes come from the bundled nervous system model" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M3 12h4l2.2-5 4.2 10 2.1-5H21"/><circle cx="9.2" cy="7" r="1"/><circle cx="15.5" cy="12" r="1"/></svg><span>Conduction</span></button>
               <button id="toggle-depolarization" class="tool-button depolarization-tool" disabled title="Anatomy-guided activation map with approximate tissue timing. Yellow is the wavefront, red activated tissue, blue resting or recovered. Not a patient-specific voltage simulation." aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M4 17.5c2.5-8 5-11 8-11s5.5 3 8 11"/><path d="M4 20h16"/><path d="M12 5V2.5"/></svg><span>Depolarization</span></button>
-              <button id="toggle-ecg" class="tool-button ecg-tool" disabled title="Show limb electrode guides in 3D and open the ECG viewer" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M2.5 12h4l2.1-5 3.1 10 2.4-7 1.6 2h5.8"/></svg><span>ECG</span></button>
-              <button id="toggle-render-tuning" class="tool-button" title="Adjust the heart rendering values" aria-expanded="false" aria-controls="render-tuning"><svg viewBox="0 0 24 24"><path d="M4 6h9m4 0h3M4 12h3m4 0h9M4 18h11m4 0h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Tune</span></button>
+              <button id="toggle-ecg" class="tool-button ecg-tool" disabled title="Show limb electrode guides in 3D" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M2.5 12h4l2.1-5 3.1 10 2.4-7 1.6 2h5.8"/></svg><span>ECG guides</span></button>
               <button id="focus-heart" class="tool-button heart-tool" disabled title="Show heart structures"><svg viewBox="0 0 24 24"><path d="M20.4 5.9a5 5 0 0 0-7.1 0L12 7.2l-1.3-1.3a5 5 0 0 0-7.1 7.1l8.4 8.1 8.4-8.1a5 5 0 0 0 0-7.1Z"/><path d="M4.2 12h4l1.7-3.1 3 6.2 1.9-3.1h5"/></svg><span>Heart focus</span></button>
             </div>
           </div>
@@ -88,25 +84,11 @@
               <h2>Bring your anatomy into view.</h2>
               <p class="empty-copy">Open a GLB file, or choose a glTF file with its referenced textures and buffers. The model is processed locally.</p>
               <button id="import-empty" class="button button-primary">Choose model</button>
-              <span class="empty-foot">Male and female 2024 systems are available in the offline library.</span>
+              <span class="empty-foot">Male and female systems are available in the offline library.</span>
             </div>
             <div id="viewport-hud" class="viewport-hud" hidden>
               <span id="hud-structure">Structure selected</span><span id="hud-triangles">— triangles</span>
             </div>
-            <section id="render-tuning" class="render-tuning" aria-label="Heart rendering adjustments" hidden>
-              <div class="render-tuning-heading"><div><span class="tuning-mark"></span><strong>Heart rendering</strong></div><button id="reset-render-tuning" type="button">Reset</button></div>
-              <label class="tuning-control"><span>Exposure <output id="render-exposure-value">0.85</output></span><input id="render-exposure" type="range" min="0.15" max="1.5" step="0.01" value="0.85" /></label>
-              <label class="tuning-control"><span>Fill overlay <output id="render-overlay-value">0</output></span><input id="render-overlay" type="range" min="0" max="1" step="0.01" value="0" /></label>
-              <label class="tuning-control"><span>Environment <output id="render-ibl-value">1.00</output></span><input id="render-ibl" type="range" min="0.1" max="2" step="0.01" value="1" /></label>
-              <p>Adjust these values against the source app. Changes stay in this browser.</p>
-            </section>
-            <section id="ecg-panel" class="ecg-panel" aria-label="Schematic ECG lead viewer" hidden>
-              <div class="ecg-heading"><div><span class="ecg-live-dot"></span><strong id="ecg-title">ECG · Lead II</strong><small id="ecg-cycle-label">Activation-linked · one cycle</small></div><label class="ecg-lead-label" for="ecg-lead-select">Lead</label><select id="ecg-lead-select" class="ecg-lead-select" aria-label="Select ECG lead"><option>I</option><option selected>II</option><option>III</option><option>aVR</option><option>aVL</option><option>aVF</option><option>V1</option><option>V2</option><option>V3</option><option>V4</option><option>V5</option><option>V6</option></select><span class="ecg-calibration">relative voltage</span><button id="ecg-minimize" class="ecg-minimize" type="button" title="Minimize ECG viewer" aria-label="Minimize ECG viewer" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="minimize-mark" d="M5 12h14"/><path class="expand-mark" d="M5 12h14M12 5v14"/></svg></button></div>
-              <div class="ecg-chart-layout">
-                <canvas id="ecg-trace" aria-label="Schematic six limb leads synchronized to the heart cycle"></canvas>
-              </div>
-              <div class="ecg-foot"><span id="ecg-intervals">P — · PR — · QRS —</span><span>V1–V6 follow rib, sternum, clavicle, and chest landmarks. Educational trace; no body-conduction simulation.</span></div>
-            </section>
             <div class="viewport-corner corner-top-left"><span class="axis-mark"><i></i><b></b><em></em></span><span>3D view</span></div>
             <div class="viewport-corner corner-bottom-left"><span class="mouse-glyph">◎</span> Drag to orbit <span class="hud-separator">·</span> Right-drag to pan up/down <span class="hud-separator">·</span> Scroll to zoom</div>
           </div>

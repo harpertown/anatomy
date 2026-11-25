@@ -42,22 +42,6 @@ const ui = {
   conduction: el('toggle-conduction'),
   depolarization: el('toggle-depolarization'),
   ecg: el('toggle-ecg'),
-  ecgPanel: el('ecg-panel'),
-  ecgCanvas: el('ecg-trace'),
-  ecgLeadSelect: el('ecg-lead-select'),
-  ecgTitle: el('ecg-title'),
-  ecgCycleLabel: el('ecg-cycle-label'),
-  ecgIntervals: el('ecg-intervals'),
-  ecgMinimize: el('ecg-minimize'),
-  renderTuningButton: el('toggle-render-tuning'),
-  renderTuningPanel: el('render-tuning'),
-  renderExposure: el('render-exposure'),
-  renderOverlay: el('render-overlay'),
-  renderIbl: el('render-ibl'),
-  renderExposureValue: el('render-exposure-value'),
-  renderOverlayValue: el('render-overlay-value'),
-  renderIblValue: el('render-ibl-value'),
-  resetRenderTuning: el('reset-render-tuning'),
 };
 
 const canvas = el('viewport');
@@ -89,35 +73,8 @@ function updateRenderTuning(field, value) {
   for (const uniforms of sourceShaderUniforms) {
     if (uniforms[uniformName]) uniforms[uniformName].value = value;
   }
-  const control = {
-    exposure: [ui.renderExposure, ui.renderExposureValue, 2],
-    overlayVisibility: [ui.renderOverlay, ui.renderOverlayValue, 2],
-    iblIntensity: [ui.renderIbl, ui.renderIblValue, 2],
-  }[field];
-  if (control) {
-    control[0].value = String(value);
-    control[1].value = Number(value).toFixed(control[2]);
-  }
   try { localStorage.setItem(RENDER_TUNING_STORAGE_KEY, JSON.stringify(sourceRenderTuning)); } catch { /* The slider still applies for this session. */ }
 }
-
-for (const [input, field] of [
-  [ui.renderExposure, 'exposure'],
-  [ui.renderOverlay, 'overlayVisibility'],
-  [ui.renderIbl, 'iblIntensity'],
-]) {
-  input.addEventListener('input', () => updateRenderTuning(field, Number(input.value)));
-}
-ui.renderTuningButton.addEventListener('click', () => {
-  const open = ui.renderTuningPanel.hidden;
-  ui.renderTuningPanel.hidden = !open;
-  ui.renderTuningButton.setAttribute('aria-expanded', String(open));
-});
-ui.resetRenderTuning.addEventListener('click', () => {
-  updateRenderTuning('exposure', SOURCE_RENDER_ESTIMATES.exposure);
-  updateRenderTuning('overlayVisibility', SOURCE_RENDER_ESTIMATES.overlayVisibility);
-  updateRenderTuning('iblIntensity', 1);
-});
 for (const field of ['exposure', 'overlayVisibility', 'iblIntensity']) updateRenderTuning(field, sourceRenderTuning[field]);
 
 async function loadSourceIbl() {
@@ -254,9 +211,6 @@ let conductionMorphAnchors = [];
 let conductionElapsed = 0;
 let depolarizationShell = null;
 let depolarizationMeshPairs = [];
-let ecgTiming = null;
-let ecgCurrentPhase = 0;
-let ecgCurrentCycleSeconds = 1;
 let lastDepolarizationPhase = -1;
 let previousFrameTime = performance.now();
 const heartMaterials = new Map();
@@ -826,178 +780,8 @@ function createDepolarizationShell(root) {
   return shellRoot;
 }
 
-const ECG_WAVE_NAMES = ['p', 'q', 'r', 's', 't'];
-const LIMB_ELECTRODE_WAVEFORMS = {
-  RA: { p: -0.10, q: 0.10, r: -0.45, s: 0.20, t: -0.16 },
-  LA: { p: 0.04, q: -0.05, r: 0.18, s: -0.10, t: 0.08 },
-  LL: { p: 0.15, q: -0.10, r: 0.55, s: -0.20, t: 0.20 },
-};
-const limbDifference = (name, positive, negative, factor = 1) => ({
-  name,
-  ...Object.fromEntries(ECG_WAVE_NAMES.map((wave) => [wave, (positive[wave] - negative[wave]) * factor])),
-});
-const limbMeanDifference = (name, positive, negativeA, negativeB) => ({
-  name,
-  ...Object.fromEntries(ECG_WAVE_NAMES.map((wave) => [wave, positive[wave] - (negativeA[wave] + negativeB[wave]) / 2])),
-});
-const ECG_LEAD_MORPHOLOGY = [
-  limbDifference('I', LIMB_ELECTRODE_WAVEFORMS.LA, LIMB_ELECTRODE_WAVEFORMS.RA),
-  limbDifference('II', LIMB_ELECTRODE_WAVEFORMS.LL, LIMB_ELECTRODE_WAVEFORMS.RA),
-  limbDifference('III', LIMB_ELECTRODE_WAVEFORMS.LL, LIMB_ELECTRODE_WAVEFORMS.LA),
-  limbMeanDifference('aVR', LIMB_ELECTRODE_WAVEFORMS.RA, LIMB_ELECTRODE_WAVEFORMS.LA, LIMB_ELECTRODE_WAVEFORMS.LL),
-  limbMeanDifference('aVL', LIMB_ELECTRODE_WAVEFORMS.LA, LIMB_ELECTRODE_WAVEFORMS.RA, LIMB_ELECTRODE_WAVEFORMS.LL),
-  limbMeanDifference('aVF', LIMB_ELECTRODE_WAVEFORMS.LL, LIMB_ELECTRODE_WAVEFORMS.RA, LIMB_ELECTRODE_WAVEFORMS.LA),
-  { name: 'V1', p: 0.02, q: -0.04, r: 0.18, s: -0.62, t: -0.10 },
-  { name: 'V2', p: 0.06, q: -0.06, r: 0.38, s: -0.45, t: 0.04 },
-  { name: 'V3', p: 0.09, q: -0.08, r: 0.68, s: -0.29, t: 0.16 },
-  { name: 'V4', p: 0.11, q: -0.09, r: 0.88, s: -0.17, t: 0.26 },
-  { name: 'V5', p: 0.11, q: -0.08, r: 0.84, s: -0.12, t: 0.28 },
-  { name: 'V6', p: 0.10, q: -0.07, r: 0.74, s: -0.10, t: 0.25 },
-];
-
-function getECGActivationTiming() {
-  let atrialStart = Infinity;
-  let atrialEnd = -Infinity;
-  let ventricularStart = Infinity;
-  let ventricularEnd = -Infinity;
-  for (const pair of depolarizationMeshPairs) {
-    if (!pair.selected) continue;
-    for (const time of pair.activationTimes) {
-      if (!Number.isFinite(time)) continue;
-      if (pair.atrialTissue) {
-        atrialStart = Math.min(atrialStart, time);
-        atrialEnd = Math.max(atrialEnd, time);
-      } else {
-        ventricularStart = Math.min(ventricularStart, time);
-        ventricularEnd = Math.max(ventricularEnd, time);
-      }
-    }
-  }
-  if (!Number.isFinite(atrialStart)) { atrialStart = 0.02; atrialEnd = 0.11; }
-  if (!Number.isFinite(ventricularStart)) { ventricularStart = 0.20; ventricularEnd = ventricularStart + 0.09; }
-  // Keep the ECG events on the same absolute clock as the conduction overlay.
-  // Clamping PR/QRS to textbook ranges made the trace drift from the modeled
-  // ventricular activation whenever this anatomy's propagation fell outside
-  // those bounds.
-  const pStart = Math.max(0, atrialStart);
-  const pDuration = Math.max(0.04, atrialEnd - atrialStart);
-  const qrsStart = ventricularStart;
-  const prDuration = qrsStart - pStart;
-  const qrsDuration = Math.max(0.04, ventricularEnd - ventricularStart);
-  const tStart = Math.max(ventricularEnd + 0.12, qrsStart + qrsDuration + 0.08);
-  return { pStart, pDuration, prDuration, qrsStart, qrsDuration, tStart, tDuration: 0.16 };
-}
-
-function getECGCycleSeconds(beatCycleSeconds) {
-  return beatCycleSeconds;
-}
-
-function gaussian(time, center, width) {
-  const normalized = (time - center) / width;
-  return Math.exp(-0.5 * normalized * normalized);
-}
-
-function ecgVoltage(time, lead) {
-  const timing = ecgTiming;
-  if (!timing) return 0;
-  const pCenter = timing.pStart + timing.pDuration * 0.5;
-  const pWidth = Math.max(timing.pDuration * 0.22, 0.018);
-  const qrs = timing.qrsDuration;
-  const qrsProgress = (time - timing.qrsStart) / qrs;
-  // Keep Q, R, and S as separate, narrow deflections with a return to baseline
-  // between them; overlapping Gaussians made the whole complex look like one bump.
-  const qrsPoints = [
-    [0, 0], [0.10, 0], [0.18, lead.q], [0.29, 0],
-    [0.39, lead.r], [0.51, 0], [0.63, lead.s], [0.78, 0], [1, 0],
-  ];
-  let qrsVoltage = 0;
-  if (qrsProgress >= 0 && qrsProgress <= 1) {
-    for (let i = 1; i < qrsPoints.length; i += 1) {
-      const [end, endVoltage] = qrsPoints[i];
-      const [start, startVoltage] = qrsPoints[i - 1];
-      if (qrsProgress <= end) {
-        const fraction = (qrsProgress - start) / (end - start);
-        qrsVoltage = THREE.MathUtils.lerp(startVoltage, endVoltage, fraction);
-        break;
-      }
-    }
-  }
-  const tCenter = timing.tStart + timing.tDuration * 0.5;
-  return lead.p * gaussian(time, pCenter, pWidth)
-    + qrsVoltage
-    + lead.t * gaussian(time, tCenter, timing.tDuration * 0.28);
-}
-
-function drawECGTrace(beatPhase, beatCycleSeconds) {
-  const canvas = ui.ecgCanvas;
-  const bounds = canvas.getBoundingClientRect();
-  if (!bounds.width || !bounds.height) return;
-  const ratio = Math.min(window.devicePixelRatio || 1, 2);
-  const width = Math.round(bounds.width * ratio);
-  const height = Math.round(bounds.height * ratio);
-  if (canvas.width !== width || canvas.height !== height) {
-    canvas.width = width;
-    canvas.height = height;
-  }
-  const context = canvas.getContext('2d');
-  context.setTransform(ratio, 0, 0, ratio, 0, 0);
-  context.clearRect(0, 0, bounds.width, bounds.height);
-  ecgCurrentPhase = beatPhase;
-  ecgCurrentCycleSeconds = beatCycleSeconds;
-  const plotLeft = 34;
-  const plotWidth = Math.max(bounds.width - plotLeft - 4, 20);
-  const cycleSeconds = getECGCycleSeconds(beatCycleSeconds);
-  ui.ecgCycleLabel.textContent = `Synced · ${cycleSeconds.toFixed(2)} s cycle`;
-  const milliseconds = (seconds) => `${Math.round(seconds * 1000)} ms`;
-  ui.ecgIntervals.textContent = `P ${milliseconds(ecgTiming.pDuration)} · PR ${milliseconds(ecgTiming.prDuration)} · QRS ${milliseconds(ecgTiming.qrsDuration)}`;
-
-  context.lineWidth = 1;
-  for (let x = plotLeft; x <= bounds.width; x += 5) {
-    const major = Math.round((x - plotLeft) / 5) % 5 === 0;
-    context.strokeStyle = major ? 'rgba(190,104,105,.19)' : 'rgba(190,104,105,.075)';
-    context.beginPath(); context.moveTo(x, 0); context.lineTo(x, bounds.height); context.stroke();
-  }
-  for (let y = 0; y <= bounds.height; y += 5) {
-    const major = Math.round(y / 5) % 5 === 0;
-    context.strokeStyle = major ? 'rgba(190,104,105,.17)' : 'rgba(144,166,166,.10)';
-    context.beginPath(); context.moveTo(plotLeft, y); context.lineTo(bounds.width, y); context.stroke();
-  }
-
-  const lead = ECG_LEAD_MORPHOLOGY.find(({ name }) => name === ui.ecgLeadSelect.value)
-    || ECG_LEAD_MORPHOLOGY.find(({ name }) => name === 'II');
-  const limbLeads = ECG_LEAD_MORPHOLOGY.filter(({ name }) => !name.startsWith('V'));
-  const visibleLeads = lead.name.startsWith('V') ? [...limbLeads, lead] : limbLeads;
-  const rowHeight = bounds.height / visibleLeads.length;
-  ui.ecgTitle.textContent = `ECG · Lead ${lead.name}`;
-  const selectedLeadMessage = lead.name.startsWith('V') ? `six limb leads and ${lead.name}` : 'six limb leads';
-  ui.ecgCanvas.setAttribute('aria-label', `Schematic ${selectedLeadMessage} synchronized to the heart cycle`);
-  visibleLeads.forEach((displayLead, row) => {
-    const baseline = (row + 0.5) * rowHeight;
-    context.fillStyle = displayLead.name === lead.name ? '#edd09b' : '#9bd4d2';
-    context.font = '600 9px system-ui, sans-serif';
-    context.textAlign = 'left';
-    context.textBaseline = 'middle';
-    context.fillText(displayLead.name, 2, baseline);
-    context.beginPath();
-    context.strokeStyle = displayLead.name === lead.name ? '#f0d59c' : '#88d6c9';
-    context.lineWidth = displayLead.name === lead.name ? 1.65 : 1.3;
-    for (let px = 0; px <= plotWidth; px += 1) {
-      const time = (px / plotWidth) * cycleSeconds;
-      const voltage = ecgVoltage(time, displayLead);
-      const y = baseline - voltage * rowHeight * 0.68;
-      if (px === 0) context.moveTo(plotLeft + px, y);
-      else context.lineTo(plotLeft + px, y);
-    }
-    context.stroke();
-  });
-  const cursorX = plotLeft + THREE.MathUtils.clamp(beatPhase, 0, 1) * plotWidth;
-  context.strokeStyle = 'rgba(255,224,153,.86)';
-  context.lineWidth = 1;
-  context.beginPath(); context.moveTo(cursorX, 0); context.lineTo(cursorX, bounds.height); context.stroke();
-}
-
 function updateConductionOverlay(delta) {
-  if (!conductionOverlay?.visible && !depolarizationShell?.visible && ui.ecgPanel.hidden) return;
+  if (!conductionOverlay?.visible && !depolarizationShell?.visible) return;
   conductionElapsed += delta;
   const clipDuration = animationAction?.getClip().duration || 0;
   const cycleSeconds = clipDuration > 0
@@ -1008,7 +792,6 @@ function updateConductionOverlay(delta) {
     : (conductionElapsed % cycleSeconds) / cycleSeconds;
   loadedRoot.updateWorldMatrix(true, true);
   conductionOverlay?.userData.updateMorphFollowers?.();
-  if (!ui.ecgPanel.hidden) drawECGTrace(beatPhase, cycleSeconds);
   if (depolarizationShell?.visible) {
     const phaseDifference = Math.abs(beatPhase - lastDepolarizationPhase);
     const updateColors = lastDepolarizationPhase < 0 || Math.min(phaseDifference, 1 - phaseDifference) >= 0.015;
@@ -1743,14 +1526,12 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', anim
   conductionMorphAnchors = [];
   depolarizationShell = null;
   depolarizationMeshPairs = [];
-  ecgTiming = null;
   lastDepolarizationPhase = -1;
   ui.conduction.disabled = true;
   ui.conduction.setAttribute('aria-pressed', 'false');
   ui.depolarization.disabled = true;
   ui.depolarization.setAttribute('aria-pressed', 'false');
   ui.ecg.disabled = true;
-  ui.ecgPanel.hidden = true;
   ui.ecg.setAttribute('aria-pressed', 'false');
   modelGroup = new THREE.Group();
   modelGroup.name = 'Loaded anatomy fit';
@@ -1784,22 +1565,21 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', anim
     conductionOverlay = createConductionOverlay(heartRoot, nodeModel);
     depolarizationShell = createDepolarizationShell(heartRoot);
     modelGroup.add(depolarizationShell);
-    ecgTiming = getECGActivationTiming();
     ecgLeadOverlay = createECGLeadOverlay(heartRoot, ecgModel);
     heartRoot.add(ecgLeadOverlay);
     ui.conduction.disabled = false;
     ui.depolarization.disabled = false;
     ui.ecg.disabled = false;
-    ui.ecgPanel.classList.remove('minimized');
-    ui.ecgMinimize.setAttribute('aria-expanded', 'true');
-    ui.ecgMinimize.setAttribute('aria-label', 'Minimize ECG viewer');
-    ui.ecgMinimize.title = 'Minimize ECG viewer';
   }
   renderTree('');
   const facts = countMeshFacts(loadedRoot);
   ui.modelTitle.textContent = displayName;
   ui.source.textContent = displayName;
-  if (catalogId) ui.library.value = catalogId;
+  if (catalogId) {
+    const checkbox = Array.from(ui.library.querySelectorAll('input[type="checkbox"]'))
+      .find((input) => input.value === catalogId);
+    if (checkbox) checkbox.checked = true;
+  }
   ui.meshSummary.textContent = `${facts.meshes.toLocaleString()} meshes · ${facts.triangles.toLocaleString()} triangles`;
   ui.emptyState.hidden = true;
   ui.isolate.disabled = true;
@@ -1840,7 +1620,10 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
 }
 
 function selectedLibraryModels() {
-  const selectedIds = new Set(Array.from(ui.library.selectedOptions, (option) => option.value).filter(Boolean));
+  const selectedIds = new Set(Array.from(
+    ui.library.querySelectorAll('input[type="checkbox"]:checked'),
+    (input) => input.value,
+  ));
   return libraryModels.filter((model) => selectedIds.has(model.id));
 }
 
@@ -1973,7 +1756,7 @@ async function loadBundledHeart() {
     const response = await fetch('/models/heart.glb');
     if (!response.ok) return;
     const blob = await response.blob();
-    await loadFiles([new File([blob], 'heart.glb', { type: 'model/gltf-binary' })], { displayName: 'Male 2024 · Heart', catalogId: 'male-2024-heart' });
+    await loadFiles([new File([blob], 'heart.glb', { type: 'model/gltf-binary' })], { displayName: 'Male · Heart', catalogId: 'male-2024-heart' });
   } catch {
     // The model file is optional; the workspace remains ready for a local import.
   }
@@ -1987,19 +1770,31 @@ async function loadModelLibrary() {
     libraryModels = Array.isArray(data.models) ? data.models : [];
     ui.library.replaceChildren();
     for (const modelName of [...new Set(libraryModels.map((model) => model.model))]) {
-      const group = document.createElement('optgroup');
-      group.label = modelName;
+      const group = document.createElement('fieldset');
+      group.className = 'library-group';
+      const legend = document.createElement('legend');
+      legend.textContent = modelName;
+      group.append(legend);
       for (const model of libraryModels.filter((entry) => entry.model === modelName)) {
-        group.append(new Option(`${model.system} · ${model.meshes} parts`, model.id));
+        const label = document.createElement('label');
+        label.className = 'library-option';
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = model.id;
+        checkbox.checked = model.id === 'male-2024-heart';
+        const name = document.createElement('span');
+        name.textContent = model.system;
+        label.append(checkbox, name);
+        group.append(label);
       }
       ui.library.append(group);
     }
-    ui.library.disabled = libraryModels.length === 0;
-    const defaultHeart = Array.from(ui.library.options).find((option) => option.value === 'male-2024-heart');
-    if (defaultHeart) defaultHeart.selected = true;
+    ui.library.setAttribute('aria-busy', 'false');
   } catch (error) {
-    ui.library.replaceChildren(new Option('Bundled library unavailable', ''));
-    ui.library.disabled = true;
+    const message = document.createElement('p');
+    message.className = 'library-loading';
+    message.textContent = 'Bundled library unavailable';
+    ui.library.replaceChildren(message);
     setStatus(error.message || 'Offline model library unavailable');
   }
 }
@@ -2040,7 +1835,7 @@ canvas.addEventListener('pointerup', (event) => {
   else deselectNode();
 });
 
-for (const id of ['import-top', 'import-empty', 'drop-zone']) el(id).addEventListener('click', () => ui.input.click());
+for (const id of ['import-top', 'import-empty']) el(id).addEventListener('click', () => ui.input.click());
 ui.input.addEventListener('change', async () => { await loadFiles(ui.input.files); ui.input.value = ''; });
 ui.libraryLoad.addEventListener('click', loadSelectedLibraryModels);
 ui.search.addEventListener('input', () => renderTree(ui.search.value));
@@ -2065,24 +1860,7 @@ ui.ecg.addEventListener('click', () => {
   if (!ecgLeadOverlay) return;
   const active = ui.ecg.getAttribute('aria-pressed') !== 'true';
   ecgLeadOverlay.visible = active;
-  ui.ecgPanel.hidden = !active;
   ui.ecg.setAttribute('aria-pressed', String(active));
-  if (active) {
-    conductionElapsed = 0;
-    if (animationAction && !animationPlaying) ui.animation.click();
-    drawECGTrace(0, 1);
-  }
-});
-ui.ecgLeadSelect.addEventListener('change', () => {
-  drawECGTrace(ecgCurrentPhase, ecgCurrentCycleSeconds);
-});
-ui.ecgMinimize.addEventListener('click', () => {
-  const expanded = ui.ecgMinimize.getAttribute('aria-expanded') === 'true';
-  const nextExpanded = !expanded;
-  ui.ecgPanel.classList.toggle('minimized', !nextExpanded);
-  ui.ecgMinimize.setAttribute('aria-expanded', String(nextExpanded));
-  ui.ecgMinimize.setAttribute('aria-label', nextExpanded ? 'Minimize ECG viewer' : 'Expand ECG viewer');
-  ui.ecgMinimize.title = nextExpanded ? 'Minimize ECG viewer' : 'Expand ECG viewer';
 });
 ui.animation.addEventListener('click', () => {
   if (!animationAction) return;
