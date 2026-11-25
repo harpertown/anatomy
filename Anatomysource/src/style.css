@@ -187,6 +187,8 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .axis-mark i { left: -2px; top: -1px; background: #83bdc4; }.axis-mark b { right: -2px; bottom: -2px; background: #d97c6e; }.axis-mark em { left: 7px; top: 7px; background: #b1c39f; }
 .mouse-glyph { width: 15px; height: 15px; border: 1px solid #78909b; border-radius: 50%; display: inline-grid; place-items: center; color: #9eb4bb; font-size: 13px; line-height: 1; }
 .hud-separator { color: #536975; }
+.viewport-fps { min-width: 46px; margin-left: 4px; padding: 3px 6px; border: 1px solid rgba(144,174,186,.22); border-radius: 4px; background: rgba(10,23,37,.76); color: #cad5d7; font-size: 9px; font-variant-numeric: tabular-nums; text-align: center; }
+.viewport-fps[data-rate="low"] { color: #f0a59d; }
 .viewport-hud { position: absolute; z-index: 3; top: 14px; right: 16px; display: flex; align-items: center; gap: 12px; padding: 7px 9px; border: 1px solid rgba(144,174,186,.22); border-radius: 6px; background: rgba(17,30,41,.76); color: #adbdc0; font-size: 9px; backdrop-filter: blur(8px); }
 .viewport-hud[hidden] { display: none; }
 .view-status { position: absolute; z-index: 4; right: 14px; bottom: 12px; max-width: calc(100% - 28px); min-height: 30px; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid rgba(144,174,186,.22); border-radius: 4px; background: rgba(10,23,37,.86); color: #b4c1c6; font-size: 9px; backdrop-filter: blur(8px); }
@@ -374,6 +376,8 @@ body { color: var(--ink); background: #ebe9e5; }
 .axis-mark i, .axis-mark b, .axis-mark em, .axis-mark i, .axis-mark b { background: #7897ee; }
 .mouse-glyph { border-color: #a7b5d1; color: #d8dfed; }
 .hud-separator { color: #8795b2; }
+.viewport-fps { border-color: rgba(218,222,235,.26); background: rgba(16,28,49,.8); color: #e1e6f0; }
+.viewport-fps[data-rate="low"] { color: #b74943; }
 .viewport-hud { border-color: rgba(222,230,243,.24); border-radius: 3px; background: rgba(16,28,49,.78); color: #e1e6f0; }
 .view-status { border-color: rgba(218,222,235,.28); background: rgba(16,28,49,.82); color: #d3d8e5; }
 .view-status .status-light { background: #123eb6; }

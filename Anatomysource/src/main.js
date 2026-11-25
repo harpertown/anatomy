@@ -11,6 +11,7 @@ const ui = {
   libraryLoad: el('load-library-models'),
   emptyModelPicker: el('empty-model-picker'),
   emptyModelLoad: el('empty-load-model'),
+  fps: el('viewport-fps'),
   modelLoadProgress: el('model-load-progress'),
   modelLoadLabel: el('model-load-label'),
   modelLoadPercent: el('model-load-percent'),
@@ -238,6 +239,8 @@ let depolarizationShell = null;
 let depolarizationMeshPairs = [];
 let previousFrameTime = performance.now();
 let previousRenderTime = 0;
+let fpsWindowStart = 0;
+let fpsWindowFrames = 0;
 let renderRequest = 0;
 const heartMaterials = new Map();
 const originalHeartTextures = new Map();
@@ -1986,10 +1989,12 @@ function focusHeart({ frontView = false, distanceScale = 1 } = {}) {
 
 function hideECGFasciaLayers() {
   if (!loadedRoot) return;
-  const fasciaNames = /^(?:Pectoral Fascia|Clavipectoral Fascia)(?:\s*\((?:Left|Right)\))?$/i;
+  const fasciaNames = /\bfascia(?:e)?\b/i;
+  ecgSupportVisibility ||= new Map();
   let hidden = 0;
   for (const entry of allNodes) {
-    if (!fasciaNames.test(entry.name.trim())) continue;
+    if (!fasciaNames.test(`${entry.path} ${entry.name}`)) continue;
+    if (!ecgSupportVisibility.has(entry.object)) ecgSupportVisibility.set(entry.object, entry.object.visible);
     entry.object.visible = false;
     hidden += 1;
   }
@@ -2042,6 +2047,7 @@ function setECGSupportVisibility(enabled) {
     if (!ecgSupportVisibility.has(entry.object)) ecgSupportVisibility.set(entry.object, entry.object.visible);
     entry.object.visible = keep && ecgSupportVisibility.get(entry.object);
   }
+  hideECGFasciaLayers();
   invalidateVisibleStructureMeshes();
   renderTree(ui.search.value);
   requestRender();
@@ -2516,6 +2522,16 @@ function render(frameTime = performance.now()) {
     return;
   }
   previousRenderTime = frameTime;
+  fpsWindowFrames += 1;
+  if (!fpsWindowStart) fpsWindowStart = frameTime;
+  const fpsWindowDuration = frameTime - fpsWindowStart;
+  if (fpsWindowDuration >= 500) {
+    const framesPerSecond = Math.round((fpsWindowFrames - 1) * 1000 / fpsWindowDuration);
+    ui.fps.textContent = `${framesPerSecond} FPS`;
+    ui.fps.dataset.rate = framesPerSecond < 20 ? 'low' : framesPerSecond < 40 ? 'medium' : 'high';
+    fpsWindowStart = frameTime;
+    fpsWindowFrames = 1;
+  }
   controls.update();
   const delta = Math.min(Math.max((frameTime - previousFrameTime) / 1000, 0), 0.05);
   previousFrameTime = frameTime;
@@ -2688,7 +2704,6 @@ ui.ecg.addEventListener('click', async () => {
       heartRoot.add(ecgLeadOverlay);
     }
     setECGSupportVisibility(true);
-    hideECGFasciaLayers();
 
     const targetOverlay = ecgLeadOverlay;
     if (ecgTorsoContextEligible && !ecgTorsoContextPromise) {
