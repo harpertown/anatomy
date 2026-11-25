@@ -1,0 +1,202 @@
+{
+  "5573696dbf778c2242294b75e853fbaa": {
+    "formeOriginalAlbedoTexture": "female-2024-nervous-system-Inner_Ear_Organs-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Inner_Ear_Organs-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "f651cf77283d1d120b5064e2dce176d7": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_spine_03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_spine_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "6da9ca0ea1a1e7d43f630b69083bc5b5": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_spine_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_spine_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "019e88ce44ea150d5df1b5408eff6a43": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_spine_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_spine_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "e4c3b2d6cf7b68380ff4b5d4dbf1ad24": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_spine_03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_spine_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "1439ef0df610eeff4683d91e9ec98e6c": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_spine_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_spine_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "19dd3b815b62bd79a8ddb4e37f6ad466": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_spine_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_spine_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "7356aaa651aedc6276fde22ec207f51d": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_05-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_05-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a4b5d21484232910695fc1473dfbd9d0": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_03_TLF-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-muscles_torso_03_TLF-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a23e87f77c7f27fc7bff364496b0973b": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-MalePelvis_Genitalia03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_Genitalia03-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "f6a4438e74bd73558e13b7dfbd5eca96": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-Ligaments_P7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-Ligaments_P7-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "812595febe5a507480bfdc66ba828f82": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_torso_07-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_torso_07-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "792c335c66dec93f56c1c48b21d9aac0": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_09-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_09-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "799e0c0ddaa375ee167fe3b77205bf88": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_torso_07-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_torso_07-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "14308af26c03b970ebf7610e3a75905b": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-MalePelvis_Genitalia03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_Genitalia03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "cd95c9dbb6fb9838226f6ef9d6c787b2": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_torso_07-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_torso_07-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "6b4a7d04303fc3a193c795a83079584a": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-Lligaments_P5-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-Lligaments_P5-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "2abd960918c701fc1f63abb43f536d46": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_head_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_head_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "1af8596f7c4a52afc754f22176f90ba9": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_head_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_head_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "64188dabe4a22a6eedb53cd3eb104ea3": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_head-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_head-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c6026251a91f2fba1b5062c058f7850e": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_head-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_head-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "27db1c7e20d836da11559b7619cf455f": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_04-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "991b34aaec7685412c0d727837cd6abf": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_lower_limb_01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_lower_limb_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "91e0f682fc03535ffebaae4cbf9f71d5": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_lower_limb_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-muscles_lower_limb_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "5a72e7136ca9179630ce73573b068454": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_lower_limb_03-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_lower_limb_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "2eb963fdc735954d873b11dcfb75aeb2": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_lower_limb_04-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_lower_limb_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c1c23608eee434867209f0d3342d49f0": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_08-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_08-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "1a1839c50c8093d50af95d9bd4ad5d15": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-fascia_diffuse-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-fascia_diffuse-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "8e29a67ea308dfeb8ed8afc356a8fb6c": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_04-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "037ec504518d4b02ada93c405d946d47": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_04-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c9455e90bd6250d0adbdf478f76e5f04": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_muscle01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-MalePelvis_muscle01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c740b081c2a7ca541605053bf741f51f": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_muscle01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-MalePelvis_muscle01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "b922a28be2e0ca24c78239700722dc54": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_torso_06-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_torso_06-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d71fa600c805b221d5f9f75c2eba97ec": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "4b00ef6c38548876e137dc7ef0fd3fd4": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_upper_limb_04-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_upper_limb_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "361ce6fb3b062dbf6852b0121d78a218": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_upper_limb_03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_upper_limb_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d6b9178cddabe9bfd62a8e294608dda1": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_upper_limb_03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_upper_limb_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "25003c02b6e8e656501883c8f48bf573": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-muscles_upper_limb_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-muscles_upper_limb_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "92dab0379d1b45d066ffe64e8f9a969a": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_upper_limb_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_upper_limb_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c24cec4f390552e6edce77932c85d876": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_05-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-muscles_torso_05-normal.png",
+    "formeOriginalNormalScale": 2.0
+  }
+}

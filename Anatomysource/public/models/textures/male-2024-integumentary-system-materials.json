@@ -1,0 +1,35 @@
+{
+  "2e0766eab39e73af20f074dd72117577": {
+    "formeOriginalAlbedoTexture": "male-2024-integumentary-system-Male_body_X-7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Male_body_X-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "77462a416fbef638f5f831a4af42eed0": {
+    "formeOriginalAlbedoTexture": "male-2024-integumentary-system-Male_body_X-7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Male_body_X-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "de73a05b76e042ac03ef122874a7455d": {
+    "formeOriginalAlbedoTexture": "male-2024-integumentary-system-Male_skin_X-1-albedo.png"
+  },
+  "b3d0713c2563698cc6faaf7c6fbd8b0e": {
+    "formeOriginalAlbedoTexture": "male-2024-integumentary-system-Male_body_X-7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Male_body_X-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "496d43eb34fe36923f521565dee6eefd": {
+    "formeOriginalAlbedoTexture": "male-2024-integumentary-system-Male_head_E-7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Male_head_E-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "3b923ab46ff35726192fdb7a59c236a9": {
+    "formeOriginalAlbedoTexture": "male-2024-integumentary-system-Male_head_E-7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Male_head_E-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d4b8abbeda61e0c7b33211af0d9a957e": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Fat-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Fat-normal.png",
+    "formeOriginalNormalScale": 1.0
+  }
+}

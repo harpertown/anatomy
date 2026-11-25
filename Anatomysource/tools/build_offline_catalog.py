@@ -93,10 +93,14 @@ def main() -> None:
         if heart_index is None:
             raise SystemExit(f"{model_name}: Heart cluster not found")
         heart_path = ROOT / "public/models/heart.glb" if model_slug == "male-2024" else destination / f"{model_slug}-heart.glb"
+        heart_texture_args = (
+            texture_args if model_slug == "male-2024"
+            else extract_texture_args(source, model_slug, "heart", HEART_ID)
+        )
         subprocess.run([
             sys.executable, str(CONVERTER), "--model-dir", str(source),
             "--cluster-id", HEART_ID, "--out", str(heart_path), *name_args,
-            *(texture_args if model_slug == "male-2024" else []),
+            *heart_texture_args,
             *(runtime_sample_args if model_slug == "male-2024" else []),
         ], check=True)
         structure_count, mesh_count = cluster_stats(assets, gltf, heart_index)
@@ -115,9 +119,8 @@ def main() -> None:
             label = cluster["id"].split("_", 1)[-1]
             filename = f"{model_slug}-{slug(label)}.glb"
             output = destination / filename
-            local_texture_args = (
-                extract_texture_args(source, model_slug, slug(label), cluster["id"])
-                if label == "Nervous System" else []
+            local_texture_args = extract_texture_args(
+                source, model_slug, slug(label), cluster["id"]
             )
             subprocess.run([
                 sys.executable, str(CONVERTER), "--model-dir", str(source),
@@ -174,6 +177,7 @@ def main() -> None:
         "--female", str(destination / "female-2024-nervous-system.glb"),
         "--out", str(ROOT / "public/models/conduction-node-geometry.json"),
     ], check=True)
+    subprocess.run([sys.executable, str(ROOT / "tools/dedupe_source_textures.py")], check=True)
 
 
 if __name__ == "__main__":

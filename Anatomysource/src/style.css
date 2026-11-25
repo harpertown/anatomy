@@ -56,6 +56,11 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .panel-heading h1, .panel-heading h2 { margin: 3px 0 0; font-family: var(--serif); font-size: 20px; font-weight: 500; letter-spacing: -.025em; }
 .eyebrow { margin: 0; color: #75909d; font-size: 9px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
 .library-picker { display: block; margin: 0 13px 17px; }
+.sidebar-brand { flex: 0 0 auto; align-self: flex-start; margin: 0 19px 12px; }
+.sidebar-brand .brand-copy strong { color: var(--ink); font: 700 27px/1 var(--sans); letter-spacing: -.075em; }
+.library-heading { min-height: 25px; margin: 0 0 7px 2px; display: flex; align-items: center; justify-content: space-between; }
+.library-heading h2 { margin: 0; }
+.library-heading .icon-button { width: 25px; height: 25px; }
 .library-picker h2 { margin: 0 0 7px 2px; color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .055em; text-transform: uppercase; }
 .model-checklist { max-height: min(31vh, 250px); overflow: auto; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel-raised); scrollbar-color: #8b94a6 transparent; scrollbar-width: thin; }
 .model-checklist:focus-within { outline: 2px solid var(--cyan); outline-offset: 2px; }
@@ -153,6 +158,12 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .empty-copy { max-width: 370px; margin: 11px 0 18px; color: #91a4ac; font-size: 11px; line-height: 1.6; }
 .empty-state .button { pointer-events: auto; }
 .empty-foot { margin-top: 18px; color: #637984; font-size: 9px; }
+.empty-library-picker { width: min(390px, 100%); padding: 25px; border: 1px solid rgba(205,214,230,.24); background: #f0efeb; color: #101c31; text-align: left; box-shadow: 0 18px 55px rgba(0,0,0,.2); }
+.empty-library-picker .empty-kicker { margin-bottom: 8px; color: #526796; font-weight: 700; }
+.empty-library-picker h2 { margin-bottom: 22px; color: #101c31; font-size: 22px; letter-spacing: -.035em; }
+.empty-library-picker label { display: block; margin-bottom: 7px; color: #596583; font-size: 10px; font-weight: 600; }
+.empty-library-picker select { width: 100%; height: 42px; margin-bottom: 12px; padding: 0 10px; border: 1px solid #c9cbd0; border-radius: 3px; background: #f8f7f3; color: #101c31; font: inherit; font-size: 11px; }
+.empty-library-picker .button { width: 100%; min-height: 40px; }
 .viewport-corner { position: absolute; z-index: 3; display: flex; align-items: center; gap: 8px; color: #718793; font-size: 9px; pointer-events: none; }
 .corner-top-left { left: 19px; top: 16px; }
 .corner-bottom-left { left: 19px; bottom: 17px; }
@@ -163,7 +174,6 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .hud-separator { color: #536975; }
 .viewport-hud { position: absolute; z-index: 3; top: 14px; right: 16px; display: flex; align-items: center; gap: 12px; padding: 7px 9px; border: 1px solid rgba(144,174,186,.22); border-radius: 6px; background: rgba(17,30,41,.76); color: #adbdc0; font-size: 9px; backdrop-filter: blur(8px); }
 .viewport-hud[hidden] { display: none; }
-.viewport-hud span:last-child { color: #8aa1a9; }
 .view-status { position: absolute; z-index: 4; right: 14px; bottom: 12px; max-width: calc(100% - 28px); min-height: 30px; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border: 1px solid rgba(144,174,186,.22); border-radius: 4px; background: rgba(10,23,37,.86); color: #b4c1c6; font-size: 9px; backdrop-filter: blur(8px); }
 .view-status > span:first-child { display: flex; align-items: center; gap: 7px; }
 .view-status .status-light { width: 5px; height: 5px; background: #7daea0; }
@@ -310,7 +320,6 @@ body { color: var(--ink); background: #ebe9e5; }
 .mouse-glyph { border-color: #a7b5d1; color: #d8dfed; }
 .hud-separator { color: #8795b2; }
 .viewport-hud { border-color: rgba(222,230,243,.24); border-radius: 3px; background: rgba(16,28,49,.78); color: #e1e6f0; }
-.viewport-hud span:last-child { color: #b8c2d6; }
 .view-status { border-color: rgba(218,222,235,.28); background: rgba(16,28,49,.82); color: #d3d8e5; }
 .view-status .status-light { background: #123eb6; }
 .inspector-heading { border-bottom-color: var(--line); }

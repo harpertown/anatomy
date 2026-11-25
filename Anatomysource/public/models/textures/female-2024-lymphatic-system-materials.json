@@ -1,0 +1,22 @@
+{
+  "6d31c9a2c5bfab8eca323063c497580e": {
+    "formeOriginalAlbedoTexture": "female-2024-lymphatic-system-Thymus-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-lymphatic-system-Thymus-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "8898e979cd6eb2197916880f99bc18fa": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Mucosa-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Mucosa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "8c57ed23dc881fe709a404d4176e2e2f": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Mucosa-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Mucosa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "b53705bffe7b60537c5e0126ad994704": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-GallbladderSpleen-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-lymphatic-system-GallbladderSpleen-normal.png",
+    "formeOriginalNormalScale": 1.50832
+  }
+}

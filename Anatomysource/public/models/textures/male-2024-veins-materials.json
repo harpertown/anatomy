@@ -1,12 +1,12 @@
 {
   "f53fdfa7a1c902fcb2395947e1a3f3bd": {
-    "formeOriginalAlbedoTexture": "male-2024-veins-Heart_P4-albedo.png",
-    "formeOriginalNormalTexture": "male-2024-veins-Heart_P4-normal.png",
+    "formeOriginalAlbedoTexture": "male-2024-cardiovascular-system-Heart_P4-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-heart-Heart_P4-normal.png",
     "formeOriginalNormalScale": -1.5
   },
   "c2cf5596d873f93ec6b6771a6b850ff3": {
-    "formeOriginalAlbedoTexture": "male-2024-veins-Heart_P3-albedo.png",
-    "formeOriginalNormalTexture": "male-2024-veins-Heart_P3-normal.png",
+    "formeOriginalAlbedoTexture": "female-2024-cardiovascular-system-Heart_P3-albedo.png",
+    "formeOriginalNormalTexture": "heart-original-Heart_P3-normal.png",
     "formeOriginalNormalScale": -1.5
   }
 }

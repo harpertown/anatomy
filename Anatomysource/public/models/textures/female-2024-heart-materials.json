@@ -1,0 +1,37 @@
+{
+  "c5d4e704ba8c81bd06a60ee99522c365": {
+    "formeOriginalAlbedoTexture": "female-2024-cardiovascular-system-Heart_P1-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-heart-Heart_P1-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "0f3d87f0d3adebe9adc1f942db963b09": {
+    "formeOriginalAlbedoTexture": "male-2024-cardiovascular-system-Heart_P4-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-heart-Heart_P4-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "f84f48e91c307d9a929bfcb454ba8ac8": {
+    "formeOriginalAlbedoTexture": "female-2024-heart-Heart_P2-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-arteries-Heart_P2-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "4cc9332310465c061119cdd6eebd3ae8": {
+    "formeOriginalAlbedoTexture": "female-2024-cardiovascular-system-Heart_P3-albedo.png",
+    "formeOriginalNormalTexture": "heart-original-Heart_P3-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "5e2a0a0ed9dc83cbb322ca235d968174": {
+    "formeOriginalAlbedoTexture": "female-2024-heart-Heart_P5-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-cardiovascular-system-Heart_P5-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "eb84255beb7796653a306f58e56716d0": {
+    "formeOriginalAlbedoTexture": "female-2024-cardiovascular-system-Heart_P1-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-heart-Heart_P1-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "e781aea4c56204e27c8caf8d3e344cb5": {
+    "formeOriginalAlbedoTexture": "female-2024-heart-Heart_P5-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-cardiovascular-system-Heart_P5-normal.png",
+    "formeOriginalNormalScale": 1.0
+  }
+}

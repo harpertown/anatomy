@@ -1,0 +1,47 @@
+{
+  "8c57ed23dc881fe709a404d4176e2e2f": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Mucosa-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Mucosa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "54eaedf3608a9117aba1f3f1e4e757d7": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Trachea-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-respiratory-system-Trachea-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "82ad6c27cb102a79a0bd043f608079c0": {
+    "formeOriginalAlbedoTexture": "female-2024-respiratory-system-Respiratory_Lobes-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-respiratory-system-Respiratory_Lobes-normal.png",
+    "formeOriginalNormalScale": 1.25723
+  },
+  "5b8e936095a3aabf266d0a50c7c26781": {
+    "formeOriginalAlbedoTexture": "female-2024-respiratory-system-Respiratory_Pleuras-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Respiratory_Pleuras-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "64a4eecac9bde131439c486a9b5e46fc": {
+    "formeOriginalAlbedoTexture": "female-2024-respiratory-system-Respiratory_Pleuras-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Respiratory_Pleuras-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "21492ccf838502785683b669797c4f79": {
+    "formeOriginalAlbedoTexture": "female-2024-respiratory-system-Respiratory_Pleuras-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Respiratory_Pleuras-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "2b52756bc51c4859d60bdee268d3a35b": {
+    "formeOriginalAlbedoTexture": "female-2024-respiratory-system-Respiratory-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Respiratory-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "8b8aa7a76748f94a44265018836d153e": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Sinus-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-respiratory-system-Sinus-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "e6cd1a8a4e83901871b9d72a42b3ff3b": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Mucosa-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Mucosa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  }
+}

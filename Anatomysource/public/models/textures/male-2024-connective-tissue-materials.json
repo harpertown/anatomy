@@ -1,0 +1,207 @@
+{
+  "8dc6e4c0738937289a39b891c982d3fc": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Articulated_Surfaces-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Articulated_Surfaces-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "5573696dbf778c2242294b75e853fbaa": {
+    "formeOriginalAlbedoTexture": "female-2024-nervous-system-Inner_Ear_Organs-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Inner_Ear_Organs-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a4b5d21484232910695fc1473dfbd9d0": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_torso_03_TLF-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-muscles_torso_03_TLF-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a23e87f77c7f27fc7bff364496b0973b": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-MalePelvis_Genitalia03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_Genitalia03-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "f6a4438e74bd73558e13b7dfbd5eca96": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-Ligaments_P7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-Ligaments_P7-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "14308af26c03b970ebf7610e3a75905b": {
+    "formeOriginalAlbedoTexture": "male-2024-muscular-system-MalePelvis_Genitalia03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_Genitalia03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "6b4a7d04303fc3a193c795a83079584a": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-Lligaments_P5-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-Lligaments_P5-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "91e0f682fc03535ffebaae4cbf9f71d5": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-muscles_lower_limb_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-muscles_lower_limb_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "1a1839c50c8093d50af95d9bd4ad5d15": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-fascia_diffuse-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-fascia_diffuse-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "2b52756bc51c4859d60bdee268d3a35b": {
+    "formeOriginalAlbedoTexture": "female-2024-respiratory-system-Respiratory-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Respiratory-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "b91d64ed5982d0a297b1c32796d7af20": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-Thyroid_Parotid_Nasal-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-Thyroid_Parotid_Nasal-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "884914ccf1d5fb2bef6fc89c8e344ca9": {
+    "formeOriginalAlbedoTexture": "female-2024-cardiovascular-system-Lligaments_P6-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-cardiovascular-system-Lligaments_P6-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "1395cb1b3d36cf91cbf3635570cee957": {
+    "formeOriginalAlbedoTexture": "female-2024-connective-tissue-AbdomenFat-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-AbdomenFat-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a3e3d932f39d2793a72e130e158e8a34": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Articulated_Surfaces-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Articulated_Surfaces-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "271b943965b0c3f919e58e8eda62d9ec": {
+    "formeOriginalAlbedoTexture": "female-2024-connective-tissue-Lligaments_P3_2021-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Lligaments_P3_2021-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "5f4367c5ae686e6450f0cb2b107945b9": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Lligaments_P3-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Lligaments_P3-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "4c4fc6d248cd437d05c0b216645fc90b": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-Ligaments_P7-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-Ligaments_P7-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "e4489cdeec43ee4a3b6774527ff07b6d": {
+    "formeOriginalAlbedoTexture": "female-2024-cardiovascular-system-Lligaments_P6-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-cardiovascular-system-Lligaments_P6-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "9c4bd361e542b9b17ab0a96ae4cf497b": {
+    "formeOriginalAlbedoTexture": "female-2024-connective-tissue-Lligaments_P3_2021-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Lligaments_P3_2021-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "354ba57e025ca31a10774e68d2c77888": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-Lligaments_P4-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-Lligaments_P4-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "46d9c501d5f3d5718c1c6b1ff404c2e4": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-Thyroid_Parotid_Nasal-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-Thyroid_Parotid_Nasal-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "2eae3d4ba16ee1811d757d6ed5d46f45": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Bursa-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Bursa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "696e47e8c3a29b2806427d917c5024f3": {
+    "formeOriginalAlbedoTexture": "female-2024-nervous-system-Inner_Ear_Organs-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Inner_Ear_Organs-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "be362565958af56e3a2a9e18a4dd2e13": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-fascia_diffuse-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-fascia_diffuse-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c6be6f9f9fad2cd8644a2eabd3c27f0a": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Lligaments_P1-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Lligaments_P1-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d2bf6aef2fd46525cd84bdab0e747d8e": {
+    "formeOriginalAlbedoTexture": "female-2024-connective-tissue-Lligaments_P2-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Lligaments_P2-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "f1950defc2c68d749a01e93224f17f56": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-Lligaments_P4-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-Lligaments_P4-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "16cb7fef418a2e0f47ed1e0a588ab6ef": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Articulated_Surfaces-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Articulated_Surfaces-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "35170b07d82ce2e7c645b50b3c6b1e25": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Articulated_Surfaces-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Articulated_Surfaces-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "b5df5a3521854e60b03afe1711a97ab8": {
+    "formeOriginalAlbedoTexture": "female-2024-connective-tissue-Costal_cartilage-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Costal_cartilage-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "da4de362fe14f36b51a2f42243bbb972": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-Lligaments_P5-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-muscular-system-Lligaments_P5-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "5e15dcb6888a857b3104822efb5e26ce": {
+    "formeOriginalAlbedoTexture": "female-2024-connective-tissue-Lligaments_P2-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-Lligaments_P2-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "e1d5b7be51d16503b63d8e3e0b3d845a": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-fascia_diffuse-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-fascia_diffuse-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "cfe2a85efeb4019abb609289708793c5": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-fascia_diffuse-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-fascia_diffuse-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a3bd5f4c3d5322b13e31cafb243591fc": {
+    "formeOriginalAlbedoTexture": "female-2024-muscular-system-fascia_diffuse-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-fascia_diffuse-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "94225b5bccdef415ab4b6c19b267db1d": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_muscle01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-MalePelvis_muscle01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "3602630ced7fbca4adf82343f6fcf61b": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_muscle01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-MalePelvis_muscle01-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "fb5fd13c7a9eba20484023cbe7c606d7": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_muscle01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-MalePelvis_muscle01-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "02db2aeb749c8a001eeec65368ca3800": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-FatFascia-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-FatFascia-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "216ff9bb9970aab7693b318ec85c7bf2": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-Fascia_Transversalis-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-connective-tissue-Fascia_Transversalis-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "44c4f61f8e2444981c4df5a8d55ae22a": {
+    "formeOriginalAlbedoTexture": "male-2024-connective-tissue-FatFascia-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-connective-tissue-FatFascia-normal.png",
+    "formeOriginalNormalScale": 1.0
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "31852afa297092c8a0a6ed01c47611bd": {
+    "formeOriginalAlbedoTexture": "female-2024-endocrine-system-AbdomenKidney_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-endocrine-system-AbdomenKidney_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "009bab24dafd1026383b7626b1dd160e": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-Thyroid_Parotid_Nasal-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-Thyroid_Parotid_Nasal-normal.png",
+    "formeOriginalNormalScale": -1.0
+  }
+}

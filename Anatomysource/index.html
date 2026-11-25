@@ -10,30 +10,12 @@
   </head>
   <body>
     <div class="app-shell">
-      <header class="topbar">
-        <a class="brand" href="https://itsadam.tech" aria-label="Adam home">
-          <span class="brand-mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32"><path d="M16 27.2 5.5 17.1C-.4 10.8 8.7 2.7 16 9.3c7.3-6.6 16.4 1.5 10.5 7.8L16 27.2Z"/><path d="M16 9.3c-1.6 2.3-2.1 4.5-1.5 6.6.5 1.6 1.9 2.6 3.4 2.4 1.2-.2 2.1-1.2 2.3-2.5"/></svg>
-          </span>
-          <span class="brand-copy"><strong>adam.</strong><small>Anatomy viewer</small></span>
-        </a>
-        <div class="topbar-actions">
-          <button id="export-image" class="icon-button" title="Save a viewport image" aria-label="Save viewport image" disabled>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h3l1.2-2h7.6l1.2 2h3v11H4z"/><circle cx="12" cy="13" r="3.3"/></svg>
-          </button>
-          <button id="import-top" class="button button-primary">Open model</button>
-        </div>
-      </header>
-
       <main class="workspace">
         <aside class="panel left-panel" aria-label="Model structure">
-          <div class="panel-heading">
-            <div><p class="eyebrow">Workspace</p><h1>Structure</h1></div>
-            <button id="collapse-left" class="icon-button quiet" title="Toggle structure panel" aria-label="Toggle structure panel"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button>
-          </div>
+          <a class="brand sidebar-brand" href="https://itsadam.tech" aria-label="Adam home"><span class="brand-copy"><strong>adam.</strong></span></a>
           <input id="model-input" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2" multiple hidden />
           <section class="library-picker" aria-labelledby="library-title">
-            <h2 id="library-title">Model library</h2>
+            <div class="library-heading"><h2 id="library-title">Model library</h2><button id="collapse-left" class="icon-button quiet" title="Hide model library" aria-label="Hide model library"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button></div>
             <div id="model-library" class="model-checklist" role="group" aria-label="Choose anatomy systems" aria-busy="true">
               <p class="library-loading">Loading bundled models…</p>
             </div>
@@ -76,15 +58,16 @@
           <div id="viewport-wrap" class="viewport-wrap">
             <canvas id="viewport" aria-label="Interactive three-dimensional model"></canvas>
             <div id="empty-state" class="empty-state">
-              <div class="empty-orbit" aria-hidden="true"><span class="orbit-ring orbit-one"></span><span class="orbit-ring orbit-two"></span><span class="orbit-core"><svg viewBox="0 0 64 64"><path d="M32 54 11.8 34.7C.5 22.6 18 7 32 19.7 46 7 63.5 22.6 52.2 34.7L32 54Z"/><path d="M32 20c-3.3 4.7-4.3 9.2-3 13.4 1 3.4 4 5.2 7.1 4.8 2.7-.4 4.6-2.5 4.9-5.3"/></svg></span></div>
-              <p class="empty-kicker">A model is needed</p>
-              <h2>Bring your anatomy into view.</h2>
-              <p class="empty-copy">Open a GLB file, or choose a glTF file with its referenced textures and buffers. The model is processed locally.</p>
-              <button id="import-empty" class="button button-primary">Choose model</button>
-              <span class="empty-foot">Male and female systems are available in the offline library.</span>
+              <div class="empty-library-picker">
+                <p class="empty-kicker">Model library</p>
+                <h2>Choose anatomy to explore</h2>
+                <label for="empty-model-picker">Anatomy model</label>
+                <select id="empty-model-picker" aria-label="Choose an anatomy model"><option value="">Loading models…</option></select>
+                <button id="empty-load-model" class="button button-primary" type="button">Load model</button>
+              </div>
             </div>
             <div id="viewport-hud" class="viewport-hud" hidden>
-              <span id="hud-structure">Structure selected</span><span id="hud-triangles">— triangles</span>
+              <span id="hud-structure">Structure selected</span>
             </div>
             <div class="view-status"><span><span class="status-light"></span><span id="status-message">Ready for a local model</span></span><span id="mesh-summary">No mesh loaded</span></div>
             <div class="viewport-corner corner-top-left"><span class="axis-mark"><i></i><b></b><em></em></span><span>3D view</span></div>

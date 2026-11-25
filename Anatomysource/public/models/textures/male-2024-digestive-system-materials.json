@@ -1,0 +1,132 @@
+{
+  "8c57ed23dc881fe709a404d4176e2e2f": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Mucosa-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Mucosa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "e6cd1a8a4e83901871b9d72a42b3ff3b": {
+    "formeOriginalAlbedoTexture": "male-2024-respiratory-system-Mucosa-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-respiratory-system-Mucosa-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "2e7c0eada457bf4174c95c369ec0cb94": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-GallbladderSpleen-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-lymphatic-system-GallbladderSpleen-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "c3c2a1977274226be029d6283954c313": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenLiver-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenLiver-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "5e9fb5ccb470a7fd4ea697d5911744de": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenLiver-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenLiver-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "b91d64ed5982d0a297b1c32796d7af20": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-Thyroid_Parotid_Nasal-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-Thyroid_Parotid_Nasal-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "671891bdcf198ccf2cb7d90bf352db2e": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-Sternum-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-Sternum-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "27238b990dda8c96830f7eb5430f6802": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenPancreas-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenPancreas-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "e5e33854276e01e676668594d29a10ec": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenLargeIntestine_04-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenLargeIntestine_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d50f0798cf9452ae23086b0203f96131": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenLargeIntestine_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenLargeIntestine_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "de2ab1314bc3f2c795a2666953a1b486": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenLargeIntestine_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenLargeIntestine_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "b8f1b50623a5deafa680ae67d631f214": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenLargeIntestine_05-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenLargeIntestine_05-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "f37af7d31ca542a70ce4503938ed629c": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenLargeIntestine_06-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenLargeIntestine_06-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "7daa16b8deb187da448e77648bdd834d": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenLargeIntestine_03-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenLargeIntestine_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a53ecb3eb0daf249cc44ab3e9ef338ab": {
+    "formeOriginalAlbedoTexture": "male-2024-urinary-and-reproductive-systems-MalePelvis_muscle01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-muscular-system-MalePelvis_muscle01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "32babd69c627867e943f5ba069379f9d": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenSmallIntestine_01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenSmallIntestine_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "5a2dcb73f199d2f57704ebbcdab93fcb": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenSmallIntestine_02-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenSmallIntestine_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "ba730fec1c469f376d1505801b8fe44b": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenSmallIntestine_03-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenSmallIntestine_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "8cf04c916b201a99e3c9d446ccc9d157": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenSmallIntestine_04-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenSmallIntestine_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "3b8c73588792493a950b225e17037f8a": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenStomach_03-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenStomach_03-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "3d69f7b4800bb692fb13b03f2397ad8e": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenStomach_02-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenStomach_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "3733e3c2dbcf1c907be790e716263fb4": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenStomach_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenStomach_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "dd6d1dbd53ca33f4a83a5eb7fdead7e9": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenStomach_04-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenStomach_04-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "729702b30156cd5517ae474253834fc8": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenStomach_01-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenStomach_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "574e9166baaf8230b1535992956b03f7": {
+    "formeOriginalAlbedoTexture": "male-2024-digestive-system-AbdomenPeritoneum_2k_02-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-digestive-system-AbdomenPeritoneum_2k_02-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "150b66055b97e3aafe2494a340be1f87": {
+    "formeOriginalAlbedoTexture": "female-2024-digestive-system-AbdomenPeritoneum_2k_01-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-digestive-system-AbdomenPeritoneum_2k_01-normal.png",
+    "formeOriginalNormalScale": 1.0
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "902ab6f5dba6e780ffad3843184b2574": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Breast_connective_tissue-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Breast_connective_tissue-normal.png",
+    "formeOriginalNormalScale": -1.00422
+  },
+  "988756534d257e688a04aff7077d4a00": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Breast_adipose_tissue-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Breast_adipose_tissue-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "f876490a30aaa8130b48b72bd672059c": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Breast_adipose_tissue-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Breast_adipose_tissue-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d9b76c0c9d8ad8073bfef14787c1167d": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Breast_connective_tissue-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Breast_connective_tissue-normal.png",
+    "formeOriginalNormalScale": -1.00422
+  },
+  "967bb877c75aa1e197925c24f226cb25": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Female_body_X-7-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Female_body_X-normal.png",
+    "formeOriginalNormalScale": -1.0
+  },
+  "34e1ef86e7819282878321c15818721c": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Female_head_E-7-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Female_head_E-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "a3bd30674fd01e320f3cbb7d435edaef": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Female_head_E-7-albedo.png",
+    "formeOriginalNormalTexture": "female-2024-integumentary-system-Female_head_E-normal.png",
+    "formeOriginalNormalScale": 1.0
+  },
+  "d4b8abbeda61e0c7b33211af0d9a957e": {
+    "formeOriginalAlbedoTexture": "female-2024-integumentary-system-Fat-albedo.png",
+    "formeOriginalNormalTexture": "male-2024-integumentary-system-Fat-normal.png",
+    "formeOriginalNormalScale": 1.0
+  }
+}

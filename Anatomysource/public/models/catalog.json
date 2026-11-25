@@ -2,8 +2,8 @@
   "models": [
     {
       "id": "male-2024-heart",
-      "label": "Male · Heart",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Heart",
+      "model": "Male 2024",
       "system": "Heart",
       "file": "heart.glb",
       "structures": 48,
@@ -11,8 +11,8 @@
     },
     {
       "id": "male-2024-skeletal-system",
-      "label": "Male · Skeletal System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Skeletal System",
+      "model": "Male 2024",
       "system": "Skeletal System",
       "file": "catalog/male-2024-skeletal-system.glb",
       "structures": 642,
@@ -20,8 +20,8 @@
     },
     {
       "id": "male-2024-muscular-system",
-      "label": "Male · Muscular System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Muscular System",
+      "model": "Male 2024",
       "system": "Muscular System",
       "file": "catalog/male-2024-muscular-system.glb",
       "structures": 628,
@@ -29,8 +29,8 @@
     },
     {
       "id": "male-2024-lymphatic-system",
-      "label": "Male · Lymphatic System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Lymphatic System",
+      "model": "Male 2024",
       "system": "Lymphatic System",
       "file": "catalog/male-2024-lymphatic-system.glb",
       "structures": 351,
@@ -38,8 +38,8 @@
     },
     {
       "id": "male-2024-endocrine-system",
-      "label": "Male · Endocrine System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Endocrine System",
+      "model": "Male 2024",
       "system": "Endocrine System",
       "file": "catalog/male-2024-endocrine-system.glb",
       "structures": 4,
@@ -47,8 +47,8 @@
     },
     {
       "id": "male-2024-integumentary-system",
-      "label": "Male · Integumentary System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Integumentary System",
+      "model": "Male 2024",
       "system": "Integumentary System",
       "file": "catalog/male-2024-integumentary-system.glb",
       "structures": 83,
@@ -56,8 +56,8 @@
     },
     {
       "id": "male-2024-respiratory-system",
-      "label": "Male · Respiratory System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Respiratory System",
+      "model": "Male 2024",
       "system": "Respiratory System",
       "file": "catalog/male-2024-respiratory-system.glb",
       "structures": 114,
@@ -65,8 +65,8 @@
     },
     {
       "id": "male-2024-digestive-system",
-      "label": "Male · Digestive System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Digestive System",
+      "model": "Male 2024",
       "system": "Digestive System",
       "file": "catalog/male-2024-digestive-system.glb",
       "structures": 209,
@@ -74,8 +74,8 @@
     },
     {
       "id": "male-2024-cardiovascular-system",
-      "label": "Male · Cardiovascular System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Cardiovascular System",
+      "model": "Male 2024",
       "system": "Cardiovascular System",
       "file": "catalog/male-2024-cardiovascular-system.glb",
       "structures": 1937,
@@ -83,8 +83,8 @@
     },
     {
       "id": "male-2024-connective-tissue",
-      "label": "Male · Connective Tissue",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Connective Tissue",
+      "model": "Male 2024",
       "system": "Connective Tissue",
       "file": "catalog/male-2024-connective-tissue.glb",
       "structures": 927,
@@ -92,8 +92,8 @@
     },
     {
       "id": "male-2024-urinary-and-reproductive-systems",
-      "label": "Male · Urinary and Reproductive Systems",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Urinary and Reproductive Systems",
+      "model": "Male 2024",
       "system": "Urinary and Reproductive Systems",
       "file": "catalog/male-2024-urinary-and-reproductive-systems.glb",
       "structures": 123,
@@ -101,125 +101,17 @@
     },
     {
       "id": "male-2024-nervous-system",
-      "label": "Male · Nervous System",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Nervous System",
+      "model": "Male 2024",
       "system": "Nervous System",
       "file": "catalog/male-2024-nervous-system.glb",
       "structures": 1664,
       "meshes": 1664
     },
     {
-      "id": "female-2024-heart",
-      "label": "Female · Heart",
-      "model": "Female",
-      "system": "Heart",
-      "file": "catalog/female-2024-heart.glb",
-      "structures": 48,
-      "meshes": 48
-    },
-    {
-      "id": "female-2024-skeletal-system",
-      "label": "Female · Skeletal System",
-      "model": "Female",
-      "system": "Skeletal System",
-      "file": "catalog/female-2024-skeletal-system.glb",
-      "structures": 642,
-      "meshes": 642
-    },
-    {
-      "id": "female-2024-muscular-system",
-      "label": "Female · Muscular System",
-      "model": "Female",
-      "system": "Muscular System",
-      "file": "catalog/female-2024-muscular-system.glb",
-      "structures": 624,
-      "meshes": 624
-    },
-    {
-      "id": "female-2024-lymphatic-system",
-      "label": "Female · Lymphatic System",
-      "model": "Female",
-      "system": "Lymphatic System",
-      "file": "catalog/female-2024-lymphatic-system.glb",
-      "structures": 363,
-      "meshes": 363
-    },
-    {
-      "id": "female-2024-endocrine-system",
-      "label": "Female · Endocrine System",
-      "model": "Female",
-      "system": "Endocrine System",
-      "file": "catalog/female-2024-endocrine-system.glb",
-      "structures": 4,
-      "meshes": 4
-    },
-    {
-      "id": "female-2024-integumentary-system",
-      "label": "Female · Integumentary System",
-      "model": "Female",
-      "system": "Integumentary System",
-      "file": "catalog/female-2024-integumentary-system.glb",
-      "structures": 141,
-      "meshes": 141
-    },
-    {
-      "id": "female-2024-respiratory-system",
-      "label": "Female · Respiratory System",
-      "model": "Female",
-      "system": "Respiratory System",
-      "file": "catalog/female-2024-respiratory-system.glb",
-      "structures": 114,
-      "meshes": 114
-    },
-    {
-      "id": "female-2024-digestive-system",
-      "label": "Female · Digestive System",
-      "model": "Female",
-      "system": "Digestive System",
-      "file": "catalog/female-2024-digestive-system.glb",
-      "structures": 219,
-      "meshes": 219
-    },
-    {
-      "id": "female-2024-cardiovascular-system",
-      "label": "Female · Cardiovascular System",
-      "model": "Female",
-      "system": "Cardiovascular System",
-      "file": "catalog/female-2024-cardiovascular-system.glb",
-      "structures": 1956,
-      "meshes": 1956
-    },
-    {
-      "id": "female-2024-connective-tissue",
-      "label": "Female · Connective Tissue",
-      "model": "Female",
-      "system": "Connective Tissue",
-      "file": "catalog/female-2024-connective-tissue.glb",
-      "structures": 923,
-      "meshes": 923
-    },
-    {
-      "id": "female-2024-urinary-and-reproductive-systems",
-      "label": "Female · Urinary and Reproductive Systems",
-      "model": "Female",
-      "system": "Urinary and Reproductive Systems",
-      "file": "catalog/female-2024-urinary-and-reproductive-systems.glb",
-      "structures": 118,
-      "meshes": 118
-    },
-    {
-      "id": "female-2024-nervous-system",
-      "label": "Female · Nervous System",
-      "model": "Female",
-      "system": "Nervous System",
-      "file": "catalog/female-2024-nervous-system.glb",
-      "structures": 1666,
-      "meshes": 1666
-    },
-    {
       "id": "male-2024-arteries",
-      "label": "Male · Arteries",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Arteries",
+      "model": "Male 2024",
       "system": "Arteries",
       "file": "catalog/male-2024-arteries.glb",
       "structures": 1149,
@@ -227,17 +119,125 @@
     },
     {
       "id": "male-2024-veins",
-      "label": "Male · Veins",
-      "model": "Male",
+      "label": "Male 2024 \u00b7 Veins",
+      "model": "Male 2024",
       "system": "Veins",
       "file": "catalog/male-2024-veins.glb",
       "structures": 736,
       "meshes": 736
     },
     {
+      "id": "female-2024-heart",
+      "label": "Female 2024 \u00b7 Heart",
+      "model": "Female 2024",
+      "system": "Heart",
+      "file": "catalog/female-2024-heart.glb",
+      "structures": 48,
+      "meshes": 48
+    },
+    {
+      "id": "female-2024-skeletal-system",
+      "label": "Female 2024 \u00b7 Skeletal System",
+      "model": "Female 2024",
+      "system": "Skeletal System",
+      "file": "catalog/female-2024-skeletal-system.glb",
+      "structures": 642,
+      "meshes": 642
+    },
+    {
+      "id": "female-2024-muscular-system",
+      "label": "Female 2024 \u00b7 Muscular System",
+      "model": "Female 2024",
+      "system": "Muscular System",
+      "file": "catalog/female-2024-muscular-system.glb",
+      "structures": 624,
+      "meshes": 624
+    },
+    {
+      "id": "female-2024-lymphatic-system",
+      "label": "Female 2024 \u00b7 Lymphatic System",
+      "model": "Female 2024",
+      "system": "Lymphatic System",
+      "file": "catalog/female-2024-lymphatic-system.glb",
+      "structures": 363,
+      "meshes": 363
+    },
+    {
+      "id": "female-2024-endocrine-system",
+      "label": "Female 2024 \u00b7 Endocrine System",
+      "model": "Female 2024",
+      "system": "Endocrine System",
+      "file": "catalog/female-2024-endocrine-system.glb",
+      "structures": 4,
+      "meshes": 4
+    },
+    {
+      "id": "female-2024-integumentary-system",
+      "label": "Female 2024 \u00b7 Integumentary System",
+      "model": "Female 2024",
+      "system": "Integumentary System",
+      "file": "catalog/female-2024-integumentary-system.glb",
+      "structures": 141,
+      "meshes": 141
+    },
+    {
+      "id": "female-2024-respiratory-system",
+      "label": "Female 2024 \u00b7 Respiratory System",
+      "model": "Female 2024",
+      "system": "Respiratory System",
+      "file": "catalog/female-2024-respiratory-system.glb",
+      "structures": 114,
+      "meshes": 114
+    },
+    {
+      "id": "female-2024-digestive-system",
+      "label": "Female 2024 \u00b7 Digestive System",
+      "model": "Female 2024",
+      "system": "Digestive System",
+      "file": "catalog/female-2024-digestive-system.glb",
+      "structures": 219,
+      "meshes": 219
+    },
+    {
+      "id": "female-2024-cardiovascular-system",
+      "label": "Female 2024 \u00b7 Cardiovascular System",
+      "model": "Female 2024",
+      "system": "Cardiovascular System",
+      "file": "catalog/female-2024-cardiovascular-system.glb",
+      "structures": 1956,
+      "meshes": 1956
+    },
+    {
+      "id": "female-2024-connective-tissue",
+      "label": "Female 2024 \u00b7 Connective Tissue",
+      "model": "Female 2024",
+      "system": "Connective Tissue",
+      "file": "catalog/female-2024-connective-tissue.glb",
+      "structures": 923,
+      "meshes": 923
+    },
+    {
+      "id": "female-2024-urinary-and-reproductive-systems",
+      "label": "Female 2024 \u00b7 Urinary and Reproductive Systems",
+      "model": "Female 2024",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/female-2024-urinary-and-reproductive-systems.glb",
+      "structures": 118,
+      "meshes": 118
+    },
+    {
+      "id": "female-2024-nervous-system",
+      "label": "Female 2024 \u00b7 Nervous System",
+      "model": "Female 2024",
+      "system": "Nervous System",
+      "file": "catalog/female-2024-nervous-system.glb",
+      "structures": 1666,
+      "meshes": 1666
+    },
+    {
       "id": "female-2024-arteries",
-      "label": "Female · Arteries",
-      "model": "Female",
+      "label": "Female 2024 \u00b7 Arteries",
+      "model": "Female 2024",
       "system": "Arteries",
       "file": "catalog/female-2024-arteries.glb",
       "structures": 1161,
@@ -245,8 +245,8 @@
     },
     {
       "id": "female-2024-veins",
-      "label": "Female · Veins",
-      "model": "Female",
+      "label": "Female 2024 \u00b7 Veins",
+      "model": "Female 2024",
       "system": "Veins",
       "file": "catalog/female-2024-veins.glb",
       "structures": 743,

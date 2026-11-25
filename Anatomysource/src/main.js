@@ -9,6 +9,8 @@ const ui = {
   input: el('model-input'),
   library: el('model-library'),
   libraryLoad: el('load-library-models'),
+  emptyModelPicker: el('empty-model-picker'),
+  emptyModelLoad: el('empty-load-model'),
   modelLoadProgress: el('model-load-progress'),
   modelLoadLabel: el('model-load-label'),
   modelLoadPercent: el('model-load-percent'),
@@ -61,6 +63,7 @@ try {
   Object.assign(sourceRenderTuning, JSON.parse(localStorage.getItem(RENDER_TUNING_STORAGE_KEY) || '{}'));
 } catch { /* Keep the source-informed defaults if browser storage is unavailable. */ }
 const sourceShaderUniforms = new Set();
+const sourceShaderUniformsByMaterial = new WeakMap();
 
 function updateRenderTuning(field, value) {
   sourceRenderTuning[field] = value;
@@ -959,8 +962,9 @@ async function originalHeartTexture(filename, colorSpace) {
   return originalHeartTextures.get(key);
 }
 
-async function applyHeartMaterials(root) {
-  const fillingTexture = await originalHeartTexture('filling_heart.png', THREE.SRGBColorSpace);
+async function applySourceMaterials(root, { heart = false } = {}) {
+  const sourceProgramKey = heart ? 'forme-source-pbr-v2-heart' : 'forme-source-pbr-v2';
+  const fillingTexture = heart ? await originalHeartTexture('filling_heart.png', THREE.SRGBColorSpace) : null;
   let heartEnvironment;
   try {
     heartEnvironment = await loadSourceIbl();
@@ -971,6 +975,8 @@ async function applyHeartMaterials(root) {
     }
   }
   const replacements = [];
+  const originals = new Set();
+  const replacementByMaterial = new WeakMap();
   root.traverse((object) => {
     if (!object.isMesh) return;
     const label = `${object.userData?.formeClusterPath || ''} / ${object.userData?.formeDisplayName || object.name || ''}`.toLocaleLowerCase();
@@ -982,16 +988,21 @@ async function applyHeartMaterials(root) {
     else if (label.includes('heart wall windows')) kind = 'window';
     const previous = Array.isArray(object.material) ? object.material : [object.material];
     const next = previous.map((material) => {
-      if (!material) return getHeartMaterial(kind);
+      if (!material) return heart ? getHeartMaterial(kind) : material;
       const albedoName = material.userData?.formeOriginalAlbedoTexture;
-      if (!albedoName) return getHeartMaterial(kind);
-      return (async () => {
+      const normalName = material.userData?.formeOriginalNormalTexture;
+      if (heart && !albedoName) return getHeartMaterial(kind);
+      if (!heart && !albedoName && !normalName && material.userData?.formeOriginalReflection === undefined) return material;
+      let replacement = replacementByMaterial.get(material);
+      if (!replacement) {
+        originals.add(material);
+        let activeMaterial = null;
+        replacement = (async () => {
         const clone = material.clone();
         clone.opacity = material.userData?.formeOriginalOpacity ?? clone.opacity;
-        clone.map = await originalHeartTexture(albedoName, THREE.SRGBColorSpace);
+        if (albedoName) clone.map = await originalHeartTexture(albedoName, THREE.SRGBColorSpace);
         const sourceIbl = heartEnvironment?.specular ? heartEnvironment : null;
         clone.envMap = sourceIbl ? null : heartEnvironment || null;
-        const normalName = material.userData?.formeOriginalNormalTexture;
         if (normalName) {
           clone.normalMap = await originalHeartTexture(normalName, THREE.NoColorSpace);
           const runtimeIntensity = material.userData?.formeRuntimeNormalIntensity;
@@ -1007,7 +1018,7 @@ async function applyHeartMaterials(root) {
         clone.side = THREE.DoubleSide;
         const sourceTone = (shader) => {
           shader.uniforms.formeHeartFillingMap = { value: fillingTexture };
-          shader.uniforms.formeSourceOverlayVisibility = { value: sourceRenderTuning.overlayVisibility };
+          shader.uniforms.formeSourceOverlayVisibility = { value: heart ? sourceRenderTuning.overlayVisibility : 0 };
           shader.uniforms.formeSourceExposure = { value: sourceRenderTuning.exposure };
           shader.uniforms.formeSourceDiffuseIbl = { value: sourceIbl?.diffuse || null };
           shader.uniforms.formeSourceSpecularIbl = { value: sourceIbl?.specular || null };
@@ -1019,12 +1030,17 @@ async function applyHeartMaterials(root) {
             value: sourceDirectionalLights.map(({ direction, intensity }) => new THREE.Vector4(...direction, intensity)),
           };
           sourceShaderUniforms.add(shader.uniforms);
-          shader.fragmentShader = shader.fragmentShader.replace(
-            '#include <map_fragment>',
-            `#include <map_fragment>
-             vec4 formeHeartFillingTexel = texture2D(formeHeartFillingMap, vMapUv);
-             diffuseColor.rgb = mix(diffuseColor.rgb, formeHeartFillingTexel.rgb, formeSourceOverlayVisibility * formeHeartFillingTexel.a);`,
-          );
+          if (activeMaterial) {
+            let materialUniforms = sourceShaderUniformsByMaterial.get(activeMaterial);
+            if (!materialUniforms) sourceShaderUniformsByMaterial.set(activeMaterial, materialUniforms = new Set());
+            materialUniforms.add(shader.uniforms);
+          }
+          const mapFragment = heart
+            ? `#include <map_fragment>
+               vec4 formeHeartFillingTexel = texture2D(formeHeartFillingMap, vMapUv);
+               diffuseColor.rgb = mix(diffuseColor.rgb, formeHeartFillingTexel.rgb, formeSourceOverlayVisibility * formeHeartFillingTexel.a);`
+            : '#include <map_fragment>';
+          shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', mapFragment);
           shader.fragmentShader = shader.fragmentShader.replace(
             'void main() {',
             `uniform sampler2D formeHeartFillingMap;
@@ -1103,7 +1119,7 @@ async function applyHeartMaterials(root) {
           );
         };
         clone.onBeforeCompile = sourceTone;
-        clone.customProgramCacheKey = () => 'forme-source-pbr-v2';
+        clone.customProgramCacheKey = () => sourceProgramKey;
         const physicalSource = Object.assign({}, clone, {
           clearcoatNormalScale: new THREE.Vector2(1, 1),
           sheenColor: new THREE.Color(),
@@ -1111,6 +1127,7 @@ async function applyHeartMaterials(root) {
           specularColor: new THREE.Color(1, 1, 1),
         });
         const glossy = new THREE.MeshPhysicalMaterial().copy(physicalSource);
+        activeMaterial = glossy;
         // Source shader derives dielectric F0 as 0.16 * reflectance^2.
         const f0 = 0.16 * sourceReflection * sourceReflection;
         const rootF0 = Math.sqrt(Math.max(0, Math.min(0.99, f0)));
@@ -1118,48 +1135,10 @@ async function applyHeartMaterials(root) {
         glossy.clearcoat = 0;
         glossy.roughness = material.roughness ?? 0.1;
         glossy.onBeforeCompile = sourceTone;
-        glossy.customProgramCacheKey = () => 'forme-source-pbr-v2';
+        glossy.customProgramCacheKey = () => sourceProgramKey;
         glossy.needsUpdate = true;
         clone.dispose();
-        material.dispose();
         return glossy;
-      })();
-    });
-    replacements.push(Promise.all(next).then((materials) => {
-      object.material = Array.isArray(object.material) ? materials : materials[0];
-    }));
-  });
-  await Promise.all(replacements);
-}
-
-async function applyCatalogTextures(root) {
-  const replacements = [];
-  const originals = new Set();
-  const replacementByMaterial = new WeakMap();
-  root.traverse((object) => {
-    if (!object.isMesh) return;
-    const previous = Array.isArray(object.material) ? object.material : [object.material];
-    const next = previous.map((material) => {
-      if (!material) return material;
-      const userData = material.userData || {};
-      const albedoName = userData.formeOriginalAlbedoTexture;
-      const normalName = userData.formeOriginalNormalTexture;
-      if (!albedoName && !normalName) return material;
-      let replacement = replacementByMaterial.get(material);
-      if (!replacement) {
-        originals.add(material);
-        replacement = (async () => {
-          const clone = material.clone();
-          if (albedoName) clone.map = await originalHeartTexture(albedoName, THREE.SRGBColorSpace);
-          if (normalName) {
-            clone.normalMap = await originalHeartTexture(normalName, THREE.NoColorSpace);
-            const scale = userData.formeOriginalNormalScale ?? 1;
-            clone.normalScale.set(scale, scale);
-          }
-          clone.emissive?.set(0, 0, 0);
-          clone.side = THREE.DoubleSide;
-          clone.needsUpdate = true;
-          return clone;
         })();
         replacementByMaterial.set(material, replacement);
       }
@@ -1171,6 +1150,18 @@ async function applyCatalogTextures(root) {
   });
   await Promise.all(replacements);
   originals.forEach((material) => material.dispose());
+}
+
+function releaseSourceShaderUniforms(root) {
+  root.traverse((object) => {
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    materials.forEach((material) => {
+      const uniforms = material && sourceShaderUniformsByMaterial.get(material);
+      if (!uniforms) return;
+      uniforms.forEach((entry) => sourceShaderUniforms.delete(entry));
+      sourceShaderUniformsByMaterial.delete(material);
+    });
+  });
 }
 
 function updateAnimationButton() {
@@ -1374,11 +1365,12 @@ function selectNode(object) {
   selectionBox.name = 'Selected mesh surface highlight';
   selectionBox.renderOrder = 10;
   scene.add(selectionBox);
+  const isSurface = object.isMesh || object.isSkinnedMesh || object.isInstancedMesh;
   const material = new THREE.MeshBasicMaterial({
-    color: 0xe48a7d,
+    color: 0xff765f,
     transparent: true,
-    opacity: object.isMesh || object.isSkinnedMesh || object.isInstancedMesh ? 0.34 : 0.13,
-    depthTest: !(object.isMesh || object.isSkinnedMesh || object.isInstancedMesh),
+    opacity: isSurface ? 0.52 : 0.24,
+    depthTest: !isSurface,
     depthWrite: false,
     polygonOffset: true,
     polygonOffsetFactor: -1,
@@ -1457,7 +1449,6 @@ function updateInspector(object) {
   ui.toggle.textContent = object.visible ? 'Hide' : 'Show';
   ui.selectedCrumb.textContent = name;
   el('hud-structure').textContent = name;
-  el('hud-triangles').textContent = `${facts.triangles.toLocaleString()} triangles`;
   ui.hud.hidden = false;
 }
 
@@ -1541,6 +1532,28 @@ function fitModel(root = loadedRoot) {
   updateSelectionHighlight();
 }
 
+function frameObject(object) {
+  if (!object) return;
+  object.updateWorldMatrix(true, true);
+  const bounds = new THREE.Box3().setFromObject(object);
+  if (bounds.isEmpty()) return;
+
+  const center = bounds.getCenter(new THREE.Vector3());
+  const sphere = bounds.getBoundingSphere(new THREE.Sphere());
+  const verticalHalfFov = THREE.MathUtils.degToRad(camera.fov * 0.5);
+  const horizontalHalfFov = Math.atan(Math.tan(verticalHalfFov) * Math.max(camera.aspect, 0.1));
+  const distance = Math.max(sphere.radius / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov)) * 0.94, 0.12);
+  const viewDirection = camera.position.clone().sub(controls.target).normalize();
+  if (viewDirection.lengthSq() < 1e-6) viewDirection.set(0.84, 0.58, 1).normalize();
+
+  controls.target.copy(center);
+  camera.position.copy(center).addScaledVector(viewDirection, distance);
+  camera.near = 0.005;
+  camera.far = Math.max(500, distance * 20);
+  camera.updateProjectionMatrix();
+  controls.update();
+}
+
 function showAll() {
   if (!loadedRoot) return;
   loadedRoot.traverse((object) => { object.visible = true; });
@@ -1575,15 +1588,6 @@ function focusHeart() {
     return;
   }
 
-  const keep = new Set([loadedRoot]);
-  for (const entry of matches) {
-    for (let parent = entry.object; parent; parent = parent.parent) {
-      keep.add(parent);
-      if (parent === loadedRoot) break;
-    }
-    entry.object.traverse((part) => keep.add(part));
-  }
-  loadedRoot.traverse((object) => { object.visible = keep.has(object); });
   ui.search.value = '';
   renderTree('');
 
@@ -1592,9 +1596,8 @@ function focusHeart() {
     || matches.find((entry) => entry.isMesh)
     || matches[0];
   selectNode(preferred.object);
-  fitModel(loadedRoot);
-  updateInspector(preferred.object);
-  showToast(`Showing ${matches.length} heart-related structures.`);
+  frameObject(preferred.object);
+  showToast('Heart centered in view.');
 }
 
 async function parseModel(files) {
@@ -1634,6 +1637,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', mode
   mixer = null;
   activeAnimationRoot = null;
   if (modelGroup) {
+    releaseSourceShaderUniforms(modelGroup);
     scene.remove(modelGroup);
     modelGroup.traverse((object) => {
       object.geometry?.dispose?.();
@@ -1709,7 +1713,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', mode
   ui.emptyState.hidden = true;
   ui.isolate.disabled = true;
   ui.toggle.disabled = true;
-  for (const id of ['fit-view', 'reset-view', 'show-all', 'export-image']) el(id).disabled = false;
+  for (const id of ['fit-view', 'reset-view', 'show-all']) el(id).disabled = false;
   el('focus-heart').disabled = false;
   setStatus(`${modelCount} model${modelCount === 1 ? '' : 's'} loaded`);
   showToast(`Loaded ${displayName}.`);
@@ -1725,8 +1729,8 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
     const { gltf, modelFile, blobUrls } = await parseModel(files);
     const heartRoot = catalogId.endsWith('-heart') ? gltf.scene : null;
     setModelLoadProgress(`Applying materials · ${displayName || modelFile.name}`);
-    if (heartRoot) await applyHeartMaterials(heartRoot);
-    else if (catalogId) await applyCatalogTextures(gltf.scene);
+    if (heartRoot) await applySourceMaterials(heartRoot, { heart: true });
+    else if (catalogId) await applySourceMaterials(gltf.scene);
     await installLoadedScene({
       root: gltf.scene,
       displayName: displayName || modelFile.name,
@@ -1816,14 +1820,14 @@ async function fetchModelBlob(url, onProgress, model = null) {
   return new Blob(blobs, { type: 'model/gltf-binary' });
 }
 
-async function loadSelectedLibraryModels() {
+async function loadSelectedLibraryModels(models = selectedLibraryModels()) {
   if (ui.libraryLoad.disabled) return;
-  const models = selectedLibraryModels();
   if (!models.length) {
     showToast('Select one or more offline systems first.', 'error');
     return;
   }
   ui.libraryLoad.disabled = true;
+  ui.emptyModelLoad.disabled = true;
   try {
     setStatus(`Loading ${models.length} offline model${models.length === 1 ? '' : 's'}…`);
     const loaded = [];
@@ -1842,8 +1846,8 @@ async function loadSelectedLibraryModels() {
       const root = parsed.gltf.scene;
       root.name = model.system;
       setModelLoadProgress(`Applying materials · ${model.system} · ${index + 1} of ${models.length}`);
-      if (model.id.endsWith('-heart')) await applyHeartMaterials(root);
-      else await applyCatalogTextures(root);
+      if (model.id.endsWith('-heart')) await applySourceMaterials(root, { heart: true });
+      else await applySourceMaterials(root);
       loaded.push({
         model,
         root,
@@ -1874,6 +1878,7 @@ async function loadSelectedLibraryModels() {
   } finally {
     clearModelLoadProgress();
     ui.libraryLoad.disabled = false;
+    ui.emptyModelLoad.disabled = false;
   }
 }
 
@@ -1895,15 +1900,25 @@ async function loadModelLibrary() {
     const data = await response.json();
     libraryModels = Array.isArray(data.models) ? data.models : [];
     ui.library.replaceChildren();
+    ui.emptyModelPicker.replaceChildren();
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.textContent = 'Choose a model';
+    ui.emptyModelPicker.append(emptyOption);
     for (const modelName of [...new Set(libraryModels.map((model) => model.model))]) {
+      const groupName = modelName.replace(/\s+\d{4}$/, '');
       const group = document.createElement('details');
       group.className = 'library-group';
-      group.open = modelName === 'Male';
+      group.open = groupName === 'Male';
       const summary = document.createElement('summary');
       summary.className = 'library-group-summary';
-      summary.textContent = modelName;
+      summary.textContent = groupName;
       group.append(summary);
       for (const model of libraryModels.filter((entry) => entry.model === modelName)) {
+        const option = document.createElement('option');
+        option.value = model.id;
+        option.textContent = `${groupName} · ${model.system}`;
+        ui.emptyModelPicker.append(option);
         const label = document.createElement('label');
         label.className = 'library-option';
         const checkbox = document.createElement('input');
@@ -1917,6 +1932,7 @@ async function loadModelLibrary() {
       }
       ui.library.append(group);
     }
+    ui.emptyModelPicker.value = 'male-2024-heart';
     ui.library.setAttribute('aria-busy', 'false');
   } catch (error) {
     const message = document.createElement('p');
@@ -1964,9 +1980,13 @@ canvas.addEventListener('pointerup', (event) => {
   else deselectNode();
 });
 
-for (const id of ['import-top', 'import-empty']) el(id).addEventListener('click', () => ui.input.click());
 ui.input.addEventListener('change', async () => { await loadFiles(ui.input.files); ui.input.value = ''; });
 ui.libraryLoad.addEventListener('click', loadSelectedLibraryModels);
+ui.emptyModelLoad.addEventListener('click', () => {
+  const selected = libraryModels.find((model) => model.id === ui.emptyModelPicker.value);
+  if (selected) loadSelectedLibraryModels([selected]);
+  else showToast('Choose an anatomy model first.', 'error');
+});
 ui.search.addEventListener('input', () => renderTree(ui.search.value));
 el('fit-view').addEventListener('click', () => fitModel());
 el('reset-view').addEventListener('click', resetCamera);
@@ -2012,20 +2032,6 @@ ui.toggle.addEventListener('click', () => {
   renderTree(ui.search.value);
   updateInspector(selectedNode);
 });
-el('export-image').addEventListener('click', () => {
-  if (!loadedRoot) return;
-  renderer.render(scene, camera);
-  renderer.domElement.toBlob((blob) => {
-    if (!blob) return showToast('The viewport image could not be saved.', 'error');
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${modelFileName.replace(/\.[^.]+$/, '') || 'anatomy-view'}-view.png`;
-    link.click();
-    URL.revokeObjectURL(link.href);
-    showToast('Viewport image saved.');
-  }, 'image/png');
-});
-
 const viewport = el('viewport-wrap');
 viewport.addEventListener('dragover', (event) => { event.preventDefault(); viewport.classList.add('dragging'); });
 viewport.addEventListener('dragleave', () => viewport.classList.remove('dragging'));
