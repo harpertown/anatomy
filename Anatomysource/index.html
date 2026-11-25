@@ -35,7 +35,7 @@
           </div>
           <input id="model-input" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2" multiple hidden />
           <section class="library-picker" aria-labelledby="library-title">
-            <h2 id="library-title">Offline model library</h2>
+            <h2 id="library-title">Model library</h2>
             <div id="model-library" class="model-checklist" role="group" aria-label="Choose anatomy systems" aria-busy="true">
               <p class="library-loading">Loading bundled models…</p>
             </div>
@@ -56,7 +56,6 @@
           </label>
           <div id="tree-empty" class="tree-empty"><span class="tree-empty-mark">◌</span><p>Nothing loaded yet</p><small>Open a model to see its named structures here.</small></div>
           <div id="scene-tree" class="scene-tree" role="tree" aria-label="Model scene tree"></div>
-          <div class="left-footer"><span class="footer-glyph">⌘</span><span>Local model session</span><span class="live-led"></span></div>
         </aside>
 
         <section class="view-column" aria-label="3D model view">
@@ -89,10 +88,10 @@
             <div id="viewport-hud" class="viewport-hud" hidden>
               <span id="hud-structure">Structure selected</span><span id="hud-triangles">— triangles</span>
             </div>
+            <div class="view-status"><span><span class="status-light"></span><span id="status-message">Ready for a local model</span></span><span id="mesh-summary">No mesh loaded</span></div>
             <div class="viewport-corner corner-top-left"><span class="axis-mark"><i></i><b></b><em></em></span><span>3D view</span></div>
             <div class="viewport-corner corner-bottom-left"><span class="mouse-glyph">◎</span> Drag to orbit <span class="hud-separator">·</span> Right-drag to pan up/down <span class="hud-separator">·</span> Scroll to zoom</div>
           </div>
-          <div class="view-status"><span><span class="status-light"></span><span id="status-message">Ready for a local model</span></span><span id="mesh-summary">No mesh loaded</span></div>
         </section>
 
         <aside class="panel inspector-panel" aria-label="Selected structure details">

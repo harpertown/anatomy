@@ -298,47 +298,55 @@ function createECGLeadOverlay(root, landmarks) {
   group.name = 'Model-registered ECG lead and electrode guides';
   group.userData.excludeFromDepolarizationShell = true;
   group.visible = false;
-  const chestMaterial = new THREE.LineBasicMaterial({ color: 0xe9bf79, transparent: true, opacity: 0.78, depthTest: false, depthWrite: false, toneMapped: false });
+  const guideRadius = Math.max(labelHeight * 0.07, 0.012);
+  const addGuide = (start, end, color, name) => {
+    const delta = end.clone().sub(start);
+    const guide = new THREE.Mesh(
+      new THREE.CylinderGeometry(guideRadius, guideRadius, delta.length(), 8),
+      new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.88, depthTest: false, depthWrite: false, toneMapped: false }),
+    );
+    guide.position.copy(start).add(end).multiplyScalar(0.5);
+    guide.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
+    guide.name = name;
+    guide.renderOrder = 8;
+    group.add(guide);
+  };
   const label = (name, end, type, accent = '#82c9ca') => {
     const labelCanvas = document.createElement('canvas');
-    labelCanvas.width = 128;
-    labelCanvas.height = 64;
+    labelCanvas.width = 192;
+    labelCanvas.height = 96;
     const context = labelCanvas.getContext('2d');
-    context.fillStyle = type === 'limb' ? 'rgba(20,43,52,.94)' : 'rgba(50,42,27,.92)';
-    context.fillRect(9, 7, 110, 50);
-    context.strokeStyle = type === 'limb' ? accent : '#e9bf79';
-    context.lineWidth = 2;
-    context.strokeRect(9, 7, 110, 50);
-    context.fillStyle = '#edf1e9';
-    context.font = '600 30px system-ui, sans-serif';
+    context.fillStyle = 'rgba(7,18,33,.97)';
+    context.beginPath();
+    context.roundRect(5, 5, 182, 86, 12);
+    context.fill();
+    context.strokeStyle = type === 'limb' ? accent : '#ffd071';
+    context.lineWidth = 5;
+    context.stroke();
+    context.fillStyle = '#ffffff';
+    context.font = '700 50px system-ui, sans-serif';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.fillText(name, 64, 32);
+    context.fillText(name, 96, 48);
     const texture = new THREE.CanvasTexture(labelCanvas);
     texture.colorSpace = THREE.SRGBColorSpace;
     const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false, depthWrite: false, toneMapped: false }));
     sprite.position.copy(end);
-    sprite.scale.set(labelHeight * 1.9, labelHeight * 0.9, 1);
+    sprite.scale.set(labelHeight * 6.6, labelHeight * 3.3, 1);
     sprite.renderOrder = 9;
     group.add(sprite);
   };
   // In the heart-only scene, show the four limb electrode directions around
   // the myocardium as labeled schematic endpoints.
   const limbElectrodes = [
-    ['RA', -0.82, 0.52, '#f0d59c'],
-    ['LA', 0.82, 0.52, '#88d6c9'],
-    ['RL', -0.40, -0.82, '#d89191'],
-    ['LL', 0.40, -0.82, '#b5a5df'],
+    ['RA', -0.82, 0.52, '#ffca58'],
+    ['LA', 0.82, 0.52, '#44e2cf'],
+    ['RL', -0.40, -0.82, '#ff7484'],
+    ['LL', 0.40, -0.82, '#bd9bff'],
   ];
   for (const [name, xDirection, yDirection, color] of limbElectrodes) {
     const end = center.clone().add(new THREE.Vector3(xDirection * radius, yDirection * radius, 0));
-    const line = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints([center, end]),
-      new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.74, depthTest: false, depthWrite: false, toneMapped: false }),
-    );
-    line.name = `Schematic limb electrode guide ${name}`;
-    line.renderOrder = 8;
-    group.add(line);
+    addGuide(center, end, color, `Schematic limb electrode guide ${name}`);
     const marker = new THREE.Mesh(
       new THREE.SphereGeometry(Math.max(labelHeight * 0.12, 0.012), 12, 8),
       new THREE.MeshBasicMaterial({ color, toneMapped: false, depthTest: false, depthWrite: false }),
@@ -386,10 +394,7 @@ function createECGLeadOverlay(root, landmarks) {
         nearest = new THREE.Vector3(myocardialPositions[i], myocardialPositions[i + 1], myocardialPositions[i + 2]);
       }
     }
-    const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([nearest, end]), chestMaterial);
-    line.name = `Chest electrode guide ${name}`;
-    line.renderOrder = 8;
-    group.add(line);
+    addGuide(nearest, end, 0xffd071, `Chest electrode guide ${name}`);
     const marker = new THREE.Mesh(
       new THREE.SphereGeometry(Math.max(labelHeight * 0.12, 0.012), 10, 8),
       new THREE.MeshBasicMaterial({ color: 0xffdf9e, toneMapped: false, depthTest: false, depthWrite: false }),
@@ -1207,11 +1212,23 @@ function collectNodes(root) {
     const hasChildren = object.children.length > 0;
     if (!isMesh && !hasChildren && !object.name) return;
     const name = object.userData?.formeDisplayName?.trim() || object.name?.trim() || (isMesh ? `Unnamed ${object.type}` : object.type);
-    const depth = (() => { let n = object, d = 0; while (n && n !== root) { d++; n = n.parent; } return d - 1; })();
+    const parentName = object.parent?.userData?.formeDisplayName?.trim() || object.parent?.name?.trim();
+    const duplicateWrapper = !isMesh && object.parent !== root && parentName === name;
+    if (duplicateWrapper) return;
+    let depth = 0;
+    for (let node = object.parent; node && node !== root; node = node.parent) {
+      const nodeName = node.userData?.formeDisplayName?.trim() || node.name?.trim();
+      const nodeParentName = node.parent?.userData?.formeDisplayName?.trim() || node.parent?.name?.trim();
+      const nodeIsMesh = node.isMesh || node.isSkinnedMesh || node.isInstancedMesh;
+      if (!(nodeName && nodeName === nodeParentName && !nodeIsMesh && node.parent !== root)) depth++;
+    }
     const ancestors = [];
     for (let parent = object.parent; parent && parent !== root; parent = parent.parent) {
       const parentName = parent.userData?.formeDisplayName?.trim() || parent.name?.trim();
-      if (parentName) ancestors.unshift(parentName);
+      const grandparentName = parent.parent?.userData?.formeDisplayName?.trim() || parent.parent?.name?.trim();
+      const parentIsMesh = parent.isMesh || parent.isSkinnedMesh || parent.isInstancedMesh;
+      const duplicateParent = !parentIsMesh && parent.parent !== root && parentName === grandparentName;
+      if (parentName && !duplicateParent) ancestors.unshift(parentName);
     }
     entries.push({ object, id: object.id, name, depth, path: [...ancestors, name].join(' / '), isMesh });
   });
@@ -1404,7 +1421,7 @@ function fitModel(root = loadedRoot) {
   const radius = Math.max(fit.extents.length() * fit.scale * 0.5, 0.1);
   const verticalHalfFov = THREE.MathUtils.degToRad(camera.fov * 0.5);
   const horizontalHalfFov = Math.atan(Math.tan(verticalHalfFov) * Math.max(camera.aspect, 0.1));
-  const fitDistance = (radius / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov))) * 1.12;
+  const fitDistance = (radius / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov))) * 0.94;
   const viewDirection = new THREE.Vector3(0.84, 0.58, 1).normalize();
   camera.position.copy(viewDirection.multiplyScalar(fitDistance));
   camera.near = 0.005;
@@ -1770,11 +1787,13 @@ async function loadModelLibrary() {
     libraryModels = Array.isArray(data.models) ? data.models : [];
     ui.library.replaceChildren();
     for (const modelName of [...new Set(libraryModels.map((model) => model.model))]) {
-      const group = document.createElement('fieldset');
+      const group = document.createElement('details');
       group.className = 'library-group';
-      const legend = document.createElement('legend');
-      legend.textContent = modelName;
-      group.append(legend);
+      group.open = modelName === 'Male';
+      const summary = document.createElement('summary');
+      summary.className = 'library-group-summary';
+      summary.textContent = modelName;
+      group.append(summary);
       for (const model of libraryModels.filter((entry) => entry.model === modelName)) {
         const label = document.createElement('label');
         label.className = 'library-option';
