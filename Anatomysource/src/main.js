@@ -52,10 +52,12 @@ const ui = {
 
 const canvas = el('viewport');
 const LOW_POWER_MODE_STORAGE_KEY = 'forme-low-power-mode-v1';
+const DEFAULT_RENDER_PIXEL_RATIO = 1.25;
 let lowPowerMode = false;
 try { lowPowerMode = localStorage.getItem(LOW_POWER_MODE_STORAGE_KEY) === 'true'; } catch { /* Use full quality when browser storage is unavailable. */ }
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPowerMode, alpha: true, preserveDrawingBuffer: true });
-renderer.setPixelRatio(lowPowerMode ? Math.min(window.devicePixelRatio || 1, 1) : Math.min(window.devicePixelRatio || 1, 1.75));
+// No canvas export path uses the drawing buffer, so avoid forcing the GPU to preserve it.
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPowerMode, alpha: true, preserveDrawingBuffer: false });
+renderer.setPixelRatio(lowPowerMode ? Math.min(window.devicePixelRatio || 1, 1) : Math.min(window.devicePixelRatio || 1, DEFAULT_RENDER_PIXEL_RATIO));
 renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;
@@ -247,7 +249,7 @@ function requestRender() {
 function applyLowPowerMode() {
   renderer.setPixelRatio(lowPowerMode
     ? Math.min(window.devicePixelRatio || 1, 1)
-    : Math.min(window.devicePixelRatio || 1, 1.75));
+    : Math.min(window.devicePixelRatio || 1, DEFAULT_RENDER_PIXEL_RATIO));
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
   if (width && height) renderer.setSize(width, height, false);
@@ -598,6 +600,7 @@ function createECGLeadOverlay(root, landmarks) {
       }
     }
     const guide = addGuide(nearest, end, 0xffd071, `Chest electrode guide ${name}`);
+    guide.guide.userData.targetLength = guide.baseLength;
     const surfaceBinding = bindAnimatedSurfaceHit(surfaceHit);
     if (surfaceBinding) {
       animatedSurfaceGuides.push({
@@ -617,18 +620,23 @@ function createECGLeadOverlay(root, landmarks) {
     group.add(marker);
     label(name, end, 'chest');
   }
-  group.userData.updateAnimatedSurfaceGuides = () => {
+  let lastGuideRaycastTime = -Infinity;
+  let lastGuideUpdateTime = 0;
+  group.userData.updateAnimatedSurfaceGuides = (frameTime = performance.now()) => {
     const a = new THREE.Vector3();
     const b = new THREE.Vector3();
     const c = new THREE.Vector3();
     const surfacePoint = new THREE.Vector3();
-    const visibleMyocardialMeshes = myocardialMeshes.filter((candidate) => {
+    const shouldRaycast = frameTime - lastGuideRaycastTime >= 1000 / 20;
+    const visibleMyocardialMeshes = shouldRaycast ? myocardialMeshes.filter((candidate) => {
       for (let parent = candidate; parent; parent = parent.parent) {
         if (!parent.visible) return false;
         if (parent === root) break;
       }
       return true;
-    });
+    }) : null;
+    const deltaSeconds = lastGuideUpdateTime ? Math.min((frameTime - lastGuideUpdateTime) / 1000, 0.05) : 1 / 60;
+    const blend = 1 - Math.exp(-deltaSeconds * 24);
     for (const { guide, baseLength, surfaceBinding, electrodePoint, inwardDirection } of animatedSurfaceGuides) {
       const { mesh, meshToRoot, indices, barycentric } = surfaceBinding;
       mesh.getVertexPosition(indices[0], a).applyMatrix4(meshToRoot);
@@ -637,22 +645,28 @@ function createECGLeadOverlay(root, landmarks) {
       surfacePoint.copy(a).multiplyScalar(barycentric.x)
         .addScaledVector(b, barycentric.y)
         .addScaledVector(c, barycentric.z);
-      const worldOrigin = root.localToWorld(electrodePoint.clone());
       const maxLength = baseLength * 1.35;
-      const worldLimit = root.localToWorld(electrodePoint.clone().addScaledVector(inwardDirection, maxLength));
-      const rayDelta = worldLimit.sub(worldOrigin);
-      surfaceRaycaster.set(worldOrigin, rayDelta.clone().normalize());
-      surfaceRaycaster.near = 0;
-      surfaceRaycaster.far = rayDelta.length();
-      const animatedHit = surfaceRaycaster.intersectObjects(visibleMyocardialMeshes, false)[0];
-      const surfaceLength = animatedHit
-        ? root.worldToLocal(animatedHit.point.clone()).sub(electrodePoint).dot(inwardDirection)
-        : Infinity;
       const projectedLength = surfacePoint.clone().sub(electrodePoint).dot(inwardDirection);
-      const usableHit = animatedHit && surfaceLength > 0 && surfaceLength <= maxLength;
-      const length = Math.max(Math.min(usableHit ? surfaceLength : projectedLength, maxLength), 1e-6);
-      guide.scale.y = length / baseLength;
+      if (shouldRaycast) {
+        const worldOrigin = root.localToWorld(electrodePoint.clone());
+        const worldLimit = root.localToWorld(electrodePoint.clone().addScaledVector(inwardDirection, maxLength));
+        const rayDelta = worldLimit.sub(worldOrigin);
+        const rayLength = rayDelta.length();
+        surfaceRaycaster.set(worldOrigin, rayDelta.normalize());
+        surfaceRaycaster.near = 0;
+        surfaceRaycaster.far = rayLength;
+        const animatedHit = surfaceRaycaster.intersectObjects(visibleMyocardialMeshes, false)[0];
+        const surfaceLength = animatedHit
+          ? root.worldToLocal(animatedHit.point.clone()).sub(electrodePoint).dot(inwardDirection)
+          : Infinity;
+        const usableHit = animatedHit && surfaceLength > 0 && surfaceLength <= maxLength;
+        guide.userData.targetLength = Math.max(Math.min(usableHit ? surfaceLength : projectedLength, maxLength), 1e-6);
+      }
+      const currentLength = guide.scale.y * baseLength;
+      guide.scale.y = THREE.MathUtils.lerp(currentLength, guide.userData.targetLength, blend) / baseLength;
     }
+    if (shouldRaycast) lastGuideRaycastTime = frameTime;
+    lastGuideUpdateTime = frameTime;
   };
   return group;
 }
@@ -2366,7 +2380,7 @@ function render(frameTime = performance.now()) {
   const delta = Math.min(Math.max((frameTime - previousFrameTime) / 1000, 0), 0.05);
   previousFrameTime = frameTime;
   if (animationPlaying) mixer?.update(delta);
-  if (ecgLeadOverlay?.visible) ecgLeadOverlay.userData.updateAnimatedSurfaceGuides?.();
+  if (animationPlaying && ecgLeadOverlay?.visible) ecgLeadOverlay.userData.updateAnimatedSurfaceGuides?.(frameTime);
   updateConductionOverlay(delta);
   updateSelectionHighlight();
   renderer.render(scene, camera);
