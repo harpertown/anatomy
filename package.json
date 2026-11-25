@@ -34,12 +34,13 @@
 	},
 	"private": true,
 	"scripts": {
-		"build": "react-router build",
+		"build": "npm --prefix Anatomysource run build:viewer",
 		"cf-typegen": "wrangler types && react-router typegen",
 		"check": "tsc && react-router build && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
-		"dev": "react-router dev",
-		"preview": "npm run build && vite preview",
+		"dev": "npm --prefix Anatomysource run dev",
+		"dev:router": "react-router dev",
+		"preview": "npm --prefix Anatomysource run preview",
 		"typecheck": "npm run typegen && tsc -b"
 	},
 	"type": "module"
