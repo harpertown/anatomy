@@ -53,8 +53,14 @@ const ui = {
 const canvas = el('viewport');
 const LOW_POWER_MODE_STORAGE_KEY = 'forme-low-power-mode-v1';
 const DEFAULT_RENDER_PIXEL_RATIO = 1.25;
-let lowPowerMode = false;
-try { lowPowerMode = localStorage.getItem(LOW_POWER_MODE_STORAGE_KEY) === 'true'; } catch { /* Use full quality when browser storage is unavailable. */ }
+const reportedMemoryGiB = Number(navigator.deviceMemory) || 0;
+const reportedCpuCores = Number(navigator.hardwareConcurrency) || 0;
+let lowPowerMode = (reportedMemoryGiB > 0 && reportedMemoryGiB <= 4)
+  || (reportedCpuCores > 0 && reportedCpuCores <= 4);
+try {
+  const savedPowerPreference = localStorage.getItem(LOW_POWER_MODE_STORAGE_KEY);
+  if (savedPowerPreference !== null) lowPowerMode = savedPowerPreference === 'true';
+} catch { /* Keep the device-informed default when browser storage is unavailable. */ }
 // No canvas export path uses the drawing buffer, so avoid forcing the GPU to preserve it.
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPowerMode, alpha: true, preserveDrawingBuffer: false });
 renderer.setPixelRatio(lowPowerMode ? Math.min(window.devicePixelRatio || 1, 1) : Math.min(window.devicePixelRatio || 1, DEFAULT_RENDER_PIXEL_RATIO));
@@ -205,6 +211,7 @@ let activeHeartRoot = null;
 let activeHeartModelId = '';
 let ecgTorsoContextPromise = null;
 let ecgTorsoContextEligible = false;
+let ecgSupportVisibility = null;
 let loadedRoot = null;
 let modelFileName = '';
 let allNodes = [];
@@ -229,8 +236,8 @@ let conductionMorphAnchors = [];
 let conductionElapsed = 0;
 let depolarizationShell = null;
 let depolarizationMeshPairs = [];
-let lastDepolarizationPhase = -1;
 let previousFrameTime = performance.now();
+let previousRenderTime = 0;
 let renderRequest = 0;
 const heartMaterials = new Map();
 const originalHeartTextures = new Map();
@@ -620,14 +627,19 @@ function createECGLeadOverlay(root, landmarks) {
     group.add(marker);
     label(name, end, 'chest');
   }
-  let lastGuideRaycastTime = -Infinity;
   let lastGuideUpdateTime = 0;
+  let lastGuideRaycastTime = -Infinity;
+  const guideVertexA = new THREE.Vector3();
+  const guideVertexB = new THREE.Vector3();
+  const guideVertexC = new THREE.Vector3();
+  const guideSurfacePoint = new THREE.Vector3();
+  const guideWorldOrigin = new THREE.Vector3();
+  const guideWorldLimit = new THREE.Vector3();
   group.userData.updateAnimatedSurfaceGuides = (frameTime = performance.now()) => {
-    const a = new THREE.Vector3();
-    const b = new THREE.Vector3();
-    const c = new THREE.Vector3();
-    const surfacePoint = new THREE.Vector3();
-    const shouldRaycast = frameTime - lastGuideRaycastTime >= 1000 / 20;
+    // Correct the triangle-projection estimate against the true ray/surface
+    // intersection at 5 Hz. This keeps the endpoints on the animated heart
+    // without paying for six mesh-wide raycasts on every rendered frame.
+    const shouldRaycast = frameTime - lastGuideRaycastTime >= 1000 / 5;
     const visibleMyocardialMeshes = shouldRaycast ? myocardialMeshes.filter((candidate) => {
       for (let parent = candidate; parent; parent = parent.parent) {
         if (!parent.visible) return false;
@@ -639,28 +651,34 @@ function createECGLeadOverlay(root, landmarks) {
     const blend = 1 - Math.exp(-deltaSeconds * 24);
     for (const { guide, baseLength, surfaceBinding, electrodePoint, inwardDirection } of animatedSurfaceGuides) {
       const { mesh, meshToRoot, indices, barycentric } = surfaceBinding;
-      mesh.getVertexPosition(indices[0], a).applyMatrix4(meshToRoot);
-      mesh.getVertexPosition(indices[1], b).applyMatrix4(meshToRoot);
-      mesh.getVertexPosition(indices[2], c).applyMatrix4(meshToRoot);
-      surfacePoint.copy(a).multiplyScalar(barycentric.x)
-        .addScaledVector(b, barycentric.y)
-        .addScaledVector(c, barycentric.z);
+      mesh.getVertexPosition(indices[0], guideVertexA).applyMatrix4(meshToRoot);
+      mesh.getVertexPosition(indices[1], guideVertexB).applyMatrix4(meshToRoot);
+      mesh.getVertexPosition(indices[2], guideVertexC).applyMatrix4(meshToRoot);
+      guideSurfacePoint.copy(guideVertexA).multiplyScalar(barycentric.x)
+        .addScaledVector(guideVertexB, barycentric.y)
+        .addScaledVector(guideVertexC, barycentric.z);
       const maxLength = baseLength * 1.35;
-      const projectedLength = surfacePoint.clone().sub(electrodePoint).dot(inwardDirection);
+      const projectedLength = guideSurfacePoint.sub(electrodePoint).dot(inwardDirection);
+      // Keep the ray anchored at the electrode and update only its length as
+      // the heart morphs. The initial raycast bound this exact surface
+      // triangle; projecting its animated position onto the fixed ray avoids
+      // repeatedly raycasting every myocardial mesh while the ECG guides are
+      // active. A low-frequency correction keeps the line on the true surface.
       if (shouldRaycast) {
-        const worldOrigin = root.localToWorld(electrodePoint.clone());
-        const worldLimit = root.localToWorld(electrodePoint.clone().addScaledVector(inwardDirection, maxLength));
+        const worldOrigin = root.localToWorld(guideWorldOrigin.copy(electrodePoint));
+        const worldLimit = root.localToWorld(guideWorldLimit.copy(electrodePoint).addScaledVector(inwardDirection, maxLength));
         const rayDelta = worldLimit.sub(worldOrigin);
         const rayLength = rayDelta.length();
         surfaceRaycaster.set(worldOrigin, rayDelta.normalize());
         surfaceRaycaster.near = 0;
         surfaceRaycaster.far = rayLength;
-        const animatedHit = surfaceRaycaster.intersectObjects(visibleMyocardialMeshes, false)[0];
-        const surfaceLength = animatedHit
-          ? root.worldToLocal(animatedHit.point.clone()).sub(electrodePoint).dot(inwardDirection)
-          : Infinity;
-        const usableHit = animatedHit && surfaceLength > 0 && surfaceLength <= maxLength;
-        guide.userData.targetLength = Math.max(Math.min(usableHit ? surfaceLength : projectedLength, maxLength), 1e-6);
+        const hit = surfaceRaycaster.intersectObjects(visibleMyocardialMeshes, false)[0];
+        const surfaceLength = hit
+          ? root.worldToLocal(hit.point).sub(electrodePoint).dot(inwardDirection)
+          : projectedLength;
+        guide.userData.targetLength = Math.max(Math.min(surfaceLength, maxLength), 1e-6);
+      } else {
+        guide.userData.targetLength = Math.max(Math.min(projectedLength, maxLength), 1e-6);
       }
       const currentLength = guide.scale.y * baseLength;
       guide.scale.y = THREE.MathUtils.lerp(currentLength, guide.userData.targetLength, blend) / baseLength;
@@ -677,6 +695,7 @@ function createConductionOverlay(root, nodeModel = null) {
   const group = new THREE.Group();
   group.name = 'Schematic cardiac conduction overlay';
   group.userData.excludeFromDepolarizationShell = true;
+  group.userData.needsStaticUpdate = true;
   group.visible = ui.conduction.getAttribute('aria-pressed') === 'true';
   const gold = new THREE.MeshBasicMaterial({ color: 0xffc66d, toneMapped: false, transparent: true, opacity: 0.94, side: THREE.DoubleSide, depthTest: false, depthWrite: false });
   const nodeMaterial = new THREE.MeshBasicMaterial({ color: 0xfff0bd, toneMapped: false, side: THREE.DoubleSide, depthTest: false, depthWrite: false });
@@ -831,6 +850,9 @@ function createConductionOverlay(root, nodeModel = null) {
       line.userData.excludeFromDepolarizationShell = true;
       line.renderOrder = 6;
       line.visible = false;
+      // Morphing rewrites these few dozen anchor positions each frame; skip
+      // rebuilding a bounding sphere for a line whose path follows the heart.
+      line.frustumCulled = false;
       group.add(line);
       conductionLines.push({ line, anchors, updateAnchor: (anchor) => anchor.point });
     }
@@ -894,6 +916,28 @@ function createConductionOverlay(root, nodeModel = null) {
   return group;
 }
 
+async function ensureConductionOverlay() {
+  if (conductionOverlay) return conductionOverlay;
+  const heartRoot = activeHeartRoot;
+  const heartModelId = activeHeartModelId;
+  if (!heartRoot) return null;
+  ui.conduction.disabled = true;
+  try {
+    let nodeModel = null;
+    try { nodeModel = await loadConductionNodeGeometry(heartModelId); }
+    catch (error) { console.warn('Using schematic conduction node markers.', error); }
+    if (heartRoot !== activeHeartRoot) return null;
+    conductionLines = [];
+    conductionNodes = [];
+    conductionMorphFollowers = [];
+    conductionMorphAnchors = [];
+    conductionOverlay = createConductionOverlay(heartRoot, nodeModel);
+    return conductionOverlay;
+  } finally {
+    ui.conduction.disabled = !activeHeartRoot;
+  }
+}
+
 function getConductionPathTiming(lines, metersPerUnit) {
   const lengths = lines.map(({ anchors }) => {
     let length = 0;
@@ -921,6 +965,51 @@ function getConductionPathTiming(lines, metersPerUnit) {
     durations[i] = lengths[i] * metersPerUnit / HIS_PURKINJE_SPEED_M_S;
   }
   return { starts, durations };
+}
+
+function createDepolarizationMaterial(atrialTissue) {
+  const uniforms = {
+    uDepolarizationTime: { value: 0 },
+    uCycleSeconds: { value: 1 },
+    uPlateau: { value: atrialTissue ? 0.12 : 0.20 },
+    uRecovery: { value: atrialTissue ? 0.06 : 0.08 },
+    uRestingColor: { value: depolarizationResting.clone() },
+    uActiveColor: { value: depolarizationActive.clone() },
+    uFrontColor: { value: depolarizationFront.clone() },
+  };
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.44,
+    depthTest: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -1,
+  });
+  material.userData.depolarizationUniforms = uniforms;
+  material.onBeforeCompile = (shader) => {
+    Object.assign(shader.uniforms, uniforms);
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nattribute float activationTime;\nvarying float vActivationTime;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvActivationTime = activationTime;');
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying float vActivationTime;\nuniform float uDepolarizationTime;\nuniform float uCycleSeconds;\nuniform float uPlateau;\nuniform float uRecovery;\nuniform vec3 uRestingColor;\nuniform vec3 uActiveColor;\nuniform vec3 uFrontColor;')
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        if (vActivationTime < 0.0) {
+          diffuseColor.rgb = uRestingColor;
+        } else {
+          float elapsedSinceActivation = mod(uDepolarizationTime - vActivationTime, uCycleSeconds);
+          if (elapsedSinceActivation < 0.0) elapsedSinceActivation += uCycleSeconds;
+          float depolarized = 1.0 - smoothstep(uPlateau, uPlateau + uRecovery, elapsedSinceActivation);
+          float wavefront = 1.0 - smoothstep(0.008, 0.020, elapsedSinceActivation);
+          vec3 tissueColor = mix(uRestingColor, uActiveColor, depolarized * 0.86);
+          diffuseColor.rgb = mix(tissueColor, uFrontColor, wavefront * 0.92);
+        }`);
+  };
+  material.customProgramCacheKey = () => 'forme-depolarization-activation-time-v1';
+  return { material, uniforms };
 }
 
 function createDepolarizationShell(root) {
@@ -1006,24 +1095,13 @@ function createDepolarizationShell(root) {
           const offset = i * 3;
           localVertex.toArray(rootCoordinates, offset);
         }
-        const colors = new THREE.BufferAttribute(new Float32Array(position.count * 3), 3);
-        clone.geometry.setAttribute('color', colors);
-        clone.material = new THREE.MeshBasicMaterial({
-          color: 0xffffff,
-          vertexColors: true,
-          transparent: true,
-          opacity: 0.44,
-          depthTest: true,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-          polygonOffset: true,
-          polygonOffsetFactor: -1,
-          polygonOffsetUnits: -1,
-        });
+        clone.geometry.setAttribute('activationTime', new THREE.BufferAttribute(activationTimes, 1));
+        const { material, uniforms } = createDepolarizationMaterial(atrialTissue);
+        clone.material = material;
         clone.renderOrder = 4;
         clone.castShadow = false;
         clone.receiveShadow = false;
-        pairs.push({ source, clone, selected, colors, activationTimes, rootCoordinates, atrialTissue });
+        pairs.push({ source, clone, selected, uniforms, rootCoordinates, atrialTissue });
       } else {
         pairs.push({ source, clone, selected });
       }
@@ -1035,13 +1113,17 @@ function createDepolarizationShell(root) {
   visit(root, shellRoot);
   for (const pair of pairs) {
     if (!pair.selected) continue;
-    const { activationTimes, rootCoordinates, atrialTissue } = pair;
+    const { clone, rootCoordinates, atrialTissue } = pair;
+    const activationAttribute = clone.geometry.getAttribute('activationTime');
+    const activationTimes = activationAttribute.array;
     for (let i = 0; i < activationTimes.length; i += 1) {
       const offset = i * 3;
-      activationTimes[i] = activationAt(
+      const arrival = activationAt(
         rootCoordinates[offset], rootCoordinates[offset + 1], rootCoordinates[offset + 2], atrialTissue,
       );
+      activationTimes[i] = Number.isFinite(arrival) ? arrival : -1;
     }
+    activationAttribute.needsUpdate = true;
     delete pair.rootCoordinates;
   }
   depolarizationMeshPairs = pairs;
@@ -1050,6 +1132,12 @@ function createDepolarizationShell(root) {
 
 function updateConductionOverlay(delta) {
   if (!conductionOverlay?.visible && !depolarizationShell?.visible) return;
+  const clockDrivenDepolarization = !animationAction && Boolean(depolarizationShell?.visible);
+  const needsStaticUpdate = Boolean(
+    conductionOverlay?.userData.needsStaticUpdate || depolarizationShell?.userData.needsStaticUpdate,
+  );
+  if (!animationPlaying && !clockDrivenDepolarization && !needsStaticUpdate) return;
+  const updateHeartPose = animationPlaying || needsStaticUpdate;
   conductionElapsed += delta;
   const clipDuration = animationAction?.getClip().duration || 0;
   const cycleSeconds = clipDuration > 0
@@ -1058,62 +1146,48 @@ function updateConductionOverlay(delta) {
   const beatPhase = clipDuration > 0
     ? ((animationAction.time % clipDuration) + clipDuration) % clipDuration / clipDuration
     : (conductionElapsed % cycleSeconds) / cycleSeconds;
-  loadedRoot.updateWorldMatrix(true, true);
-  conductionOverlay?.userData.updateMorphFollowers?.();
+  if (updateHeartPose) {
+    // Conduction anchors only read the animated heart. Updating the complete
+    // scene graph here made a heart overlay walk thousands of unrelated body
+    // meshes on every animation frame when multiple systems were loaded.
+    activeHeartRoot?.updateWorldMatrix(true, true);
+    conductionOverlay?.userData.updateMorphFollowers?.();
+  }
   if (depolarizationShell?.visible) {
-    const phaseDifference = Math.abs(beatPhase - lastDepolarizationPhase);
-    const updateColors = lastDepolarizationPhase < 0 || Math.min(phaseDifference, 1 - phaseDifference) >= 0.015;
-    const smooth = (value, low, high) => {
-      const t = THREE.MathUtils.clamp((value - low) / (high - low), 0, 1);
-      return t * t * (3 - 2 * t);
-    };
-    for (const { source, clone, selected, colors, activationTimes, atrialTissue } of depolarizationMeshPairs) {
-      clone.position.copy(source.position);
-      clone.quaternion.copy(source.quaternion);
-      clone.scale.copy(source.scale);
-      clone.visible = source.isMesh ? selected && source.visible : source.visible;
-      if (source.morphTargetInfluences && clone.morphTargetInfluences) {
-        clone.morphTargetInfluences.splice(0, clone.morphTargetInfluences.length, ...source.morphTargetInfluences);
-      }
-      clone.updateMatrix();
-      if (selected && updateColors) {
-        for (let i = 0; i < activationTimes.length; i += 1) {
-          const offset = i * 3;
-          if (!Number.isFinite(activationTimes[i])) {
-            colors.array[offset] = depolarizationResting.r;
-            colors.array[offset + 1] = depolarizationResting.g;
-            colors.array[offset + 2] = depolarizationResting.b;
-            continue;
+    const depolarizationTime = beatPhase * cycleSeconds;
+    for (const { source, clone, selected, uniforms } of depolarizationMeshPairs) {
+      if (updateHeartPose) {
+        clone.position.copy(source.position);
+        clone.quaternion.copy(source.quaternion);
+        clone.scale.copy(source.scale);
+        clone.visible = source.isMesh ? selected && source.visible : source.visible;
+        if (source.morphTargetInfluences && clone.morphTargetInfluences) {
+          for (let index = 0; index < source.morphTargetInfluences.length; index += 1) {
+            clone.morphTargetInfluences[index] = source.morphTargetInfluences[index];
           }
-          let sinceActivation = beatPhase * cycleSeconds - activationTimes[i];
-          sinceActivation = ((sinceActivation % cycleSeconds) + cycleSeconds) % cycleSeconds;
-          const plateau = atrialTissue ? 0.12 : 0.20;
-          const recovery = atrialTissue ? 0.06 : 0.08;
-          const depolarized = 1 - smooth(sinceActivation, plateau, plateau + recovery);
-          const wavefront = 1 - smooth(sinceActivation, 0.008, 0.020);
-          const activeMix = depolarized * 0.86;
-          const frontMix = wavefront * 0.92;
-          const r = THREE.MathUtils.lerp(depolarizationResting.r, depolarizationActive.r, activeMix);
-          const g = THREE.MathUtils.lerp(depolarizationResting.g, depolarizationActive.g, activeMix);
-          const b = THREE.MathUtils.lerp(depolarizationResting.b, depolarizationActive.b, activeMix);
-          colors.array[offset] = THREE.MathUtils.lerp(r, depolarizationFront.r, frontMix);
-          colors.array[offset + 1] = THREE.MathUtils.lerp(g, depolarizationFront.g, frontMix);
-          colors.array[offset + 2] = THREE.MathUtils.lerp(b, depolarizationFront.b, frontMix);
         }
-        colors.needsUpdate = true;
+        clone.updateMatrix();
+      }
+      if (selected) {
+        uniforms.uDepolarizationTime.value = depolarizationTime;
+        uniforms.uCycleSeconds.value = cycleSeconds;
       }
     }
-    if (updateColors) lastDepolarizationPhase = beatPhase;
-    depolarizationShell.updateWorldMatrix(true, true);
+    if (updateHeartPose) depolarizationShell.updateWorldMatrix(true, true);
   }
-  if (!conductionOverlay?.visible) return;
-  for (const { line, anchors, updateAnchor } of conductionLines) {
-    const positions = line.geometry.attributes.position;
-    for (let i = 0; i < anchors.length; i += 1) positions.setXYZ(i, ...updateAnchor(anchors[i]).toArray());
-    positions.needsUpdate = true;
-    line.geometry.computeBoundingSphere();
+  if (conductionOverlay?.visible && updateHeartPose) {
+    for (const { line, anchors, updateAnchor } of conductionLines) {
+      const positions = line.geometry.attributes.position;
+      for (let i = 0; i < anchors.length; i += 1) {
+        const point = updateAnchor(anchors[i]);
+        positions.setXYZ(i, point.x, point.y, point.z);
+      }
+      positions.needsUpdate = true;
+    }
+    for (const { node, updateAnchor } of conductionNodes) node.position.copy(updateAnchor(node.userData.anchor));
   }
-  for (const { node, updateAnchor } of conductionNodes) node.position.copy(updateAnchor(node.userData.anchor));
+  if (conductionOverlay) conductionOverlay.userData.needsStaticUpdate = false;
+  if (depolarizationShell) depolarizationShell.userData.needsStaticUpdate = false;
 }
 
 function showToast(message, kind = 'info') {
@@ -1579,6 +1653,7 @@ function renderTree(query = '') {
     visibility.addEventListener('click', (event) => {
       event.stopPropagation();
       entry.object.visible = !entry.object.visible;
+      invalidateVisibleStructureMeshes();
       renderTree(ui.search.value);
       if (selectedNode === entry.object) updateInspector(entry.object);
       if (selectionBox) selectionBox.visible = Boolean(selectedNode?.visible);
@@ -1600,7 +1675,8 @@ function clearSelectionHighlight() {
 function updateSelectionHighlight() {
   if (!selectionBox) return;
   for (const { source, overlay } of selectionHighlightSources) {
-    source.updateWorldMatrix(true, false);
+    // The scene renderer maintains source matrices. Re-forcing each selected
+    // mesh and its ancestors here repeated matrix walks before every draw.
     overlay.matrix.copy(source.matrixWorld);
     overlay.matrixWorldNeedsUpdate = true;
     overlay.visible = true;
@@ -1651,7 +1727,9 @@ function selectNode(object) {
     overlay.matrixAutoUpdate = false;
     overlay.matrix.copy(source.matrixWorld);
     overlay.matrixWorldNeedsUpdate = true;
-    overlay.frustumCulled = false;
+    // The overlay shares the source geometry and transform, so normal frustum
+    // culling remains valid and avoids drawing selected anatomy off-screen.
+    overlay.frustumCulled = source.frustumCulled;
     if (source.morphTargetInfluences) {
       overlay.morphTargetInfluences = source.morphTargetInfluences.slice();
       overlay.morphTargetDictionary = source.morphTargetDictionary;
@@ -1791,6 +1869,15 @@ function fitModel(root = loadedRoot) {
   updateSelectionHighlight();
 }
 
+function freezeStaticModelTransforms(root) {
+  if (!root) return;
+  // Library systems and imported structures are static; the heart cycle uses
+  // morph weights, not object transforms. Keep their authored local matrices
+  // but avoid recomposing thousands of identical matrices on every render.
+  root.updateWorldMatrix(true, true);
+  root.traverse((object) => { object.matrixAutoUpdate = false; });
+}
+
 function captureViewerPose() {
   if (!loadedRoot || !modelGroup) return null;
   return {
@@ -1850,6 +1937,8 @@ function frameBounds(bounds, preferredDirection = null, distanceScale = 1) {
 function showAll() {
   if (!loadedRoot) return;
   loadedRoot.traverse((object) => { object.visible = true; });
+  invalidateVisibleStructureMeshes();
+  if (ecgSupportVisibility) setECGSupportVisibility(true);
   renderTree(ui.search.value);
   if (selectedNode) updateInspector(selectedNode);
   showToast('All structures are visible.');
@@ -1858,8 +1947,10 @@ function showAll() {
 function setIsolate(object) {
   if (!loadedRoot) return;
   loadedRoot.traverse((part) => { part.visible = part === object || object.parent === part || isAncestor(object, part); });
+  invalidateVisibleStructureMeshes();
   // Keep ancestors visible so the selected node remains attached to its scene.
   for (let parent = object.parent; parent; parent = parent.parent) parent.visible = true;
+  if (ecgSupportVisibility) setECGSupportVisibility(true);
   renderTree(ui.search.value);
   updateInspector(object);
   showToast('Showing the selected structure.');
@@ -1903,11 +1994,57 @@ function hideECGFasciaLayers() {
     hidden += 1;
   }
   if (hidden) {
+    invalidateVisibleStructureMeshes();
     renderTree(ui.search.value);
     if (selectedNode && allNodes.some((entry) => !entry.object.visible && (entry.object === selectedNode || isAncestor(entry.object, selectedNode)))) {
       deselectNode();
     }
   }
+}
+
+// ECG placement only needs the bony chest and shoulder landmarks. Showing the
+// complete skeleton/connective-tissue GLBs adds thousands of unrelated meshes
+// to every frame, so temporarily mask those models while the guide is active.
+// Keep the original visibility per mesh to restore the user's exact scene on exit.
+function setECGSupportVisibility(enabled) {
+  if (!loadedRoot) return;
+  if (!enabled) {
+    if (!ecgSupportVisibility) return;
+    for (const [mesh, visible] of ecgSupportVisibility) mesh.visible = visible;
+    ecgSupportVisibility = null;
+    invalidateVisibleStructureMeshes();
+    renderTree(ui.search.value);
+    requestRender();
+    return;
+  }
+  const skeletalLandmark = /\b(?:rib|sternum|manubrium|xiphoid|clavicle|scapula|thoracic vertebra)\b|bones of (?:the )?(?:pectoral girdle|thoracic cage)/i;
+  const connectiveLandmark = /costal cartilag|sternoclavicular ligament|costotransverse ligament|radiate ligament of head of rib|interarticular ligament of head of rib|interchondral ligament|sternocostal ligament|costochondral|coracoclavicular|\b(?:trapezoid|conoid) ligament\b|\b(?:pectoral|clavipectoral) fascia\b/i;
+  const sex = activeHeartModelId.startsWith('female-') ? 'female' : 'male';
+  const supportSystems = new Set(['Skeletal System', 'Connective Tissue']);
+  const supportRoots = new Set();
+  loadedRoot.traverse((object) => {
+    if (!object.isMesh && supportSystems.has(object.name?.trim()) && loadedLibraryModels.some((model) => model.id.startsWith(`${sex}-2024-`) && model.system === object.name.trim())) {
+      supportRoots.add(object);
+    }
+  });
+
+  ecgSupportVisibility ||= new Map();
+  for (const entry of allNodes) {
+    if (!entry.isMesh) continue;
+    let supportRoot = null;
+    for (let parent = entry.object; parent && parent !== loadedRoot; parent = parent.parent) {
+      if (supportRoots.has(parent)) { supportRoot = parent; break; }
+    }
+    if (!supportRoot) continue;
+    const isSkeletal = supportRoot.name.trim() === 'Skeletal System';
+    const path = `${entry.path} ${entry.name}`;
+    const keep = isSkeletal ? skeletalLandmark.test(path) : connectiveLandmark.test(path);
+    if (!ecgSupportVisibility.has(entry.object)) ecgSupportVisibility.set(entry.object, entry.object.visible);
+    entry.object.visible = keep && ecgSupportVisibility.get(entry.object);
+  }
+  invalidateVisibleStructureMeshes();
+  renderTree(ui.search.value);
+  requestRender();
 }
 
 async function ensureECGSupportModels() {
@@ -1990,6 +2127,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   loadedLibraryModels = catalogModels;
   ecgTorsoContextPromise = null;
   ecgTorsoContextEligible = false;
+  ecgSupportVisibility = null;
   conductionOverlay = null;
   ecgLeadOverlay = null;
   conductionLines = [];
@@ -1998,7 +2136,6 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   conductionMorphAnchors = [];
   depolarizationShell = null;
   depolarizationMeshPairs = [];
-  lastDepolarizationPhase = -1;
   ui.conduction.disabled = true;
   ui.conduction.setAttribute('aria-pressed', 'false');
   ui.depolarization.disabled = true;
@@ -2008,6 +2145,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   modelGroup = new THREE.Group();
   modelGroup.name = 'Loaded anatomy fit';
   loadedRoot = root;
+  invalidateVisibleStructureMeshes();
   modelGroup.add(loadedRoot);
   scene.add(modelGroup);
   const heartClip = animations.find((clip) => clip.name?.startsWith('Heart cycle'));
@@ -2027,20 +2165,10 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   selectedNode = null;
   updateInspector(null);
   fitModel(loadedRoot);
+  freezeStaticModelTransforms(loadedRoot);
   if (heartRoot) {
-    let nodeModel = null;
-    try { nodeModel = await loadConductionNodeGeometry(heartModelId); }
-    catch (error) { console.warn('Using schematic conduction node markers.', error); }
-    let ecgModel = null;
-    try { ecgModel = await loadECGLandmarks(heartModelId); }
-    catch (error) { console.warn('Using standard ECG lead axes without chest electrode markers.', error); }
     const integumentaryAlreadyLoaded = allNodes.some((entry) => /Integumentary System/i.test(entry.name));
     ecgTorsoContextEligible = !integumentaryAlreadyLoaded;
-    conductionOverlay = createConductionOverlay(heartRoot, nodeModel);
-    depolarizationShell = createDepolarizationShell(heartRoot);
-    modelGroup.add(depolarizationShell);
-    ecgLeadOverlay = createECGLeadOverlay(heartRoot, ecgModel);
-    heartRoot.add(ecgLeadOverlay);
     ui.conduction.disabled = false;
     ui.depolarization.disabled = false;
     ui.ecg.disabled = false;
@@ -2262,7 +2390,11 @@ async function appendLibraryModelsToScene(models) {
       prepared.push({ model, root, blobUrls: parsed.blobUrls });
     }
 
-    for (const { root } of prepared) loadedRoot.add(root);
+    for (const { root } of prepared) {
+      loadedRoot.add(root);
+      freezeStaticModelTransforms(root);
+    }
+    invalidateVisibleStructureMeshes();
     loadedLibraryModels = [...loadedLibraryModels, ...prepared.map(({ model }) => model)];
     modelGroup.userData.blobUrls ||= [];
     modelGroup.userData.blobUrls.push(...prepared.flatMap(({ blobUrls }) => blobUrls));
@@ -2376,6 +2508,14 @@ function resize() {
 function render(frameTime = performance.now()) {
   renderRequest = 0;
   if (document.hidden) return;
+  // Avoid spending GPU time above display-useful rates on 90/120/144 Hz
+  // displays. Low-power mode cuts animated scenes to 30 fps as well.
+  const minimumFrameInterval = 1000 / (lowPowerMode ? 30 : 60);
+  if (frameTime - previousRenderTime < minimumFrameInterval - 0.5) {
+    requestRender();
+    return;
+  }
+  previousRenderTime = frameTime;
   controls.update();
   const delta = Math.min(Math.max((frameTime - previousFrameTime) / 1000, 0), 0.05);
   previousFrameTime = frameTime;
@@ -2384,8 +2524,7 @@ function render(frameTime = performance.now()) {
   updateConductionOverlay(delta);
   updateSelectionHighlight();
   renderer.render(scene, camera);
-  const cycleOverlayActive = conductionOverlay?.visible || depolarizationShell?.visible;
-  const overlayUsesWallClock = !animationAction && cycleOverlayActive;
+  const overlayUsesWallClock = !animationAction && depolarizationShell?.visible;
   if (animationPlaying || overlayUsesWallClock) requestRender();
 }
 
@@ -2393,14 +2532,53 @@ controls.addEventListener('change', requestRender);
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
+const structureRaycastHits = [];
 let pointerStart = null;
-function isEffectivelyVisible(object, root) {
-  for (let parent = object; parent; parent = parent.parent) {
-    if (!parent.visible) return false;
-    if (parent === root) return true;
-  }
-  return false;
+let visibleStructureMeshes = [];
+let visibleStructureMeshesDirty = true;
+function invalidateVisibleStructureMeshes() {
+  visibleStructureMeshesDirty = true;
 }
+
+function getVisibleStructureMeshes() {
+  if (!visibleStructureMeshesDirty) return visibleStructureMeshes;
+  visibleStructureMeshes = [];
+  visibleStructureMeshesDirty = false;
+  if (!loadedRoot) return visibleStructureMeshes;
+  loadedRoot.traverseVisible((object) => {
+    if (!(object.isMesh || object.isSkinnedMesh || object.isInstancedMesh)) return;
+    for (let parent = object; parent && parent !== loadedRoot; parent = parent.parent) {
+      if (parent.userData?.excludeFromDepolarizationShell) return;
+    }
+    visibleStructureMeshes.push(object);
+  });
+  return visibleStructureMeshes;
+}
+
+function findNearestStructureHit() {
+  let nearestHit = null;
+  const originalFar = raycaster.far;
+  let nearestDistance = originalFar;
+  try {
+    for (const object of getVisibleStructureMeshes()) {
+      if (!raycaster.layers.test(object.layers)) continue;
+      structureRaycastHits.length = 0;
+      object.raycast(raycaster, structureRaycastHits);
+      for (const hit of structureRaycastHits) {
+        if (hit.distance < raycaster.near || hit.distance > nearestDistance || (nearestHit && hit.distance === nearestDistance)) continue;
+        nearestHit = hit;
+        nearestDistance = hit.distance;
+      }
+      // Mesh raycasts use far to reject triangles whose bounding sphere cannot
+      // beat the current closest hit, so later objects do less triangle work.
+      if (nearestHit) raycaster.far = nearestDistance;
+    }
+  } finally {
+    raycaster.far = originalFar;
+  }
+  return nearestHit;
+}
+
 canvas.addEventListener('pointerdown', (event) => { pointerStart = { x: event.clientX, y: event.clientY }; });
 canvas.addEventListener('pointerup', (event) => {
   if (!loadedRoot || !pointerStart) return;
@@ -2410,8 +2588,7 @@ canvas.addEventListener('pointerup', (event) => {
   const rect = canvas.getBoundingClientRect();
   pointer.set(((event.clientX - rect.left) / rect.width) * 2 - 1, -((event.clientY - rect.top) / rect.height) * 2 + 1);
   raycaster.setFromCamera(pointer, camera);
-  const hits = raycaster.intersectObject(loadedRoot, true);
-  const visibleHit = hits.find((hit) => isEffectivelyVisible(hit.object, loadedRoot));
+  const visibleHit = findNearestStructureHit();
   if (visibleHit) selectNode(visibleHit.object);
   else deselectNode();
 });
@@ -2448,32 +2625,69 @@ el('fit-view').addEventListener('click', () => fitModel());
 el('reset-view').addEventListener('click', resetCamera);
 el('show-all').addEventListener('click', showAll);
 el('focus-heart').addEventListener('click', focusHeart);
-ui.conduction.addEventListener('click', () => {
-  if (!conductionOverlay) return;
-  conductionOverlay.visible = !conductionOverlay.visible;
-  const enabled = conductionOverlay.visible;
-  if (enabled) conductionElapsed = 0;
+ui.conduction.addEventListener('click', async () => {
+  const heartRoot = activeHeartRoot;
+  if (!heartRoot) return;
+  const overlay = await ensureConductionOverlay();
+  if (!overlay || heartRoot !== activeHeartRoot) return;
+  overlay.visible = !overlay.visible;
+  const enabled = overlay.visible;
+  if (enabled) {
+    conductionElapsed = 0;
+    overlay.userData.needsStaticUpdate = true;
+  }
   ui.conduction.setAttribute('aria-pressed', String(enabled));
+  requestRender();
 });
-ui.depolarization.addEventListener('click', () => {
-  if (!depolarizationShell) return;
+ui.depolarization.addEventListener('click', async () => {
+  const heartRoot = activeHeartRoot;
+  if (!heartRoot) return;
+  if (!depolarizationShell) {
+    ui.depolarization.disabled = true;
+    try {
+      const overlay = await ensureConductionOverlay();
+      if (!overlay || heartRoot !== activeHeartRoot) return;
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      if (heartRoot !== activeHeartRoot) return;
+      depolarizationShell = createDepolarizationShell(heartRoot);
+      depolarizationShell.userData.needsStaticUpdate = true;
+      modelGroup.add(depolarizationShell);
+    } finally {
+      ui.depolarization.disabled = !activeHeartRoot;
+    }
+  }
+  if (heartRoot !== activeHeartRoot) return;
   depolarizationShell.visible = !depolarizationShell.visible;
-  lastDepolarizationPhase = -1;
+  if (depolarizationShell.visible) depolarizationShell.userData.needsStaticUpdate = true;
   ui.depolarization.setAttribute('aria-pressed', String(depolarizationShell.visible));
+  requestRender();
 });
 ui.ecg.addEventListener('click', async () => {
   const active = ui.ecg.getAttribute('aria-pressed') !== 'true';
   if (!active) {
     if (ecgLeadOverlay) ecgLeadOverlay.visible = false;
+    setECGSupportVisibility(false);
     ui.ecg.setAttribute('aria-pressed', 'false');
     requestRender();
     return;
   }
-  if (!ecgLeadOverlay || !activeHeartRoot) return;
+  if (!activeHeartRoot) return;
 
+  const heartRoot = activeHeartRoot;
+  const heartModelId = activeHeartModelId;
   ui.ecg.disabled = true;
   try {
     if (!await ensureECGSupportModels()) return;
+    if (heartRoot !== activeHeartRoot) return;
+    if (!ecgLeadOverlay) {
+      let ecgModel = null;
+      try { ecgModel = await loadECGLandmarks(heartModelId); }
+      catch (error) { console.warn('Using standard ECG lead axes without chest electrode markers.', error); }
+      if (heartRoot !== activeHeartRoot) return;
+      ecgLeadOverlay = createECGLeadOverlay(heartRoot, ecgModel);
+      heartRoot.add(ecgLeadOverlay);
+    }
+    setECGSupportVisibility(true);
     hideECGFasciaLayers();
 
     const targetOverlay = ecgLeadOverlay;
@@ -2496,7 +2710,7 @@ ui.ecg.addEventListener('click', async () => {
     focusHeart({ frontView: true, distanceScale: 1.45 });
     requestRender();
   } finally {
-    ui.ecg.disabled = !ecgLeadOverlay;
+    ui.ecg.disabled = !activeHeartRoot;
   }
 });
 ui.animation.addEventListener('click', () => {
@@ -2516,6 +2730,7 @@ ui.isolate.addEventListener('click', () => selectedNode && setIsolate(selectedNo
 ui.toggle.addEventListener('click', () => {
   if (!selectedNode) return;
   selectedNode.visible = !selectedNode.visible;
+  invalidateVisibleStructureMeshes();
   if (selectionBox) selectionBox.visible = selectedNode.visible;
   renderTree(ui.search.value);
   updateInspector(selectedNode);
