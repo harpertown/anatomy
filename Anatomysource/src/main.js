@@ -1920,6 +1920,7 @@ function selectNode(object) {
   updateSelectionHighlight();
   updateInspector(object);
   renderTree(ui.search.value);
+  openMobileInspectorPanel();
 }
 
 function selectECGLead(name) {
@@ -1929,6 +1930,7 @@ function selectECGLead(name) {
   clearSelectionHighlight();
   updateInspector(null);
   renderTree(ui.search.value);
+  openMobileInspectorPanel();
 }
 
 function deselectNode() {
@@ -3058,7 +3060,7 @@ viewport.addEventListener('dragleave', () => viewport.classList.remove('dragging
 viewport.addEventListener('drop', async (event) => { event.preventDefault(); viewport.classList.remove('dragging'); await loadFiles(event.dataTransfer?.files); });
 document.addEventListener('keydown', (event) => {
   if (event.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) { event.preventDefault(); ui.search.focus(); }
-  if (event.key === 'Escape') { ui.search.value = ''; renderTree(''); if (selectedNode || selectedLead) deselectNode(); }
+  if (event.key === 'Escape') { closeMobilePanels(); ui.search.value = ''; renderTree(''); if (selectedNode || selectedLead) deselectNode(); }
   if (event.key.toLowerCase() === 'r' && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) resetCamera();
 });
 const workspace = document.querySelector('.workspace');
@@ -3097,11 +3099,50 @@ function setSidebarCollapsed(side, collapsed) {
   button.setAttribute('aria-label', button.title);
   button.setAttribute('aria-expanded', String(!collapsed));
 }
+function closeMobilePanels() {
+  const inspectorWasOpen = workspace.classList.contains('mobile-inspector-open');
+  workspace.classList.remove('mobile-library-open', 'mobile-inspector-open');
+  el('mobile-library-toggle').setAttribute('aria-expanded', 'false');
+  el('mobile-inspector-toggle').setAttribute('aria-expanded', 'false');
+  if (inspectorWasOpen) setSidebarCollapsed('right', true);
+}
+function openMobileInspectorPanel() {
+  if (!window.matchMedia('(max-width: 860px)').matches) return;
+  closeMobilePanels();
+  setSidebarCollapsed('right', false);
+  workspace.classList.add('mobile-inspector-open');
+  el('mobile-inspector-toggle').setAttribute('aria-expanded', 'true');
+}
+el('mobile-library-toggle').addEventListener('click', () => {
+  if (workspace.classList.contains('mobile-library-open')) {
+    closeMobilePanels();
+    return;
+  }
+  closeMobilePanels();
+  workspace.classList.remove('tree-collapsed');
+  workspace.classList.add('mobile-library-open');
+  el('mobile-library-toggle').setAttribute('aria-expanded', 'true');
+});
+el('mobile-inspector-toggle').addEventListener('click', () => {
+  if (workspace.classList.contains('mobile-inspector-open')) {
+    closeMobilePanels();
+    return;
+  }
+  closeMobilePanels();
+  openMobileInspectorPanel();
+});
+workspace.addEventListener('click', (event) => {
+  if (event.target === workspace && (workspace.classList.contains('mobile-library-open') || workspace.classList.contains('mobile-inspector-open'))) {
+    closeMobilePanels();
+  }
+});
 el('collapse-left').addEventListener('click', () => {
-  setSidebarCollapsed('left', !workspace.classList.contains('tree-collapsed'));
+  if (window.matchMedia('(max-width: 560px)').matches) closeMobilePanels();
+  else setSidebarCollapsed('left', !workspace.classList.contains('tree-collapsed'));
 });
 el('collapse-inspector').addEventListener('click', () => {
-  setSidebarCollapsed('right', !workspace.classList.contains('inspector-collapsed'));
+  if (window.matchMedia('(max-width: 860px)').matches) closeMobilePanels();
+  else setSidebarCollapsed('right', !workspace.classList.contains('inspector-collapsed'));
 });
 
 const resizeObserver = new ResizeObserver(resize);

@@ -403,3 +403,63 @@ body { color: var(--ink); background: #ebe9e5; }
 .inspector-bottom span:last-child { color: #444d68; }
 .toast { border-color: #aeb6c9; border-radius: 3px; background: #f8f7f3; color: var(--ink); box-shadow: 0 12px 30px rgba(10,19,45,.16); }
 .toast[data-kind="error"] { border-color: #d9aaaa; background: #fff6f4; color: #8e313c; }
+
+/* Compact screens use reachable slide-over panels instead of hiding tools. */
+.mobile-panel-toggle { display: none; }
+.touch-gesture-help { display: none; }
+@media (max-width: 860px) {
+  .workspace { position: relative; overflow: hidden; }
+  .inspector-mobile-toggle { display: inline-flex; }
+  .workspace.mobile-inspector-open::before,
+  .workspace.mobile-library-open::before {
+    content: '';
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    background: rgba(8,17,29,.48);
+  }
+  .workspace.mobile-inspector-open .inspector-panel,
+  .workspace.mobile-library-open .left-panel {
+    position: absolute;
+    z-index: 6;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    width: min(88vw, 330px);
+    max-width: calc(100vw - 18px);
+    overflow: hidden;
+    box-shadow: 0 12px 38px rgba(0,0,0,.24);
+    transition: transform .2s ease;
+  }
+  .workspace.mobile-inspector-open .inspector-panel { right: 0; border-left: 1px solid var(--line); }
+  .workspace.mobile-library-open .left-panel { left: 0; border-right: 1px solid var(--line); }
+  .inspector-mobile-toggle[aria-expanded="true"],
+  .library-mobile-toggle[aria-expanded="true"] { color: #123eb6; background: rgba(18,62,182,.08); }
+}
+@media (max-width: 560px) {
+  .app-shell { min-height: 100svh; height: 100dvh; }
+  .workspace,
+  .workspace.inspector-collapsed,
+  .workspace.tree-collapsed,
+  .workspace.tree-collapsed.inspector-collapsed { grid-template-columns: minmax(0,1fr); }
+  .left-panel { display: none; }
+  .workspace.mobile-library-open .left-panel { display: flex; }
+  .library-mobile-toggle { display: inline-flex; }
+  .view-toolbar { height: 48px; min-height: 48px; flex-basis: 48px; flex-wrap: nowrap; gap: 4px; padding: 4px 7px; }
+  .view-actions { width: auto; min-width: 0; flex: 0 0 auto; justify-content: flex-end; flex-wrap: nowrap; gap: 2px; overflow: visible; }
+  .breadcrumb { min-width: 0; flex: 1 1 auto; overflow: hidden; white-space: nowrap; }
+  .breadcrumb span:first-child { overflow: hidden; text-overflow: ellipsis; }
+  .tool-button { width: 29px; height: 30px; flex: 0 0 29px; padding: 0 4px; justify-content: center; }
+  .tool-button span { display: none; }
+  .view-status { right: 9px; bottom: 9px; max-width: calc(100% - 18px); padding: 0 7px; gap: 6px; font-size: 8px; }
+  .corner-top-left { left: 11px; }
+  .corner-bottom-left { left: 11px; max-width: calc(100% - 22px); font-size: 8px; white-space: nowrap; }
+  .desktop-gesture-help { display: none; }
+  .touch-gesture-help { display: inline; }
+  .empty-state { padding: 14px; }
+  .empty-library-picker { padding: 18px; }
+  .workspace.mobile-inspector-open .inspector-panel,
+  .workspace.mobile-library-open .left-panel { width: min(90vw, 360px); max-width: calc(100vw - 28px); }
+  .controls-menu { width: min(196px, calc(100vw - 56px)); }
+  .controls-menu .tool-button { width: 100%; flex: initial; justify-content: flex-start; }
+}
