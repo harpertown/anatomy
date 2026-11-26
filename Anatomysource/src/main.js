@@ -226,7 +226,8 @@ const originalHeartTextureSizes = new Map();
 let ecgSupportVisibility = null;
 let loadedRoot = null;
 let modelFileName = '';
-let loadedModelSizeBytes = 0;
+let loadedModelFileBytes = 0;
+let loadedTextureBytes = 0;
 let allNodes = [];
 let selectedNode = null;
 let selectedLead = null;
@@ -2400,7 +2401,7 @@ async function parseModel(files) {
   }
 }
 
-async function installLoadedScene({ root, displayName = '', catalogId = '', catalogModels = [], modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [], modelSizeBytes = 0 } = {}) {
+async function installLoadedScene({ root, displayName = '', catalogId = '', catalogModels = [], modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [], modelFileBytes = 0, textureBytes = 0 } = {}) {
   clearSelectionHighlight();
   if (modelGroup?.userData.blobUrls) modelGroup.userData.blobUrls.forEach(URL.revokeObjectURL);
   if (mixer && loadedRoot) {
@@ -2465,7 +2466,8 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   ui.animation.disabled = !animationAction;
   updateAnimationButton();
   modelFileName = displayName || 'Anatomy model';
-  loadedModelSizeBytes = modelSizeBytes;
+  loadedModelFileBytes = modelFileBytes;
+  loadedTextureBytes = textureBytes;
   allNodes = collectNodes(loadedRoot);
   nodeMap = new Map(allNodes.map((entry) => [entry.id, entry.object]));
   collapsedGroups = new Set(allNodes.filter((entry) => !entry.isMesh && entry.object.children.length > 0).map((entry) => entry.id));
@@ -2495,7 +2497,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
       .find((input) => input.value === catalogId);
     if (checkbox) checkbox.checked = true;
   }
-  ui.meshSummary.textContent = `${facts.meshes.toLocaleString()} meshes · ${facts.triangles.toLocaleString()} triangles · Model + textures ${formatFileSize(loadedModelSizeBytes)}`;
+  ui.meshSummary.textContent = `${facts.meshes.toLocaleString()} meshes · ${facts.triangles.toLocaleString()} triangles · Model ${formatFileSize(loadedModelFileBytes)} · Textures ${formatFileSize(loadedTextureBytes)}`;
   ui.emptyState.hidden = true;
   ui.isolate.disabled = true;
   ui.toggle.disabled = true;
@@ -2510,7 +2512,8 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
 async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
   const files = Array.from(fileList || []);
   if (!files.length) return;
-  let modelSizeBytes = files.reduce((total, file) => total + (file.size || 0), 0);
+  let modelFileBytes = files.reduce((total, file) => total + (file.size || 0), 0);
+  let textureBytes = 0;
   try {
     const selectedFile = files.find((file) => /\.(glb|gltf)$/i.test(file.name));
     setModelLoadProgress(`Building meshes · ${selectedFile?.name || 'local model'}`);
@@ -2520,7 +2523,7 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
     if (heartRoot) {
       const textureVariant = heartTextureVariant(catalogId);
       await applySourceMaterials(heartRoot, { heart: true, textureVariant });
-      modelSizeBytes += getAppliedTextureBytes(heartRoot, { heart: true, textureVariant });
+      textureBytes += getAppliedTextureBytes(heartRoot, { heart: true, textureVariant });
     }
     else if (catalogId) await applySourceMaterials(gltf.scene);
     await installLoadedScene({
@@ -2532,7 +2535,8 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
       heartRoot,
       heartModelId: heartRoot ? catalogId : '',
       blobUrls,
-      modelSizeBytes,
+      modelFileBytes,
+      textureBytes,
     });
   } catch (error) {
     setStatus('Could not load model');
@@ -2717,7 +2721,8 @@ async function loadSelectedLibraryModels(requestedModels = null) {
       loaded.push({
         model,
         root,
-        modelSizeBytes: blob.size + getAppliedTextureBytes(root, { heart, textureVariant }),
+        modelFileBytes: blob.size,
+        textureBytes: getAppliedTextureBytes(root, { heart, textureVariant }),
         animations: isHeartLibraryModel(model) ? parsed.gltf.animations || [] : [],
         blobUrls: parsed.blobUrls,
       });
@@ -2738,7 +2743,8 @@ async function loadSelectedLibraryModels(requestedModels = null) {
       heartRoot: heartModel?.root || null,
       heartModelId: heartModel?.model.id || '',
       blobUrls: loaded.flatMap(({ blobUrls }) => blobUrls),
-      modelSizeBytes: loaded.reduce((total, entry) => total + entry.modelSizeBytes, 0),
+      modelFileBytes: loaded.reduce((total, entry) => total + entry.modelFileBytes, 0),
+      textureBytes: loaded.reduce((total, entry) => total + entry.textureBytes, 0),
     });
     restoreViewerPose(viewerPose);
     return true;
@@ -2784,7 +2790,8 @@ async function appendLibraryModelsToScene(models) {
         model,
         root,
         blobUrls: parsed.blobUrls,
-        modelSizeBytes: blob.size + getAppliedTextureBytes(root, { heart, textureVariant }),
+        modelFileBytes: blob.size,
+        textureBytes: getAppliedTextureBytes(root, { heart, textureVariant }),
       });
     }
 
@@ -2794,7 +2801,8 @@ async function appendLibraryModelsToScene(models) {
     }
     invalidateVisibleStructureMeshes();
     loadedLibraryModels = [...loadedLibraryModels, ...prepared.map(({ model }) => model)];
-    loadedModelSizeBytes += prepared.reduce((total, entry) => total + entry.modelSizeBytes, 0);
+    loadedModelFileBytes += prepared.reduce((total, entry) => total + entry.modelFileBytes, 0);
+    loadedTextureBytes += prepared.reduce((total, entry) => total + entry.textureBytes, 0);
     modelGroup.userData.blobUrls ||= [];
     modelGroup.userData.blobUrls.push(...prepared.flatMap(({ blobUrls }) => blobUrls));
     allNodes = collectNodes(loadedRoot);
@@ -2807,7 +2815,7 @@ async function appendLibraryModelsToScene(models) {
     ui.modelTitle.textContent = displayName;
     ui.source.textContent = displayName;
     const facts = countMeshFacts(loadedRoot);
-    ui.meshSummary.textContent = `${facts.meshes.toLocaleString()} meshes · ${facts.triangles.toLocaleString()} triangles · Model + textures ${formatFileSize(loadedModelSizeBytes)}`;
+    ui.meshSummary.textContent = `${facts.meshes.toLocaleString()} meshes · ${facts.triangles.toLocaleString()} triangles · Model ${formatFileSize(loadedModelFileBytes)} · Textures ${formatFileSize(loadedTextureBytes)}`;
     renderTree(ui.search.value);
     if (selectedNode) updateInspector(selectedNode);
     setStatus(`${loadedLibraryModels.length} models loaded`);
