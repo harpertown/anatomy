@@ -22,6 +22,7 @@ ATTRIBUTE_QUANTIZATION_BITS = "8"
 TEXTURE_TIERS = {
     "lite": ("2048", "86", "88"),
     "superlite": ("1536", "80", "84"),
+    "extremelite": ("1024", "72", "78"),
 }
 
 
@@ -77,6 +78,7 @@ def main() -> None:
                 str(LITE_SOURCE), str(simplified_source),
                 "--ratio", SIMPLIFICATION_RATIO,
                 "--error", SIMPLIFICATION_ERROR,
+                "--lock-border", "true",
             ],
             check=True,
             cwd=ROOT,

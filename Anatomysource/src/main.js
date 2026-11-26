@@ -238,26 +238,27 @@ let nodeMap = new Map();
 let libraryModels = [];
 let selectedLibrarySex = 'Male';
 function isHeartLibraryModel(model) {
-  return ['Heart', 'Heart Lite', 'Heart Super Lite'].includes(model?.system);
+  return ['Heart', 'Heart Lite', 'Heart Super Lite', 'Heart Extreme Lite'].includes(model?.system);
 }
 function isHeartModelId(modelId) {
   const model = libraryModels.find((entry) => entry.id === modelId);
-  return model ? isHeartLibraryModel(model) : /-heart(?:-(?:super-)?lite)?$/.test(modelId || '');
+  return model ? isHeartLibraryModel(model) : /-heart(?:-(?:(?:super|extreme)-)?lite)?$/.test(modelId || '');
 }
 function isReducedHeartModelId(modelId) {
   const model = libraryModels.find((entry) => entry.id === modelId);
   return model
-    ? model.system === 'Heart Lite' || model.system === 'Heart Super Lite'
-    : /-heart-(?:super-)?lite$/.test(modelId || '');
+    ? ['Heart Lite', 'Heart Super Lite', 'Heart Extreme Lite'].includes(model.system)
+    : /-heart-(?:(?:super|extreme)-)?lite$/.test(modelId || '');
 }
 function heartTextureVariant(modelId) {
   const model = libraryModels.find((entry) => entry.id === modelId);
+  if (model?.system === 'Heart Extreme Lite' || /-heart-extreme-lite$/.test(modelId || '')) return 'extremelite';
   if (model?.system === 'Heart Super Lite' || /-heart-super-lite$/.test(modelId || '')) return 'superlite';
   if (model?.system === 'Heart Lite' || /-heart-lite$/.test(modelId || '')) return 'lite';
   return 'original';
 }
 function compatibleLibraryModelAsset(model) {
-  if (model?.system !== 'Heart Super Lite' || MeshoptDecoder.supported) return model;
+  if (!['Heart Super Lite', 'Heart Extreme Lite'].includes(model?.system) || MeshoptDecoder.supported) return model;
   const fallback = libraryModels.find((entry) => entry.model === model.model && entry.system === 'Heart Lite');
   return fallback ? { ...model, file: fallback.file, chunks: fallback.chunks, fileSizeBytes: fallback.fileSizeBytes } : model;
 }
@@ -2836,7 +2837,7 @@ async function appendLibraryModelsToScene(models) {
     if (selectedNode) updateInspector(selectedNode);
     setStatus(`${loadedLibraryModels.length} models loaded`);
     showToast(usedCompatibleHeartFallback
-      ? 'Loaded Heart Super Lite with the compatible Lite mesh for this browser.'
+      ? `Loaded ${additions.filter((model) => ['Heart Super Lite', 'Heart Extreme Lite'].includes(model.system)).map((model) => model.system).join(' and ')} with the compatible Lite mesh for this browser.`
       : `Added ${additions.map((model) => model.system).join(' and ')} for ECG placement.`);
     requestRender();
     return true;

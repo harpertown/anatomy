@@ -119,6 +119,8 @@ def main() -> None:
                 RATIO,
                 "--error",
                 ERROR,
+                "--lock-border",
+                "true",
             ],
             check=True,
             cwd=ROOT,
