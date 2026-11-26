@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a compressed male heart and compact copies of its source textures."""
+"""Build a lower-triangle, compressed male heart and compact source textures."""
 
 from __future__ import annotations
 
@@ -9,11 +9,14 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from build_heart_lite import ROOT, SOURCE, prepare_glb
+from build_heart_lite import ROOT
 
 
 OUTPUT = ROOT / "public/models/catalog/male-heart-super-lite.glb"
+LITE_SOURCE = ROOT / "public/models/catalog/male-heart-lite.glb"
 TEXTURE_DIRECTORY = ROOT / "public/models/textures"
+SIMPLIFICATION_RATIO = "0.80"
+SIMPLIFICATION_ERROR = "0.003"
 POSITION_QUANTIZATION_BITS = "16"
 ATTRIBUTE_QUANTIZATION_BITS = "8"
 TEXTURE_TIERS = {
@@ -67,13 +70,22 @@ def build_heart_texture_tiers(document: dict) -> dict[str, int]:
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="heart-super-lite-") as temp_dir:
-        clean_source = Path(temp_dir) / "male-heart-clean.glb"
-        prepare_glb(SOURCE, clean_source)
-        texture_tier_sizes = build_heart_texture_tiers(read_glb_document(clean_source))
+        simplified_source = Path(temp_dir) / "male-heart-super-lite-simplified.glb"
+        subprocess.run(
+            [
+                "npx", "--yes", "@gltf-transform/cli", "simplify",
+                str(LITE_SOURCE), str(simplified_source),
+                "--ratio", SIMPLIFICATION_RATIO,
+                "--error", SIMPLIFICATION_ERROR,
+            ],
+            check=True,
+            cwd=ROOT,
+        )
+        texture_tier_sizes = build_heart_texture_tiers(read_glb_document(LITE_SOURCE))
         subprocess.run(
             [
                 "npx", "--yes", "@gltf-transform/cli", "meshopt",
-                str(clean_source), str(OUTPUT),
+                str(simplified_source), str(OUTPUT),
                 "--level", "high",
                 "--quantization-volume", "scene",
                 "--quantize-position", POSITION_QUANTIZATION_BITS,
