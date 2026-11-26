@@ -256,6 +256,11 @@ function heartTextureVariant(modelId) {
   if (model?.system === 'Heart Lite' || /-heart-lite$/.test(modelId || '')) return 'lite';
   return 'original';
 }
+function compatibleLibraryModelAsset(model) {
+  if (model?.system !== 'Heart Super Lite' || MeshoptDecoder.supported) return model;
+  const fallback = libraryModels.find((entry) => entry.model === model.model && entry.system === 'Heart Lite');
+  return fallback ? { ...model, file: fallback.file, chunks: fallback.chunks, fileSizeBytes: fallback.fileSizeBytes } : model;
+}
 const librarySelectionsBySex = new Map([
   ['Male', new Set(['male-2024-heart'])],
   ['Female', new Set(['female-2024-heart'])],
@@ -478,6 +483,7 @@ async function loadECGTorsoContext(modelId) {
   const blob = await fetchECGTorsoBlob(modelId);
   const sexModel = modelId.startsWith('female-2024') ? 'female' : 'male';
   ecgTorsoBlobs.delete(`${sexModel}-2024-integumentary-system`);
+  await MeshoptDecoder.ready;
   const gltf = await createGLTFLoader().parseAsync(await blob.arrayBuffer(), `${window.location.origin}/models/catalog/`);
   const sourceRoot = gltf.scene;
   sourceRoot.updateMatrixWorld(true);
@@ -2390,6 +2396,7 @@ async function parseModel(files) {
     blobUrls.push(localUrl);
     return localUrl;
   });
+  await MeshoptDecoder.ready;
   const loader = createGLTFLoader(manager);
   try {
     const data = await modelFile.arrayBuffer();
@@ -2401,7 +2408,7 @@ async function parseModel(files) {
   }
 }
 
-async function installLoadedScene({ root, displayName = '', catalogId = '', catalogModels = [], modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [], modelFileBytes = 0, textureBytes = 0 } = {}) {
+async function installLoadedScene({ root, displayName = '', catalogId = '', catalogModels = [], modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [], modelFileBytes = 0, textureBytes = 0, loadNotice = '' } = {}) {
   clearSelectionHighlight();
   if (modelGroup?.userData.blobUrls) modelGroup.userData.blobUrls.forEach(URL.revokeObjectURL);
   if (mixer && loadedRoot) {
@@ -2504,7 +2511,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   for (const id of ['fit-view', 'reset-view', 'show-all']) el(id).disabled = false;
   el('focus-heart').disabled = false;
   setStatus(`${modelCount} model${modelCount === 1 ? '' : 's'} loaded`);
-  showToast(`Loaded ${displayName}.`);
+  showToast(loadNotice || `Loaded ${displayName}.`);
   modelGroup.userData.blobUrls = blobUrls;
   requestRender();
 }
@@ -2699,10 +2706,13 @@ async function loadSelectedLibraryModels(requestedModels = null) {
   try {
     setStatus(`Loading ${models.length} offline model${models.length === 1 ? '' : 's'}…`);
     const loaded = [];
+    let usedCompatibleHeartFallback = false;
     for (const [index, model] of models.entries()) {
+      const assetModel = compatibleLibraryModelAsset(model);
+      usedCompatibleHeartFallback ||= assetModel.file !== model.file;
       setStatus(`Loading ${model.label} (${index + 1}/${models.length})…`);
       setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${models.length}`, (index / models.length) * 100);
-      const blob = await fetchECGSupportModelBlob(model, (fraction) => {
+      const blob = await fetchECGSupportModelBlob(assetModel, (fraction) => {
         setModelLoadProgress(
           `Downloading ${model.system} · ${index + 1} of ${models.length}`,
           fraction === null ? null : ((index + fraction * 0.7) / models.length) * 100,
@@ -2745,6 +2755,9 @@ async function loadSelectedLibraryModels(requestedModels = null) {
       blobUrls: loaded.flatMap(({ blobUrls }) => blobUrls),
       modelFileBytes: loaded.reduce((total, entry) => total + entry.modelFileBytes, 0),
       textureBytes: loaded.reduce((total, entry) => total + entry.textureBytes, 0),
+      loadNotice: usedCompatibleHeartFallback
+        ? `Loaded ${displayName} with the compatible Lite mesh for this browser.`
+        : '',
     });
     restoreViewerPose(viewerPose);
     return true;
@@ -2767,11 +2780,14 @@ async function appendLibraryModelsToScene(models) {
   ui.libraryLoad.disabled = true;
   ui.emptyModelLoad.disabled = true;
   const prepared = [];
+  let usedCompatibleHeartFallback = false;
   try {
     for (const [index, model] of additions.entries()) {
+      const assetModel = compatibleLibraryModelAsset(model);
+      usedCompatibleHeartFallback ||= assetModel.file !== model.file;
       setStatus(`Adding ${model.label} (${index + 1}/${additions.length})…`);
       setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${additions.length}`, (index / additions.length) * 100);
-      const blob = await fetchECGSupportModelBlob(model, (fraction) => {
+      const blob = await fetchECGSupportModelBlob(assetModel, (fraction) => {
         setModelLoadProgress(
           `Downloading ${model.system} · ${index + 1} of ${additions.length}`,
           fraction === null ? null : ((index + fraction * 0.7) / additions.length) * 100,
@@ -2819,7 +2835,9 @@ async function appendLibraryModelsToScene(models) {
     renderTree(ui.search.value);
     if (selectedNode) updateInspector(selectedNode);
     setStatus(`${loadedLibraryModels.length} models loaded`);
-    showToast(`Added ${additions.map((model) => model.system).join(' and ')} for ECG placement.`);
+    showToast(usedCompatibleHeartFallback
+      ? 'Loaded Heart Super Lite with the compatible Lite mesh for this browser.'
+      : `Added ${additions.map((model) => model.system).join(' and ')} for ECG placement.`);
     requestRender();
     return true;
   } catch (error) {
