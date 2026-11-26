@@ -16,6 +16,10 @@
           <input id="model-input" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2" multiple hidden />
           <section class="library-picker" aria-labelledby="library-title">
             <div class="library-heading"><h2 id="library-title">Model library</h2><button id="collapse-left" class="icon-button quiet" title="Hide model library" aria-label="Hide model library" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button></div>
+            <div class="sex-switch" role="group" aria-label="Select model sex">
+              <button id="model-sex-male" type="button" aria-pressed="true">Male</button>
+              <button id="model-sex-female" type="button" aria-pressed="false">Female</button>
+            </div>
             <div id="model-library" class="model-checklist" role="group" aria-label="Choose anatomy systems" aria-busy="true">
               <p class="library-loading">Loading bundled models…</p>
             </div>

@@ -56,7 +56,7 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .panel-heading h1, .panel-heading h2 { margin: 3px 0 0; font-family: var(--serif); font-size: 20px; font-weight: 500; letter-spacing: -.025em; }
 .eyebrow { margin: 0; color: #75909d; font-size: 9px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; }
 .library-picker { display: block; margin: 0 13px 17px; }
-.sidebar-brand { flex: 0 0 auto; align-self: flex-start; margin: 0 19px 12px; }
+.sidebar-brand { flex: 0 0 auto; align-self: flex-start; margin: 30px 19px 12px; }
 .sidebar-brand .brand-copy strong { color: var(--ink); font: 700 27px/1 var(--sans); letter-spacing: -.075em; }
 .library-heading { min-height: 25px; margin: 0 0 7px 2px; display: flex; align-items: center; justify-content: space-between; }
 .library-heading h2 { margin: 0; }
@@ -403,6 +403,10 @@ body { color: var(--ink); background: #ebe9e5; }
 .inspector-bottom span:last-child { color: #444d68; }
 .toast { border-color: #aeb6c9; border-radius: 3px; background: #f8f7f3; color: var(--ink); box-shadow: 0 12px 30px rgba(10,19,45,.16); }
 .toast[data-kind="error"] { border-color: #d9aaaa; background: #fff6f4; color: #8e313c; }
+.sex-switch { margin: 0 0 7px; padding: 2px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border: 1px solid #c9cbd0; border-radius: 4px; background: #e7e6e2; }
+.sex-switch button { min-height: 27px; border: 0; border-radius: 3px; background: transparent; color: #596583; font-size: 10px; font-weight: 600; cursor: pointer; }
+.sex-switch button[aria-pressed="true"] { background: #123eb6; color: #fff; box-shadow: 0 1px 3px rgba(16,28,67,.18); }
+.sex-switch button:focus-visible { outline: 2px solid #123eb6; outline-offset: 1px; }
 
 /* Compact screens use reachable slide-over panels instead of hiding tools. */
 .mobile-panel-toggle { display: none; }

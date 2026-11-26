@@ -227,6 +227,15 @@ let selectionHighlightSources = [];
 let toastTimer = 0;
 let nodeMap = new Map();
 let libraryModels = [];
+let selectedLibrarySex = 'Male';
+const librarySelectionsBySex = new Map([
+  ['Male', new Set(['male-2024-heart'])],
+  ['Female', new Set(['female-2024-heart'])],
+]);
+const emptyModelSelectionBySex = new Map([
+  ['Male', 'male-2024-heart'],
+  ['Female', 'female-2024-heart'],
+]);
 let loadedLibraryModels = [];
 let collapsedGroups = new Set();
 let mixer = null;
@@ -2297,6 +2306,7 @@ async function ensureECGSupportModels() {
     for (const checkbox of ui.library.querySelectorAll('input[type="checkbox"]')) {
       if (requiredIds.has(checkbox.value)) checkbox.checked = true;
     }
+    for (const model of required) librarySelectionsBySex.get(model.model)?.add(model.id);
   }
   return loaded && required.every((model) => loadedLibraryModels.some((entry) => entry.id === model.id));
 }
@@ -2414,6 +2424,8 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   ui.modelTitle.textContent = displayName;
   ui.source.textContent = displayName;
   if (catalogId) {
+    const catalogModel = libraryModels.find((model) => model.id === catalogId);
+    if (catalogModel) librarySelectionsBySex.get(catalogModel.model)?.add(catalogId);
     const checkbox = Array.from(ui.library.querySelectorAll('input[type="checkbox"]'))
       .find((input) => input.value === catalogId);
     if (checkbox) checkbox.checked = true;
@@ -2749,46 +2761,67 @@ async function loadBundledHeart() {
   }
 }
 
+function renderLibrarySexOptions() {
+  const selection = librarySelectionsBySex.get(selectedLibrarySex);
+  const models = libraryModels.filter((model) => model.model === selectedLibrarySex);
+  ui.library.replaceChildren();
+  ui.library.setAttribute('aria-label', `Choose ${selectedLibrarySex.toLowerCase()} anatomy systems`);
+  for (const model of models) {
+    const label = document.createElement('label');
+    label.className = 'library-option';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = model.id;
+    checkbox.checked = selection.has(model.id);
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) selection.add(model.id);
+      else selection.delete(model.id);
+    });
+    const name = document.createElement('span');
+    name.textContent = model.system;
+    label.append(checkbox, name);
+    ui.library.append(label);
+  }
+}
+
+function renderEmptyModelOptions() {
+  const previous = emptyModelSelectionBySex.get(selectedLibrarySex);
+  const models = libraryModels.filter((model) => model.model === selectedLibrarySex);
+  ui.emptyModelPicker.replaceChildren();
+  const emptyOption = document.createElement('option');
+  emptyOption.value = '';
+  emptyOption.textContent = 'Choose a model';
+  ui.emptyModelPicker.append(emptyOption);
+  for (const model of models) {
+    const option = document.createElement('option');
+    option.value = model.id;
+    option.textContent = `${selectedLibrarySex} · ${model.system}`;
+    ui.emptyModelPicker.append(option);
+  }
+  const selected = models.some((model) => model.id === previous)
+    ? previous
+    : models.find((model) => model.system === 'Heart')?.id || '';
+  emptyModelSelectionBySex.set(selectedLibrarySex, selected);
+  ui.emptyModelPicker.value = selected;
+}
+
+function setLibrarySex(sex) {
+  if (!['Male', 'Female'].includes(sex)) return;
+  selectedLibrarySex = sex;
+  el('model-sex-male').setAttribute('aria-pressed', String(sex === 'Male'));
+  el('model-sex-female').setAttribute('aria-pressed', String(sex === 'Female'));
+  renderLibrarySexOptions();
+  renderEmptyModelOptions();
+}
+
 async function loadModelLibrary() {
   try {
     const response = await fetch('/models/catalog.json');
     if (!response.ok) throw new Error('Offline model catalog is unavailable.');
     const data = await response.json();
     libraryModels = Array.isArray(data.models) ? data.models : [];
-    ui.library.replaceChildren();
-    ui.emptyModelPicker.replaceChildren();
-    const emptyOption = document.createElement('option');
-    emptyOption.value = '';
-    emptyOption.textContent = 'Choose a model';
-    ui.emptyModelPicker.append(emptyOption);
-    for (const modelName of [...new Set(libraryModels.map((model) => model.model))]) {
-      const groupName = modelName.replace(/\s+\d{4}$/, '');
-      const group = document.createElement('details');
-      group.className = 'library-group';
-      group.open = groupName === 'Male';
-      const summary = document.createElement('summary');
-      summary.className = 'library-group-summary';
-      summary.textContent = groupName;
-      group.append(summary);
-      for (const model of libraryModels.filter((entry) => entry.model === modelName)) {
-        const option = document.createElement('option');
-        option.value = model.id;
-        option.textContent = `${groupName} · ${model.system}`;
-        ui.emptyModelPicker.append(option);
-        const label = document.createElement('label');
-        label.className = 'library-option';
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = model.id;
-        checkbox.checked = model.id === 'male-2024-heart';
-        const name = document.createElement('span');
-        name.textContent = model.system;
-        label.append(checkbox, name);
-        group.append(label);
-      }
-      ui.library.append(group);
-    }
-    ui.emptyModelPicker.value = 'male-2024-heart';
+    renderLibrarySexOptions();
+    renderEmptyModelOptions();
     ui.library.setAttribute('aria-busy', 'false');
   } catch (error) {
     const message = document.createElement('p');
@@ -2917,6 +2950,11 @@ canvas.addEventListener('pointerup', (event) => {
 
 ui.input.addEventListener('change', async () => { await loadFiles(ui.input.files); ui.input.value = ''; });
 ui.libraryLoad.addEventListener('click', () => loadSelectedLibraryModels());
+el('model-sex-male').addEventListener('click', () => setLibrarySex('Male'));
+el('model-sex-female').addEventListener('click', () => setLibrarySex('Female'));
+ui.emptyModelPicker.addEventListener('change', () => {
+  emptyModelSelectionBySex.set(selectedLibrarySex, ui.emptyModelPicker.value);
+});
 ui.controlsMenuToggle.addEventListener('click', () => {
   const open = ui.controlsMenu.hidden;
   ui.controlsMenu.hidden = !open;
