@@ -2387,6 +2387,8 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
     activeAnimationRoot = heartRoot;
     animationAction = mixer.clipAction(clip);
     if (heartClip) animationAction.timeScale = 30;
+    animationAction.play();
+    animationPlaying = true;
   }
   ui.animation.disabled = !animationAction;
   updateAnimationButton();

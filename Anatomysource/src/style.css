@@ -463,3 +463,25 @@ body { color: var(--ink); background: #ebe9e5; }
   .controls-menu { width: min(196px, calc(100vw - 56px)); }
   .controls-menu .tool-button { width: 100%; flex: initial; justify-content: flex-start; }
 }
+@media (max-width: 560px) {
+  .workspace.mobile-inspector-open .inspector-panel {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: min(72dvh, 560px);
+    min-height: 250px;
+    max-height: calc(100dvh - 48px);
+    padding-bottom: env(safe-area-inset-bottom);
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 12px 12px 0 0;
+    box-shadow: 0 -12px 38px rgba(0,0,0,.24);
+  }
+  .workspace.mobile-inspector-open .inspector-heading {
+    height: 54px;
+    flex-basis: 54px;
+  }
+}
