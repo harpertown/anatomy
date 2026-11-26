@@ -212,6 +212,10 @@ let activeHeartRoot = null;
 let activeHeartModelId = '';
 let ecgTorsoContextPromise = null;
 let ecgTorsoContextEligible = false;
+const ecgSupportModelFetches = new Map();
+const ecgTorsoFetches = new Map();
+const ecgSupportModelBlobs = new Map();
+const ecgTorsoBlobs = new Map();
 let ecgSupportVisibility = null;
 let loadedRoot = null;
 let modelFileName = '';
@@ -434,10 +438,10 @@ async function loadECGLandmarks(modelId) {
 
 async function loadECGTorsoContext(modelId) {
   if (!modelId?.endsWith('-heart')) return null;
+  const blob = await fetchECGTorsoBlob(modelId);
   const sexModel = modelId.startsWith('female-2024') ? 'female' : 'male';
-  const response = await fetch(`/models/catalog/${sexModel}-2024-integumentary-system.glb`);
-  if (!response.ok) throw new Error('The matching torso skin model is unavailable.');
-  const gltf = await new GLTFLoader().parseAsync(await response.arrayBuffer(), `${window.location.origin}/models/catalog/`);
+  ecgTorsoBlobs.delete(`${sexModel}-2024-integumentary-system`);
+  const gltf = await new GLTFLoader().parseAsync(await blob.arrayBuffer(), `${window.location.origin}/models/catalog/`);
   const sourceRoot = gltf.scene;
   sourceRoot.updateMatrixWorld(true);
   const context = new THREE.Group();
@@ -470,6 +474,28 @@ async function loadECGTorsoContext(modelId) {
     context.add(skin);
   });
   return context.children.length ? context : null;
+}
+
+async function fetchECGTorsoBlob(modelId) {
+  const sexModel = modelId.startsWith('female-2024') ? 'female' : 'male';
+  const key = `${sexModel}-2024-integumentary-system`;
+  const cached = ecgTorsoBlobs.get(key);
+  if (cached) {
+    ecgTorsoBlobs.delete(key);
+    return cached;
+  }
+  let pending = ecgTorsoFetches.get(key);
+  if (!pending) {
+    pending = fetch(`/models/catalog/${key}.glb`).then(async (response) => {
+      if (!response.ok) throw new Error('The matching torso skin model is unavailable.');
+      return response.blob();
+    });
+    ecgTorsoFetches.set(key, pending);
+    pending.finally(() => {
+      if (ecgTorsoFetches.get(key) === pending) ecgTorsoFetches.delete(key);
+    }).catch(() => {});
+  }
+  return pending;
 }
 
 function getMyocardialBounds(root) {
@@ -2329,6 +2355,8 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   loadedLibraryModels = catalogModels;
   ecgTorsoContextPromise = null;
   ecgTorsoContextEligible = false;
+  ecgSupportModelBlobs.clear();
+  ecgTorsoBlobs.clear();
   ecgSupportVisibility = null;
   conductionOverlay = null;
   ecgLeadOverlay = null;
@@ -2375,6 +2403,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
     ui.conduction.disabled = false;
     ui.depolarization.disabled = false;
     ui.ecg.disabled = false;
+    if (heartModelId.endsWith('-heart')) scheduleECGBackgroundPreload(heartModelId);
   }
   renderTree('');
   const facts = countMeshFacts(loadedRoot);
@@ -2498,6 +2527,74 @@ async function fetchModelBlob(url, onProgress, model = null) {
   return new Blob(blobs, { type: 'model/gltf-binary' });
 }
 
+async function fetchECGSupportModelBlob(model, onProgress) {
+  const cached = ecgSupportModelBlobs.get(model.id);
+  if (cached) {
+    ecgSupportModelBlobs.delete(model.id);
+    onProgress?.(1);
+    return cached;
+  }
+  const pending = ecgSupportModelFetches.get(model.id);
+  if (pending) {
+    const blob = await pending;
+    ecgSupportModelBlobs.delete(model.id);
+    onProgress?.(1);
+    return blob;
+  }
+  return fetchModelBlob(`/models/${model.file}`, onProgress, model);
+}
+
+function scheduleECGBackgroundPreload(modelId) {
+  const preload = () => {
+    if (modelId !== activeHeartModelId || !activeHeartRoot) return;
+    void preloadECGAssets(modelId);
+  };
+  if (window.requestIdleCallback) window.requestIdleCallback(preload, { timeout: 1800 });
+  else window.setTimeout(preload, 300);
+}
+
+async function preloadECGAssets(modelId) {
+  if (!modelId?.endsWith('-heart')) return;
+  const sex = modelId.startsWith('female-2024') ? 'female' : 'male';
+  const required = libraryModels.filter((model) =>
+    model.id.startsWith(`${sex}-2024-`) && /^(Skeletal System|Connective Tissue)$/i.test(model.system),
+  );
+  const loadedIds = new Set(loadedLibraryModels.map((model) => model.id));
+  const metadataPromise = loadECGLandmarks(modelId).catch((error) => {
+    console.warn('ECG guide metadata could not be preloaded.', error);
+  });
+  const torsoPromise = ecgTorsoContextEligible
+    ? fetchECGTorsoBlob(modelId).then((blob) => {
+      if (modelId === activeHeartModelId) {
+        const sexModel = modelId.startsWith('female-2024') ? 'female' : 'male';
+        ecgTorsoBlobs.set(`${sexModel}-2024-integumentary-system`, blob);
+      }
+    }).catch((error) => console.warn('ECG torso data could not be preloaded.', error))
+    : Promise.resolve();
+
+  // Warm the larger model files one at a time during idle time. They remain
+  // detached from the scene and are parsed only if ECG guides are requested.
+  for (const model of required) {
+    if (loadedIds.has(model.id) || modelId !== activeHeartModelId) continue;
+    let pending = ecgSupportModelFetches.get(model.id);
+    if (!pending) {
+      pending = fetchModelBlob(`/models/${model.file}`, () => {}, model);
+      ecgSupportModelFetches.set(model.id, pending);
+    }
+    try {
+      const blob = await pending;
+      if (modelId === activeHeartModelId && !loadedLibraryModels.some((entry) => entry.id === model.id)) {
+        ecgSupportModelBlobs.set(model.id, blob);
+      }
+    } catch (error) {
+      console.warn(`ECG support data could not be preloaded: ${model.system}.`, error);
+    } finally {
+      if (ecgSupportModelFetches.get(model.id) === pending) ecgSupportModelFetches.delete(model.id);
+    }
+  }
+  await Promise.all([metadataPromise, torsoPromise]);
+}
+
 async function loadSelectedLibraryModels(requestedModels = null) {
   if (ui.libraryLoad.disabled) return false;
   const models = Array.isArray(requestedModels) ? requestedModels : selectedLibraryModels();
@@ -2514,12 +2611,12 @@ async function loadSelectedLibraryModels(requestedModels = null) {
     for (const [index, model] of models.entries()) {
       setStatus(`Loading ${model.label} (${index + 1}/${models.length})…`);
       setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${models.length}`, (index / models.length) * 100);
-      const blob = await fetchModelBlob(`/models/${model.file}`, (fraction) => {
+      const blob = await fetchECGSupportModelBlob(model, (fraction) => {
         setModelLoadProgress(
           `Downloading ${model.system} · ${index + 1} of ${models.length}`,
           fraction === null ? null : ((index + fraction * 0.7) / models.length) * 100,
         );
-      }, model);
+      });
       const file = new File([blob], `${model.id}.glb`, { type: 'model/gltf-binary' });
       setModelLoadProgress(`Building meshes · ${model.system} · ${index + 1} of ${models.length}`);
       const parsed = await parseModel([file]);
@@ -2577,12 +2674,12 @@ async function appendLibraryModelsToScene(models) {
     for (const [index, model] of additions.entries()) {
       setStatus(`Adding ${model.label} (${index + 1}/${additions.length})…`);
       setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${additions.length}`, (index / additions.length) * 100);
-      const blob = await fetchModelBlob(`/models/${model.file}`, (fraction) => {
+      const blob = await fetchECGSupportModelBlob(model, (fraction) => {
         setModelLoadProgress(
           `Downloading ${model.system} · ${index + 1} of ${additions.length}`,
           fraction === null ? null : ((index + fraction * 0.7) / additions.length) * 100,
         );
-      }, model);
+      });
       const file = new File([blob], `${model.id}.glb`, { type: 'model/gltf-binary' });
       setModelLoadProgress(`Building meshes · ${model.system} · ${index + 1} of ${additions.length}`);
       const parsed = await parseModel([file]);
