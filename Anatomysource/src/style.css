@@ -209,7 +209,6 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--cyan); outl
 .inspector-content { padding: 18px 17px; }
 .selected-type { display: flex; align-items: center; gap: 7px; color: #8ba0a8; font-size: 9px; }
 .type-swatch { width: 7px; height: 7px; border-radius: 2px; background: #7bb5bd; }
-.object-id { margin-left: auto; color: #627985; font-size: 9px; font-variant-numeric: tabular-nums; }
 .inspector-content h3 { margin: 13px 0 5px; overflow-wrap: anywhere; color: #ebe5da; font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.2; }
 .selected-path { margin: 0; color: #788e99; font-size: 9px; line-height: 1.5; overflow-wrap: anywhere; }
 .inspector-rule { height: 1px; margin: 19px 0; background: var(--line-soft); }
@@ -387,7 +386,7 @@ body { color: var(--ink); background: #ebe9e5; }
 .inspector-dot { background: #123eb6; box-shadow: none; }
 .target-icon { border-color: #c9cbd0; border-radius: 3px; background: #e6eaf4; color: #123eb6; }
 .inspector-empty strong { color: var(--ink); font-family: var(--sans); }
-.inspector-empty p, .selected-type, .object-id, .selected-path { color: var(--muted); }
+.inspector-empty p, .selected-type, .selected-path { color: var(--muted); }
 .type-swatch { background: #123eb6; }
 .inspector-content h3 { color: var(--ink); font-family: var(--sans); font-weight: 600; letter-spacing: -.035em; }
 .property-list span { color: var(--muted); }

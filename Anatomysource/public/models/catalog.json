@@ -10,6 +10,24 @@
       "meshes": 48
     },
     {
+      "id": "male-2024-heart-lite",
+      "label": "Male · Heart Lite",
+      "model": "Male",
+      "system": "Heart Lite",
+      "file": "catalog/male-heart-lite.glb",
+      "structures": 48,
+      "meshes": 48
+    },
+    {
+      "id": "male-2024-heart-super-lite",
+      "label": "Male · Heart Super Lite",
+      "model": "Male",
+      "system": "Heart Super Lite",
+      "file": "catalog/male-heart-super-lite.glb",
+      "structures": 48,
+      "meshes": 48
+    },
+    {
       "id": "male-2024-skeletal-system",
       "label": "Male · Skeletal System",
       "model": "Male",
