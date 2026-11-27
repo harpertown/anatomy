@@ -194,6 +194,7 @@ controls.screenSpacePanning = true;
 controls.minDistance = 0.12;
 controls.maxDistance = 100;
 controls.target.set(0, 0, 0);
+const viewerBoundsSphere = new THREE.Sphere(new THREE.Vector3(), 1);
 
 // Captured from the running app's LightsBuffer: three directional lights,
 // white intensities 1.8 / 0.5 / 1.3, ambient RGB 0.4, identity IBL rotation.
@@ -1798,6 +1799,37 @@ async function applySourceMaterials(root, { heart = false, textureVariant = 'ori
   originals.forEach((material) => material.dispose());
 }
 
+function applyDetailedPreviewMaterials(root) {
+  const replacements = new Map();
+  root.traverse((object) => {
+    if (!object.isMesh) return;
+    const sources = Array.isArray(object.material) ? object.material : [object.material];
+    const materials = sources.map((source) => {
+      if (!source) return source;
+      let replacement = replacements.get(source);
+      if (!replacement) {
+        // Detailed-model atlases can encode layer coverage in alpha that makes
+        // otherwise valid gallery surfaces disappear under glTF BLEND rules.
+        // Keep the recovered color atlas and show the complete authored mesh.
+        replacement = new THREE.MeshBasicMaterial({
+          map: source.map || null,
+          color: source.color || new THREE.Color('#ffffff'),
+          vertexColors: source.vertexColors,
+          side: THREE.DoubleSide,
+          transparent: false,
+          opacity: 1,
+          depthWrite: true,
+        });
+        replacement.name = source.name;
+        replacements.set(source, replacement);
+      }
+      return replacement;
+    });
+    object.material = Array.isArray(object.material) ? materials : materials[0];
+  });
+  replacements.forEach((replacement, source) => { if (source !== replacement) source.dispose(); });
+}
+
 function releaseSourceShaderUniforms(root) {
   root.traverse((object) => {
     const materials = Array.isArray(object.material) ? object.material : [object.material];
@@ -2202,7 +2234,30 @@ function renderStructureDescription(object, entry, name) {
 function resetCamera() {
   camera.position.set(2.9, 1.8, 3.6);
   controls.target.set(0, 0, 0);
+  updateCameraClipping();
   controls.update();
+}
+
+function refreshViewerBounds() {
+  if (!loadedRoot) return;
+  loadedRoot.updateWorldMatrix(true, true);
+  const bounds = new THREE.Box3().setFromObject(loadedRoot);
+  if (!bounds.isEmpty()) bounds.getBoundingSphere(viewerBoundsSphere);
+}
+
+function updateCameraClipping() {
+  const radius = Math.max(viewerBoundsSphere.radius, 0.05);
+  const contentDistance = camera.position.distanceTo(viewerBoundsSphere.center);
+  // Keep the depth-buffer range tight around the current view. A fixed far
+  // plane of 500 with a 0.005 near plane loses useful depth precision on our
+  // normalized models, making nearly coplanar anatomy layers flicker at a
+  // distance and as the camera zooms out.
+  const near = Math.max(0.001, Math.min(contentDistance * 0.02, radius * 0.025));
+  const far = Math.max(near + 1, contentDistance + radius * 2.5);
+  if (Math.abs(camera.near - near) < 0.0001 && Math.abs(camera.far - far) < 0.01) return;
+  camera.near = near;
+  camera.far = far;
+  camera.updateProjectionMatrix();
 }
 
 function fitModel(root = loadedRoot) {
@@ -2227,9 +2282,8 @@ function fitModel(root = loadedRoot) {
   const fitDistance = (radius / Math.sin(Math.min(verticalHalfFov, horizontalHalfFov))) * 0.94;
   const viewDirection = new THREE.Vector3(0.84, 0.58, 1).normalize();
   camera.position.copy(viewDirection.multiplyScalar(fitDistance));
-  camera.near = 0.005;
-  camera.far = 500;
-  camera.updateProjectionMatrix();
+  refreshViewerBounds();
+  updateCameraClipping();
   controls.minDistance = 0.12;
   controls.maxDistance = 35;
   controls.update();
@@ -2250,8 +2304,6 @@ function captureViewerPose() {
   return {
     cameraPosition: camera.position.clone(),
     cameraUp: camera.up.clone(),
-    cameraNear: camera.near,
-    cameraFar: camera.far,
     cameraZoom: camera.zoom,
     target: controls.target.clone(),
     modelPosition: modelGroup.position.clone(),
@@ -2266,11 +2318,9 @@ function restoreViewerPose(pose) {
   modelGroup.updateMatrixWorld(true);
   camera.position.copy(pose.cameraPosition);
   camera.up.copy(pose.cameraUp);
-  camera.near = pose.cameraNear;
-  camera.far = pose.cameraFar;
   camera.zoom = pose.cameraZoom;
-  camera.updateProjectionMatrix();
   controls.target.copy(pose.target);
+  updateCameraClipping();
   controls.update();
 }
 
@@ -2295,9 +2345,7 @@ function frameBounds(bounds, preferredDirection = null, distanceScale = 1) {
 
   controls.target.copy(center);
   camera.position.copy(center).addScaledVector(viewDirection, distance);
-  camera.near = 0.005;
-  camera.far = Math.max(500, distance * 20);
-  camera.updateProjectionMatrix();
+  updateCameraClipping();
   controls.update();
 }
 
@@ -2593,11 +2641,11 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   requestRender();
 }
 
-async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
+async function loadFiles(fileList, { displayName = '', catalogId = '', textureBytes: providedTextureBytes = 0 } = {}) {
   const files = Array.from(fileList || []);
   if (!files.length) return;
   let modelFileBytes = files.reduce((total, file) => total + (file.size || 0), 0);
-  let textureBytes = 0;
+  let textureBytes = providedTextureBytes;
   try {
     const selectedFile = files.find((file) => /\.(glb|gltf)$/i.test(file.name));
     setModelLoadProgress(`Building meshes · ${selectedFile?.name || 'local model'}`);
@@ -2612,6 +2660,9 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
     else if (catalogId) await applySourceMaterials(gltf.scene, {
       textureVariant: modelQuality(libraryModels.find((model) => model.id === catalogId)),
     });
+    else if (displayName.startsWith('Detailed · ')) {
+      applyDetailedPreviewMaterials(gltf.scene);
+    }
     await installLoadedScene({
       root: gltf.scene,
       displayName: displayName || modelFile.name,
@@ -2894,6 +2945,8 @@ async function appendLibraryModelsToScene(models) {
       loadedRoot.add(root);
       freezeStaticModelTransforms(root);
     }
+    refreshViewerBounds();
+    updateCameraClipping();
     invalidateVisibleStructureMeshes();
     loadedLibraryModels = [...loadedLibraryModels, ...prepared.map(({ model }) => model)];
     loadedModelFileBytes += prepared.reduce((total, entry) => total + entry.modelFileBytes, 0);
@@ -3023,6 +3076,145 @@ async function loadModelLibrary() {
   }
 }
 
+let detailedModelCatalog = [];
+let detailedCatalogPromise;
+const detailedGallery = el('detailed-gallery');
+const detailedGrid = el('detailed-model-grid');
+function renderDetailedModels(query = '') {
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const models = detailedModelCatalog.filter((model) => (model.displayTitle || model.title).toLocaleLowerCase().includes(normalizedQuery));
+  detailedGrid.replaceChildren();
+  el('detailed-model-count').textContent = `${models.length} of ${detailedModelCatalog.length} models`;
+  if (!models.length) {
+    const empty = document.createElement('p');
+    empty.className = 'detailed-empty';
+    empty.textContent = 'No detailed models match that search.';
+    detailedGrid.append(empty);
+    return;
+  }
+  for (const model of models) {
+    const card = document.createElement('article');
+    card.className = 'detailed-card';
+    const imageWrap = document.createElement('div');
+    imageWrap.className = 'detailed-card-image';
+    const image = document.createElement('img');
+    image.src = model.thumbnail;
+    image.alt = '';
+    image.loading = 'lazy';
+    imageWrap.append(image);
+    const body = document.createElement('div');
+    body.className = 'detailed-card-body';
+    const title = document.createElement('h2');
+    title.textContent = model.displayTitle || model.title;
+    body.append(title);
+    const structures = Array.isArray(model.structures) ? model.structures : [];
+    if (structures.length) {
+      const parts = document.createElement('details');
+      parts.className = 'detailed-card-structures';
+      const summary = document.createElement('summary');
+      summary.textContent = `${structures.length} labeled parts`;
+      const list = document.createElement('ul');
+      for (const structure of structures) {
+        const item = document.createElement('li');
+        item.textContent = structure.name || 'Unnamed structure';
+        list.append(item);
+      }
+      parts.append(summary, list);
+      body.append(parts);
+    }
+    const status = document.createElement('p');
+    const availableTextureCount = Array.isArray(model.textureBuffersAvailable)
+      ? model.textureBuffersAvailable.length
+      : 0;
+    status.className = `detailed-card-status${model.geometryAvailable || model.texturesAvailable ? ' available' : ''}`;
+    if (model.platformComplete && model.platform === 'macOS') {
+      status.textContent = 'Mesh and macOS texture recovered · browser color and alpha maps ready';
+    } else if (model.geometryAvailable && availableTextureCount) {
+      status.textContent = `Geometry and ${availableTextureCount} texture payload${availableTextureCount === 1 ? '' : 's'} recovered · original app materials`;
+    } else if (model.geometryAvailable) {
+      status.textContent = 'Geometry recovered · no texture payloads recovered';
+    } else if (availableTextureCount) {
+      status.textContent = `${availableTextureCount} texture payload${availableTextureCount === 1 ? '' : 's'} recovered · geometry unavailable`;
+    } else {
+      status.textContent = 'App metadata and thumbnail available · model files not cached';
+    }
+    body.append(status);
+    const action = document.createElement('button');
+    action.className = 'detailed-card-action';
+    action.type = 'button';
+    action.disabled = !model.geometryAvailable;
+    action.textContent = model.geometryAvailable ? 'Open textured model' : 'Model data unavailable';
+    if (model.geometryAvailable) action.addEventListener('click', () => loadDetailedModel(model, action));
+    body.append(action);
+    card.append(imageWrap, body);
+    detailedGrid.append(card);
+  }
+}
+async function openDetailedGallery() {
+  if (!detailedCatalogPromise) {
+    detailedCatalogPromise = fetch('/models/detailed/catalog.json').then((response) => {
+      if (!response.ok) throw new Error('Detailed model catalog could not be loaded.');
+      return response.json();
+    }).then((data) => {
+      detailedModelCatalog = Array.isArray(data.models) ? data.models : [];
+      el('open-detailed-models').querySelector('.detailed-model-count').textContent = detailedModelCatalog.length;
+      return detailedModelCatalog;
+    });
+  }
+  try {
+    await detailedCatalogPromise;
+    renderDetailedModels(el('detailed-search').value);
+    detailedGallery.hidden = false;
+    el('detailed-search').focus();
+  } catch (error) {
+    showToast(error.message || 'Detailed model library unavailable', 'error');
+  }
+}
+function closeDetailedGallery() {
+  detailedGallery.hidden = true;
+  el('open-detailed-models').focus();
+}
+async function loadDetailedModel(model, button) {
+  button.disabled = true;
+  button.textContent = 'Preparing preview…';
+  try {
+    const previewUrl = new URL(model.previewFile, window.location.origin);
+    const response = await fetch(previewUrl);
+    if (!response.ok) throw new Error(`Could not open ${model.displayTitle || model.title}.`);
+    const previewBlob = await response.blob();
+    const previewFile = new File([previewBlob], 'preview.gltf', { type: 'model/gltf+json' });
+    const gltf = JSON.parse(await previewBlob.text());
+    const buffers = await Promise.all((gltf.buffers || []).map(async (buffer) => {
+      const bufferUrl = new URL(buffer.uri, previewUrl);
+      const bufferResponse = await fetch(bufferUrl);
+      if (!bufferResponse.ok) throw new Error(`A geometry buffer for ${model.displayTitle || model.title} is missing.`);
+      return new File([await bufferResponse.arrayBuffer()], buffer.uri.split('/').at(-1));
+    }));
+    const images = await Promise.all((gltf.images || []).filter((image) => image.uri).map(async (image) => {
+      const imageUrl = new URL(image.uri, previewUrl);
+      const imageResponse = await fetch(imageUrl);
+      if (!imageResponse.ok) throw new Error(`A texture for ${model.displayTitle || model.title} is missing.`);
+      return new File([await imageResponse.arrayBuffer()], image.uri.split('/').at(-1), { type: image.mimeType || 'image/png' });
+    }));
+    closeDetailedGallery();
+    await loadFiles([previewFile, ...buffers, ...images], {
+      displayName: `Detailed · ${model.displayTitle || model.title}`,
+      textureBytes: images.reduce((total, image) => total + image.size, 0),
+    });
+  } catch (error) {
+    showToast(error.message || `Could not load ${model.displayTitle || model.title}.`, 'error');
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Open textured model';
+  }
+}
+el('open-detailed-models').addEventListener('click', openDetailedGallery);
+el('close-detailed-models').addEventListener('click', closeDetailedGallery);
+el('detailed-search').addEventListener('input', (event) => renderDetailedModels(event.currentTarget.value));
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !detailedGallery.hidden) closeDetailedGallery();
+});
+
 function resize() {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
@@ -3066,7 +3258,10 @@ function render(frameTime = performance.now()) {
   if (animationPlaying || overlayUsesWallClock) requestRender();
 }
 
-controls.addEventListener('change', requestRender);
+controls.addEventListener('change', () => {
+  updateCameraClipping();
+  requestRender();
+});
 
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();

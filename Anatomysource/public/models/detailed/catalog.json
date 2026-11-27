@@ -1,0 +1,5708 @@
+{
+  "source": "Complete Anatomy installed model metadata",
+  "models": [
+    {
+      "id": "bone-cross-section",
+      "title": "Bone Cross Section",
+      "appModelId": "f7cbb835f718a4b11e5c21a8f88fc402",
+      "thumbnail": "/models/detailed/thumbnails/bone-cross-section.png",
+      "previewFile": "/models/detailed/bone-cross-section/preview.gltf",
+      "geometryBuffersAvailable": [
+        "5d9ac4f8eb442e4ed8b04a5b4c44824a.vertex.bin",
+        "7dd8b82b860336584bf4ca69c0729bee.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Bone Cross Section",
+      "structures": [
+        {
+          "name": "Periosteal Vein",
+          "cid": 16331,
+          "structureId": "04c16925c503186f633b6c6475d91f8b"
+        },
+        {
+          "name": "Periosteal Nerve",
+          "cid": 15336,
+          "structureId": "7744ab98bcdeb23c560f770a8b67c022"
+        },
+        {
+          "name": "Periosteal Lymph Vessels",
+          "cid": 15252,
+          "structureId": "91d1ac81b145b774aa5019271fbfe292"
+        },
+        {
+          "name": "Fibrous Layer of Periosteum",
+          "cid": 15956,
+          "structureId": "c6a070e7244b70961037991de50deabe"
+        },
+        {
+          "name": "Periosteal Artery",
+          "cid": 15501,
+          "structureId": "cf86817497d1845c626ec604c121a14d"
+        },
+        {
+          "name": "Perforating Collagen Fiber Bundles",
+          "cid": 15243,
+          "structureId": "d22b9ff9f9ef0ade220763808af20c04"
+        },
+        {
+          "name": "Osteogenic Layer of Periosteum",
+          "cid": 16126,
+          "structureId": "d34088b38c8d4734329cd7a84b01fdd8"
+        },
+        {
+          "name": "Endosteum",
+          "cid": 16253,
+          "structureId": "2497bc1f596f45eaa7317c7849d86a64"
+        },
+        {
+          "name": "Nerves of Medullary Cavity",
+          "cid": 15411,
+          "structureId": "2809ae8721eab396ddaa2aa19f37dac2"
+        },
+        {
+          "name": "Veins of the Medullary Cavity",
+          "cid": 15952,
+          "structureId": "5e488100ff0fa2f395cf6508d7db7867"
+        },
+        {
+          "name": "Yellow Bone Marrow",
+          "cid": 15545,
+          "structureId": "7fc69ba6b81f898e0521bd3ad2e42118"
+        },
+        {
+          "name": "Spongy Bone",
+          "cid": 16093,
+          "structureId": "caa38ea6f7aeb7dc3324755e66978728"
+        },
+        {
+          "name": "Lymph Vessels of Medullary Cavity",
+          "cid": 16303,
+          "structureId": "dae3e46aadb121c14ef27ebcd55ca789"
+        },
+        {
+          "name": "Arteries of the Medullary Cavity",
+          "cid": 15576,
+          "structureId": "f8b773310c0df186e3c9578b329b5667"
+        },
+        {
+          "name": "Nerve of Central Canal",
+          "cid": 16300,
+          "structureId": "427f44b8218b09f017be1f5bf5e48a01"
+        },
+        {
+          "name": "Artery of Central Canal",
+          "cid": 15786,
+          "structureId": "69a8e49e319323820a56b0814926ab14"
+        },
+        {
+          "name": "Lymph Vessel of Central Canal",
+          "cid": 15137,
+          "structureId": "83a4e2f607d051009796957195914033"
+        },
+        {
+          "name": "Vein of Central Canal",
+          "cid": 15780,
+          "structureId": "92f34cca1707ce75341a1055331f3598"
+        },
+        {
+          "name": "Interstitial Lamella and Osteon Concentric Lamella",
+          "cid": 15196,
+          "structureId": "317180dc5b43c1c603568c5bbab6ced4"
+        },
+        {
+          "name": "Internal Circumferential Lamella",
+          "cid": 16006,
+          "structureId": "326cbb437f5d444c201be64ecf0e6c4d"
+        },
+        {
+          "name": "Compact Bone",
+          "cid": 15552,
+          "structureId": "4fc0efcbce8f5c93f672b75b9477ce9e"
+        },
+        {
+          "name": "Longitudinal Orientation of Collagen Fibrils (of Osteon)",
+          "cid": 16339,
+          "structureId": "a91fa837aaf1c396564b9d0f083a9180"
+        },
+        {
+          "name": "External Circumferential Lamella",
+          "cid": 16179,
+          "structureId": "bd76555d8b85cdc9829ec2bf91be0e11"
+        },
+        {
+          "name": "Osteon",
+          "cid": 15958,
+          "structureId": "bfd356ef3788d4c64b6717c7731eb9d6"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/c1eaeae934ce20a8697783e7b42149c2.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "renal-corpuscle",
+      "title": "Renal Corpuscle",
+      "appModelId": "b08b4a117fd2b2598bffa3799b769aeb",
+      "thumbnail": "/models/detailed/thumbnails/renal-corpuscle.png",
+      "previewFile": "/models/detailed/renal-corpuscle/preview.gltf",
+      "geometryBuffersAvailable": [
+        "56dbd9ea1f69a670679c572aa171470d.vertex.bin",
+        "10c553ab8d1dd83899a0e8bfde7eb6f8.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Renal Corpuscle",
+      "structures": [
+        {
+          "name": "Tunica Adventitia of Afferent Glomerular Arteriole",
+          "cid": 15503,
+          "structureId": "1fb717b122b984da71919be09a976c81"
+        },
+        {
+          "name": "Tunica Intima of Afferent Glomerular Arteriole",
+          "cid": 15751,
+          "structureId": "77d18cefe22aa0e9c894adf16baa50be"
+        },
+        {
+          "name": "Tunica Media of Afferent Glomerular Arteriole",
+          "cid": 15866,
+          "structureId": "7d2aee6d636b2b992eefd40a470914b7"
+        },
+        {
+          "name": "Macule Densa",
+          "cid": 15454,
+          "structureId": "37c0b1e59fa007206c98a4635a280e8a"
+        },
+        {
+          "name": "Basement Membrane of Distal Convoluted Tubule",
+          "cid": 15685,
+          "structureId": "8acca24d47873d7cd54738f9bd0cf5e3"
+        },
+        {
+          "name": "Distal Convoluted Tubule Cell",
+          "cid": 15094,
+          "structureId": "f8909d148864ff94b42ef0f22e08ebe5"
+        },
+        {
+          "name": "Tunica Media of Efferent Glomerular Arteriole",
+          "cid": 15077,
+          "structureId": "082c2ecdfe164e55089fbed71c43ea91"
+        },
+        {
+          "name": "Tunica Adventitia of Efferent Glomerular Arteriole",
+          "cid": 15742,
+          "structureId": "1a974bfb98b7a90d414da6fb9a04a99b"
+        },
+        {
+          "name": "Tunica Intima of Efferent Glomerular Arteriole",
+          "cid": 15987,
+          "structureId": "46959bc689f9301e2c911c9b447705c3"
+        },
+        {
+          "name": "Extraglomerular Mesangial Cell",
+          "cid": 15831,
+          "structureId": "6c84d216c2fe0350adc0f536fc2cb32d"
+        },
+        {
+          "name": "Juxtaglomerular Epithelioid Cell",
+          "cid": 15247,
+          "structureId": "524957b03f497ee0d0f39d356aa38d34"
+        },
+        {
+          "name": "Perivascular Islet of Mesangial Cell",
+          "cid": 16330,
+          "structureId": "d93e71332a79d9327be28ad22edb9c4f"
+        },
+        {
+          "name": "Microvillus Border of Simple Cuboidal Epithelium of Proximal Convoluted Tubule",
+          "cid": 16136,
+          "structureId": "a74191679ff0aca11c0b19d65a4455fa"
+        },
+        {
+          "name": "Simple Cuboidal Epithelium of Proximal Convoluted Tubule",
+          "cid": 15527,
+          "structureId": "fe4d06c96123b2ab883bbcee13fa8a7a"
+        },
+        {
+          "name": "Peripolar Cell",
+          "cid": 15944,
+          "structureId": "71c1ce26ec5e5bc713ad7bbc41101e27"
+        },
+        {
+          "name": "Basement Membrane of Parietal Epithelial Cell",
+          "cid": 15951,
+          "structureId": "83e716723ba8867b42b4a57a621a14b0"
+        },
+        {
+          "name": "Parietal Epithelial Cell",
+          "cid": 15080,
+          "structureId": "8e6eeda84109ef34b8af8293324e0fab"
+        },
+        {
+          "name": "Podocyte",
+          "cid": 15976,
+          "structureId": "01ba9f7605548f779cbfe015d33e8472"
+        },
+        {
+          "name": "Nucleus of Podocyte",
+          "cid": 15554,
+          "structureId": "901b651a208b16f674fab8c0fa9b1250"
+        },
+        {
+          "name": "Glomerular Capillary Vessel",
+          "cid": 15344,
+          "structureId": "09b5ee6c528ef2bdbd936d7d73fcf098"
+        },
+        {
+          "name": "Mesangial Cell",
+          "cid": 15161,
+          "structureId": "6eca1e4f323ea8fca5661811e7240bd3"
+        },
+        {
+          "name": "Mesangial Matrix",
+          "cid": 15063,
+          "structureId": "e46f06abddca7ff29b794a42b868268b"
+        },
+        {
+          "name": "Basement Membrane (of Glomerulus)",
+          "cid": 15160,
+          "structureId": "a883b9fbce73ed60a06a40f5dfceab67"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/e4669f6fc7407c105d63286295b8798e.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "tendon",
+      "title": "Tendon",
+      "appModelId": "752e04e384ce0e5bb0da5886909c6589",
+      "thumbnail": "/models/detailed/thumbnails/tendon.png",
+      "previewFile": "/models/detailed/tendon/preview.gltf",
+      "geometryBuffersAvailable": [
+        "5bbe7244d0217605c1e3fec95078bcf6.vertex.bin",
+        "62386f387f2557c4d96e2db023d5b6e2.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Tendon",
+      "structures": [
+        {
+          "name": "Secondary Fiber Bundles",
+          "cid": 15114,
+          "structureId": "04502a8be95bcb8bc8f9bb0e872c69ff"
+        },
+        {
+          "name": "Collagen Fibers",
+          "cid": 15721,
+          "structureId": "2035e60789615331c116ae2cfb5d2e28"
+        },
+        {
+          "name": "Tertiary Fiber Bundles",
+          "cid": 16054,
+          "structureId": "371a33fa79d9b507236c3c095b24b229"
+        },
+        {
+          "name": "Arteries of Tendon",
+          "cid": 15985,
+          "structureId": "57f72e3ccee476bc85ba294492be1652"
+        },
+        {
+          "name": "Endotendon",
+          "cid": 15410,
+          "structureId": "7600421eb6dbb47ffb1d360eb1731b85"
+        },
+        {
+          "name": "Nerves of Tendon",
+          "cid": 15789,
+          "structureId": "a7757716549257345aa3429887bc484f"
+        },
+        {
+          "name": "Primary Fiber Bundles",
+          "cid": 15920,
+          "structureId": "aed33e3435cafecbbaaa25cb3bb2d75d"
+        },
+        {
+          "name": "Veins of Tendon",
+          "cid": 15889,
+          "structureId": "be0b4d5102303868fbd19fecdd20179f"
+        },
+        {
+          "name": "Epitendon",
+          "cid": 15096,
+          "structureId": "c896d6cef43c33c49da13f15bc27498f"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/8e011d494994c4c89fd4948b9b9a3753.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "skin",
+      "title": "Skin",
+      "appModelId": "308de411dccf3912c46cc06a03776485",
+      "thumbnail": "/models/detailed/thumbnails/skin.png",
+      "previewFile": "/models/detailed/skin/preview.gltf",
+      "geometryBuffersAvailable": [
+        "dacd5ed239184499527b3b7380f2d41f.vertex.bin",
+        "5f9e6b91c12e33ee773854bbe94677c1.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Skin",
+      "structures": [
+        {
+          "name": "Veins of Skin",
+          "cid": 15645,
+          "structureId": "01c2055f566461dcbb4a6803425fb6a2"
+        },
+        {
+          "name": "Nerves of Skin",
+          "cid": 16352,
+          "structureId": "22acaa8a19676f7ac750bb16aaf74d93"
+        },
+        {
+          "name": "Bulbous Corpuscle (Krause)",
+          "cid": 16140,
+          "structureId": "09aa62a93ce0f15265a09eb15937f2bd"
+        },
+        {
+          "name": "Tactile Corpuscle",
+          "cid": 15280,
+          "structureId": "242598e2c7544e37f5e02714560bbd20"
+        },
+        {
+          "name": "Free Nerve Endings",
+          "cid": 15869,
+          "structureId": "41eaba839a7346c532d8521c2f72b91d"
+        },
+        {
+          "name": "Peritrichial Receptors",
+          "cid": 16036,
+          "structureId": "43d6db31c592df4509d2e384a800bf4d"
+        },
+        {
+          "name": "Tactile Meniscus",
+          "cid": 15115,
+          "structureId": "4d8f935809b9561e5e2f686d5ec7cbc5"
+        },
+        {
+          "name": "Bulbous Corpuscle (Ruffini)",
+          "cid": 16198,
+          "structureId": "c39a33b55112836b628293485b84cf39"
+        },
+        {
+          "name": "Lamellar Corpuscle",
+          "cid": 15620,
+          "structureId": "d526237310154458ddb4230973d73d2b"
+        },
+        {
+          "name": "Sweat",
+          "cid": 15991,
+          "structureId": "479376a1c18ee37be2064264b5bcbdf2"
+        },
+        {
+          "name": "Superficial Layers of Epidermis",
+          "cid": 16230,
+          "structureId": "9688eeb800e10fa0d469274f1b758cff"
+        },
+        {
+          "name": "Deep Layers of Epidermis",
+          "cid": 15307,
+          "structureId": "ef00c226d248da18d70ccd8d51dee586"
+        },
+        {
+          "name": "Epidermal Ridges",
+          "cid": 16376,
+          "structureId": "f432f1d167ae93ba3405bc040f3c0294"
+        },
+        {
+          "name": "Lymphatic Vessels",
+          "cid": 15616,
+          "structureId": "6f27a089c62ca4b9329f24efceb17809"
+        },
+        {
+          "name": "Arteries of Skin",
+          "cid": 16153,
+          "structureId": "7b94abdbeb2cba6e7f67b18e6e9dac5e"
+        },
+        {
+          "name": "Papillae",
+          "cid": 15244,
+          "structureId": "160a95ea90e517337f95e835598a319d"
+        },
+        {
+          "name": "Sebum",
+          "cid": 15787,
+          "structureId": "15b915cde7461568fc926f94c50c28d9"
+        },
+        {
+          "name": "Fibrous Sheath",
+          "cid": 16090,
+          "structureId": "2444f0baf89d9eef2a36192ab7270300"
+        },
+        {
+          "name": "Hair Sebaceous Gland",
+          "cid": 16000,
+          "structureId": "40d9aeff5198d2f1e93bdee562625508"
+        },
+        {
+          "name": "Dermal Papilla",
+          "cid": 15319,
+          "structureId": "505767b026a2186cd7ce30b2f72ba1cd"
+        },
+        {
+          "name": "Cortex",
+          "cid": 15192,
+          "structureId": "5a68e122824be8683af60e6449812362"
+        },
+        {
+          "name": "Lower Germinal Matrix",
+          "cid": 15707,
+          "structureId": "7f684e8e544e8996587e70aa4abefe6e"
+        },
+        {
+          "name": "Cuticle",
+          "cid": 16207,
+          "structureId": "846ab3af2d08773f9182713c2fbf15fc"
+        },
+        {
+          "name": "Internal Root Sheath",
+          "cid": 15955,
+          "structureId": "8cc96f90341a33b02882c1b69baa5509"
+        },
+        {
+          "name": "Hair Shaft",
+          "cid": 16384,
+          "structureId": "8cecda1f0d625efac1cd386dcb185cbd"
+        },
+        {
+          "name": "Hair Follicle",
+          "cid": 15234,
+          "structureId": "c336e156c221ff6a25e256da6ef5efbd"
+        },
+        {
+          "name": "External Root Sheath",
+          "cid": 16091,
+          "structureId": "db6d18d3d4cd1bd107ac394debf19201"
+        },
+        {
+          "name": "Medulla",
+          "cid": 15299,
+          "structureId": "eae1072cd526ea822a412469689f2feb"
+        },
+        {
+          "name": "Arrector Muscle of Hair",
+          "cid": 16219,
+          "structureId": "f917c3e86270fe750577f02cb8f2dc5e"
+        },
+        {
+          "name": "Eccrine Sweat Gland",
+          "cid": 16157,
+          "structureId": "84fb87c5e11cffb7286e43db2f23ed9b"
+        },
+        {
+          "name": "Apocrine Sweat Gland",
+          "cid": 15403,
+          "structureId": "ee28fba48419c152d3e111b9bd077caa"
+        },
+        {
+          "name": "Papillary and Reticular Layers of Dermis",
+          "cid": 15106,
+          "structureId": "d246edef4a5e1e86e6e970a7e4a26cf5"
+        },
+        {
+          "name": "Nerve Plexus of Arrector Muscle of Hair",
+          "cid": 16046,
+          "structureId": "ca028451551aee6919b60205ee8bf7b8"
+        },
+        {
+          "name": "Subcutaneous Tissue",
+          "cid": 15656,
+          "structureId": "eb3d2b489c618ce02bdd1644fffb1240"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/bdfead18789ca9d99ef0f28ce27da52a.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "ovarian-cycle",
+      "title": "Ovarian cycle",
+      "appModelId": "52d12b9268877e502b014d953e8c4de1",
+      "thumbnail": "/models/detailed/thumbnails/ovarian-cycle.png",
+      "previewFile": "/models/detailed/ovarian-cycle/preview.gltf",
+      "geometryBuffersAvailable": [
+        "cac05d19bae090bb0fa53d04eccfe5fb.vertex.bin",
+        "561f96c18b3775019a69d04363955253.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Ovarian cycle",
+      "structures": [
+        {
+          "name": "Ovarian Cortex",
+          "cid": 15731,
+          "structureId": "1a6b15c049a9da063e74145a751a8e9d"
+        },
+        {
+          "name": "Ovarian Medulla",
+          "cid": 15769,
+          "structureId": "1f62088a79694d24984c30407abb9544"
+        },
+        {
+          "name": "Rete Ovarii",
+          "cid": 15648,
+          "structureId": "65853166668a72c1e22c780a98866acb"
+        },
+        {
+          "name": "Hilus Cells",
+          "cid": 15877,
+          "structureId": "f7cee8531d9f3b7b85c36d0f4745038a"
+        },
+        {
+          "name": "Mesovarium",
+          "cid": 16309,
+          "structureId": "32cd67877f4b4f151cc7251f4fe50f82"
+        },
+        {
+          "name": "Mesothelium",
+          "cid": 15138,
+          "structureId": "5e18fee35c818d2afb2f6efe5cf42790"
+        },
+        {
+          "name": "Ovarian Vein",
+          "cid": 16086,
+          "structureId": "54953fe36b3b0b8c3b1b9b6cad03aa9b"
+        },
+        {
+          "name": "Lymph Vessels of Ovary",
+          "cid": 15961,
+          "structureId": "5b13c35a20c8274f52c9e1a4ce6ac3ad"
+        },
+        {
+          "name": "Ovarian Plexus",
+          "cid": 15373,
+          "structureId": "96f58e57fd48fc3c26e7f02dc5a8846b"
+        },
+        {
+          "name": "Ovarian Artery",
+          "cid": 15963,
+          "structureId": "c6e0f4b4f8f5a637637494c91aa9e34d"
+        },
+        {
+          "name": "Germinal Epithelium",
+          "cid": 16342,
+          "structureId": "c031596b0e61abe189ef64f49395f65b"
+        },
+        {
+          "name": "Theca Lutein Cell",
+          "cid": 16094,
+          "structureId": "6d3e37712ea00ec84831ad77446fb8b9"
+        },
+        {
+          "name": "Granulosa Lutein Cell",
+          "cid": 15935,
+          "structureId": "cbf1fc17eac3b5e82a839bc32766e3e5"
+        },
+        {
+          "name": "Central Luteal Cavity",
+          "cid": 15657,
+          "structureId": "db648a60186b6b8489093ec097dc2854"
+        },
+        {
+          "name": "Corpus Albicans",
+          "cid": 15898,
+          "structureId": "9c9d44bd78d2fc311d92cec70453fb78"
+        },
+        {
+          "name": "Hemorrhagic Body",
+          "cid": 15487,
+          "structureId": "bdd7cfc9ad158386fdc5950a6e459818"
+        },
+        {
+          "name": "Granulosa (of Secondary Ovarian Follicle)",
+          "cid": 16176,
+          "structureId": "2b27795f6cac053fb15595fbc0e3f9bb"
+        },
+        {
+          "name": "Basement Membrane (of Secondary Ovarian Follicle)",
+          "cid": 15100,
+          "structureId": "2bd601c888ce2e6502c168cbe3c839bd"
+        },
+        {
+          "name": "Zona Pellucida (of Secondary Ovarian Follicle)",
+          "cid": 16265,
+          "structureId": "4843c472ef13fd7e7d663bbcdbef9a39"
+        },
+        {
+          "name": "Primary Oocyte (of Secondary Ovarian Follicle)",
+          "cid": 16318,
+          "structureId": "9fb146c724d89a65c1783a1eec2aaf36"
+        },
+        {
+          "name": "Follicular Fluid (of Secondary Ovarian Follicle)",
+          "cid": 16349,
+          "structureId": "acc7881b4736ec20d9180058bcaf4c43"
+        },
+        {
+          "name": "Theca Externa (of Secondary Ovarian Follicle)",
+          "cid": 15840,
+          "structureId": "cb2a7b263516b3e833fa2151c29f70a6"
+        },
+        {
+          "name": "Theca Interna (of Secondary Ovarian Follicle)",
+          "cid": 15670,
+          "structureId": "fc6eb2f44d5a70ed75b49256f98a540a"
+        },
+        {
+          "name": "Simple Squamous Epithelium (of Primordial Ovarian Follicle)",
+          "cid": 15073,
+          "structureId": "6e18290f7c94e2eb39ec092b5dbc7956"
+        },
+        {
+          "name": "Basement Membrane (of Primordial Ovarian Follicle)",
+          "cid": 16229,
+          "structureId": "81eba6b1e7346f8cf7436c0125f03042"
+        },
+        {
+          "name": "Primary Oocyte (of Primordial Ovarian Follicle)",
+          "cid": 15512,
+          "structureId": "aa82977b7c7bb4a287642c4fade28bc7"
+        },
+        {
+          "name": "Zona Pellucida (of Early Primary Ovarian Follicle)",
+          "cid": 15759,
+          "structureId": "0bec22fe2ada7b9c40978f3ff9e10286"
+        },
+        {
+          "name": "Basement Membrane (of Early Primary Ovarian Follicle)",
+          "cid": 15178,
+          "structureId": "2666339d4d9222425cf9acb4d07e3489"
+        },
+        {
+          "name": "Primary Oocyte (of Early Primary Ovarian Follicle)",
+          "cid": 15933,
+          "structureId": "c67c3df769c8eeb6efdfc1fa2198b407"
+        },
+        {
+          "name": "Simple Cuboidal Epithelium (of Early Primary Ovarian Follicle)",
+          "cid": 15728,
+          "structureId": "f45f33c1c569428f686fbe281b28203a"
+        },
+        {
+          "name": "Granulosa (of Late Primary Ovarian Follicle)",
+          "cid": 15184,
+          "structureId": "3b271e99a8ef20f64789b6c57e08aac8"
+        },
+        {
+          "name": "Zona Pellucida (of Late Primary Ovarian Follicle)",
+          "cid": 15321,
+          "structureId": "4f63b7e25ec5d5e3d1f807a7a07684bd"
+        },
+        {
+          "name": "Basement Membrane (of Late Primary Ovarian Follicle)",
+          "cid": 15451,
+          "structureId": "75dc50371e27f324371f2a67310284d0"
+        },
+        {
+          "name": "Primary Oocyte (of Late Primary Ovarian Follicle)",
+          "cid": 16011,
+          "structureId": "b474fd6a3407ed67f23e8d0adbfcedd2"
+        },
+        {
+          "name": "Follicular Theca (of Late Primary Ovarian Follicle)",
+          "cid": 15432,
+          "structureId": "c5bcbeaae65fcb30fa9c45193a9d7588"
+        },
+        {
+          "name": "Granulosa (of Tertiary Ovarian Follicle)",
+          "cid": 15940,
+          "structureId": "0bdb2d0a6359d201b75443e91c1469f3"
+        },
+        {
+          "name": "Theca Externa (of Tertiary Ovarian Follicle)",
+          "cid": 16292,
+          "structureId": "0e9ec690d837695eb8d6487ac9728666"
+        },
+        {
+          "name": "Secondary Oocyte",
+          "cid": 16343,
+          "structureId": "156c1349b68d53a80eebe217f235adb3"
+        },
+        {
+          "name": "Cumulus Oophorus",
+          "cid": 16367,
+          "structureId": "20d9bc39a264aebebeef3f5ff69c0642"
+        },
+        {
+          "name": "Theca Interna (of Tertiary Ovarian Follicle)",
+          "cid": 15495,
+          "structureId": "698660c87c03be2454ca6adc87060236"
+        },
+        {
+          "name": "Follicular Fluid (of Tertiary Ovarian Follicle)",
+          "cid": 15537,
+          "structureId": "8d54c9f9c4fd7521ab22cf64b8d5b0c8"
+        },
+        {
+          "name": "Corona Radiata",
+          "cid": 16326,
+          "structureId": "b25935cc822efb6243da5fe89d1837d0"
+        },
+        {
+          "name": "Basement Membrane (of Tertiary Ovarian Follicle)",
+          "cid": 15758,
+          "structureId": "cfe358debe9b181f0ff77262023a6b3e"
+        },
+        {
+          "name": "Zona Pellucida (of Tertiary Ovarian Follicle)",
+          "cid": 15517,
+          "structureId": "d467ee423669f358ca74ae4d0580ac3b"
+        },
+        {
+          "name": "Atretic Follicle",
+          "cid": 15939,
+          "structureId": "3b9ece894b7a3b5894948f6d33ccd003"
+        },
+        {
+          "name": "Follicular Fluid (of Ruptured Follicle)",
+          "cid": 15566,
+          "structureId": "2866a3bf8dcf27450672cb3fc8d49983"
+        },
+        {
+          "name": "Theca Externa (of Ruptured Follicle)",
+          "cid": 15219,
+          "structureId": "f220eda7ee58b3aaa807904e7944b24c"
+        },
+        {
+          "name": "Ovulated Secondary Oocyte",
+          "cid": 16290,
+          "structureId": "fe85cc101756d1fb1abb3b1fbfa7d788"
+        },
+        {
+          "name": "Tunica Albuginea of Ovary",
+          "cid": 15733,
+          "structureId": "fc0999968c1043b1a12ddde328468d28"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/b0c8c84180a777d77dc47add2c15fae6.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "bronchial-tree",
+      "title": "Bronchial Tree",
+      "appModelId": "7d3a1e8c702aaa054cddd07171986fd8",
+      "thumbnail": "/models/detailed/thumbnails/bronchial-tree.png",
+      "previewFile": "/models/detailed/bronchial-tree/preview.gltf",
+      "geometryBuffersAvailable": [
+        "c2cbddc404a4f42c5f8083dc23ba038a.vertex.bin",
+        "509b5aad0b55f74991056bea815490e4.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Bronchial Tree",
+      "structures": [
+        {
+          "name": "Capillary Network",
+          "cid": 15422,
+          "structureId": "22eaba1a2e60704b846be5acb05db985"
+        },
+        {
+          "name": "Branch of Pulmonary Artery",
+          "cid": 16310,
+          "structureId": "253e791bb48d6245ba6a55d341d8e9c5"
+        },
+        {
+          "name": "Pulmonary Arteriole",
+          "cid": 15399,
+          "structureId": "28671b0dbb179a84c9da3278939f5312"
+        },
+        {
+          "name": "Branch of Pulmonary Vein",
+          "cid": 15394,
+          "structureId": "48dfbcb4429835378d6e242358a4b73c"
+        },
+        {
+          "name": "Pulmonary Venule",
+          "cid": 15883,
+          "structureId": "dc72a6799e9863b4af105d2a711c97e7"
+        },
+        {
+          "name": "Respiratory Bronchiole",
+          "cid": 15214,
+          "structureId": "12f519317f6c6140b59385aa64bdb1f4"
+        },
+        {
+          "name": "Respiratory Mucosa",
+          "cid": 15561,
+          "structureId": "4affe4d44ecb8b2fbea563528f0f253f"
+        },
+        {
+          "name": "Alveolar Ducts and Saccules",
+          "cid": 15358,
+          "structureId": "5912c941ea84a92e58f95d7a58da41bf"
+        },
+        {
+          "name": "Spiral Network of Smooth Muscle Cells",
+          "cid": 15807,
+          "structureId": "8d9fcc7cc6a58e8e798a321b8a7c0bb8"
+        },
+        {
+          "name": "Elastic Fibers",
+          "cid": 16014,
+          "structureId": "bf57326a52b2e8711faf740c05eb9b10"
+        },
+        {
+          "name": "Terminal Bronchiole",
+          "cid": 15843,
+          "structureId": "e3bbee7901c28d08cb405b81bb8c50c3"
+        },
+        {
+          "name": "Bronchial Arteries",
+          "cid": 15905,
+          "structureId": "5daa9395ccc74986f02e8e5235c1f9fd"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/63aba424d93358c51e1e373bf2703e29.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "blood-vessels",
+      "title": "Blood Vessels",
+      "appModelId": "0bd179b760d87fa5b6d26df79c4cbf1f",
+      "thumbnail": "/models/detailed/thumbnails/blood-vessels.png",
+      "previewFile": "/models/detailed/blood-vessels/preview.gltf",
+      "geometryBuffersAvailable": [
+        "b27df392df9c61901ca3dc05307ce798.vertex.bin",
+        "41b942676f8517a7166941af6352ab59.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Blood Vessels",
+      "structures": [
+        {
+          "name": "Arteriole",
+          "cid": 15305,
+          "structureId": "1667ae300bc808d5f75837f7c28342fa"
+        },
+        {
+          "name": "Vascular Endothelium (Artery)",
+          "cid": 16214,
+          "structureId": "311df6824d1f6af20e604733c593b484"
+        },
+        {
+          "name": "Internal Elastic Membrane",
+          "cid": 16007,
+          "structureId": "4f3e191e781eb139aa2a62b93f6b55ff"
+        },
+        {
+          "name": "Basement Membrane (Artery)",
+          "cid": 15255,
+          "structureId": "b28720db21157af07f8fc1fd2fcd69f0"
+        },
+        {
+          "name": "Subendothelial layer (Artery)",
+          "cid": 15522,
+          "structureId": "e53bdf2fcb9990db26610e49fcc380be"
+        },
+        {
+          "name": "Smooth Muscle (Artery)",
+          "cid": 15343,
+          "structureId": "8d1fc53470f1ac1eb4d5c19b52393433"
+        },
+        {
+          "name": "External Elastic Membrane",
+          "cid": 15131,
+          "structureId": "cb78e252ad615d5efacb66656d187140"
+        },
+        {
+          "name": "Tunica externa of Vessel (Artery)",
+          "cid": 16220,
+          "structureId": "9841ba86caa551ff9aceddc40a4d25e6"
+        },
+        {
+          "name": "Vasa Vasorum (Artery)",
+          "cid": 15392,
+          "structureId": "a6475bb4778f03ee53fbd89f810d7ff0"
+        },
+        {
+          "name": "Nervi Vasorum (Artery)",
+          "cid": 15404,
+          "structureId": "f70b10ac3d19c6073473ff32690dada0"
+        },
+        {
+          "name": "Basement Membrane (Vein)",
+          "cid": 16340,
+          "structureId": "239fba96e1546bfffa64651849321508"
+        },
+        {
+          "name": "Vascular Endothelium (Vein)",
+          "cid": 16313,
+          "structureId": "87e0e147adfd9497de2f2c477707eb6b"
+        },
+        {
+          "name": "Subendothelial Layer (Vein)",
+          "cid": 16104,
+          "structureId": "f100b2ea81d0ea7564a480c39f8ecd50"
+        },
+        {
+          "name": "Venous Valve",
+          "cid": 16296,
+          "structureId": "ffa59cc53dfc628d9f5c21fc8fd8103f"
+        },
+        {
+          "name": "Nervi Vasorum (Vein)",
+          "cid": 16278,
+          "structureId": "1a3c1ba6e3ffed28683dc24ff09af0a8"
+        },
+        {
+          "name": "Tunica Externa of Vessel (Vein)",
+          "cid": 15518,
+          "structureId": "39f777dd8fdcfd8dd51d9c786ce3c076"
+        },
+        {
+          "name": "Vasa Vasorum (Vein)",
+          "cid": 16329,
+          "structureId": "7fef9f827e2cc12a90bccd16c0386dba"
+        },
+        {
+          "name": "Tunica Media of Vessel (Vein)",
+          "cid": 15630,
+          "structureId": "b47cc65705e3a8e0ce5083fac1abb023"
+        },
+        {
+          "name": "Capillary Network",
+          "cid": 15504,
+          "structureId": "629c41360edcda5ebb2b26010269d613"
+        },
+        {
+          "name": "Venule",
+          "cid": 16155,
+          "structureId": "93c1546f14f627519ea022c28335fcf7"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/b565e70fb3dbf67fb8cfb2e841839b63.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "scalp-and-meninges",
+      "title": "Scalp and Meninges",
+      "appModelId": "edf787e9b3f39fc6b54ab610e558a6be",
+      "thumbnail": "/models/detailed/thumbnails/scalp-and-meninges.png",
+      "previewFile": "/models/detailed/scalp-and-meninges/preview.gltf",
+      "geometryBuffersAvailable": [
+        "bcfd3c60ea898b4cdb77654379863610.vertex.bin",
+        "38bd7d743dd81a1fd7f55242d2ca3c5c.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Scalp and Meninges",
+      "structures": [
+        {
+          "name": "White Matter",
+          "cid": 15628,
+          "structureId": "0c64f853ad886526fc4e451d4b1cf3a3"
+        },
+        {
+          "name": "Gray Matter",
+          "cid": 16032,
+          "structureId": "8fe69bc274910786f0d12f3d116aefe8"
+        },
+        {
+          "name": "Gray Matter",
+          "cid": 16032,
+          "structureId": "86a83705493950e7a9298bcbd7c8dfda"
+        },
+        {
+          "name": "White Matter",
+          "cid": 15628,
+          "structureId": "8a6caab0d60d942900dfaf9de10e5e02"
+        },
+        {
+          "name": "Cranial Pia Mater",
+          "cid": 16192,
+          "structureId": "4c4591823b5174f067d0532b4236ab7e"
+        },
+        {
+          "name": "Arachnoid Trabeculae",
+          "cid": 15535,
+          "structureId": "51e38842a00559f84b9ca599fd7a0b3e"
+        },
+        {
+          "name": "Falx Cerebri",
+          "cid": 15938,
+          "structureId": "032e55d87a2ecebd0b6ccda8252534a2"
+        },
+        {
+          "name": "Periosteal Cranial Dura Mater",
+          "cid": 15717,
+          "structureId": "33bdd3bcdfcd624016c23a17a558096c"
+        },
+        {
+          "name": "Meningeal Cranial Dura Mater",
+          "cid": 15129,
+          "structureId": "dd7586cbeff68bcfd16a011ffdbd81d2"
+        },
+        {
+          "name": "Arachnoid Trabeculae",
+          "cid": 15535,
+          "structureId": "6c3f7752798b48c00a5bb5005b862d22"
+        },
+        {
+          "name": "Cranial Arachnoid",
+          "cid": 15493,
+          "structureId": "77e1c7482aaa99f8b5e953340a30a534"
+        },
+        {
+          "name": "Cerebrospinal Fluid",
+          "cid": 15511,
+          "structureId": "93c44e380fbb60de667b103537fbeb34"
+        },
+        {
+          "name": "Arachnoid Granulations",
+          "cid": 15844,
+          "structureId": "9b9ce8946a7d2388f9483b6f95743aca"
+        },
+        {
+          "name": "Cranial Arachnoid",
+          "cid": 15493,
+          "structureId": "abd597a7ea18e34bf214cd9a5ffcc97d"
+        },
+        {
+          "name": "Arachnoid Granulations",
+          "cid": 15844,
+          "structureId": "bdd21d6065c842aad6f662f67f409aea"
+        },
+        {
+          "name": "Cerebrospinal Fluid",
+          "cid": 15511,
+          "structureId": "edb8571f15b37ee9f4b17bbb483ef3c0"
+        },
+        {
+          "name": "Cranial Pia Mater",
+          "cid": 16192,
+          "structureId": "ee3e89e698a3841224a641b272b45962"
+        },
+        {
+          "name": "Epicranial Aponeurosis",
+          "cid": 16076,
+          "structureId": "579fa10f295fd934c8382b957f383031"
+        },
+        {
+          "name": "Subcutaneous Tissue",
+          "cid": 15676,
+          "structureId": "60184cb98f63b1eab8888b23e28a84cd"
+        },
+        {
+          "name": "Pericranium",
+          "cid": 15281,
+          "structureId": "8a7983e7ff0da087d59ed1283749210e"
+        },
+        {
+          "name": "Loose Connective Tissue",
+          "cid": 15941,
+          "structureId": "bff3efa8e15f94868c985782ad0a4e47"
+        },
+        {
+          "name": "Skin",
+          "cid": 16337,
+          "structureId": "da2c6cd6ef320f12d2c6fa50d96fa518"
+        },
+        {
+          "name": "Cranial Bone",
+          "cid": 16372,
+          "structureId": "a7b64fa01abf7773c7421bcb16aa8c5e"
+        },
+        {
+          "name": "Lateral Lacunae",
+          "cid": 16248,
+          "structureId": "0b55d12bbdaabb8381e9dbcd4f184716"
+        },
+        {
+          "name": "Lateral Lacunae",
+          "cid": 16248,
+          "structureId": "30d339b2b18a7e6350f6f0d36db70c2e"
+        },
+        {
+          "name": "Superior Sagittal Sinus",
+          "cid": 15815,
+          "structureId": "78fb992e1ec6bbe5289268ccdc0aa841"
+        },
+        {
+          "name": "Diploic Veins",
+          "cid": 15140,
+          "structureId": "42f51db48e7b6a69d1e2885b47124930"
+        },
+        {
+          "name": "Cerebral Arteries",
+          "cid": 15981,
+          "structureId": "1db05e0238dc6dd0bba680eac20b5c0d"
+        },
+        {
+          "name": "Cerebral Arteries",
+          "cid": 15981,
+          "structureId": "cee9a0788acc57ec368dcd1e41c055ce"
+        },
+        {
+          "name": "Arteries of Scalp",
+          "cid": 15549,
+          "structureId": "947417d8d9869f900f718840e33ca9f6"
+        },
+        {
+          "name": "Diploic Veins",
+          "cid": 15140,
+          "structureId": "95167e741ffc73d0f390d61157978190"
+        },
+        {
+          "name": "Emissary Veins",
+          "cid": 15532,
+          "structureId": "aa1c550dfbc360db3bd37f0986070438"
+        },
+        {
+          "name": "Cerebral Veins",
+          "cid": 16170,
+          "structureId": "553eaaa491f1832da70e3993bb7c1d30"
+        },
+        {
+          "name": "Cerebral Veins",
+          "cid": 16170,
+          "structureId": "ae2f7da5ec20034341e74bdbb7a7296f"
+        },
+        {
+          "name": "Veins of Scalp",
+          "cid": 15480,
+          "structureId": "fed197a02b6a3e81b855ca6207babb69"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/d106f2380eed5bc27899a543746d630d.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "suprarenal-gland",
+      "title": "Suprarenal Gland",
+      "appModelId": "95f6a9ba10761520265429c9b78a9b84",
+      "thumbnail": "/models/detailed/thumbnails/suprarenal-gland.png",
+      "previewFile": "/models/detailed/suprarenal-gland/preview.gltf",
+      "geometryBuffersAvailable": [
+        "b3944cfabd8a6c4e209add69f81d4fc8.vertex.bin",
+        "2e4a6b70eed4692184d818bdd05b461b.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Suprarenal Gland",
+      "structures": [
+        {
+          "name": "Suprarenal Arteries",
+          "cid": 15619,
+          "structureId": "0bc9ef226d7a320ce955d5e3c726b22b"
+        },
+        {
+          "name": "Medullary Venous Sinus",
+          "cid": 15609,
+          "structureId": "10e07138e3ae3173e472f763237c36da"
+        },
+        {
+          "name": "Medullary Arteries",
+          "cid": 16305,
+          "structureId": "8465ee60a51767d47b6246b79e9c220f"
+        },
+        {
+          "name": "Cortical Sinusoids",
+          "cid": 15223,
+          "structureId": "a1c445f683a8a7957ebcf8bdab9bd125"
+        },
+        {
+          "name": "Subcapsular Arterial Plexus",
+          "cid": 15193,
+          "structureId": "cdae1e1433e9e0309e423fd76805bc61"
+        },
+        {
+          "name": "Central Vein of Suprarenal Gland",
+          "cid": 15643,
+          "structureId": "fd12c91ccebd00a0b09bff6ef2a6c34b"
+        },
+        {
+          "name": "Perirenal Fat Capsule",
+          "cid": 15322,
+          "structureId": "3aadb84a93a7f51831fff830462dffc6"
+        },
+        {
+          "name": "Capsule of Suprarenal Gland",
+          "cid": 15474,
+          "structureId": "46673c0c8f7143c3f2111411a29a2e20"
+        },
+        {
+          "name": "Medulla of Suprarenal Gland",
+          "cid": 15389,
+          "structureId": "49fa4543f55d43310cf605deaf85ffaa"
+        },
+        {
+          "name": "Zona Fasciculata of Cortex",
+          "cid": 15125,
+          "structureId": "0393109273aa56f5b23d4fbbdd17eed8"
+        },
+        {
+          "name": "Zona Reticularis of Cortex",
+          "cid": 16078,
+          "structureId": "0fa8762f6dbd684e2cb4513b17465366"
+        },
+        {
+          "name": "Zona Glomerulosa of Cortex",
+          "cid": 15687,
+          "structureId": "4ecaf5c64ede3ae364ab12712acfcd4b"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/acd463f0baa72ca5e3e61242a829fb4d.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "eye",
+      "title": "Eye",
+      "appModelId": "52d1ef68e17c6952b882ca7b04454683",
+      "thumbnail": "/models/detailed/thumbnails/eye.png",
+      "previewFile": "/models/detailed/eye/preview.gltf",
+      "geometryBuffersAvailable": [
+        "e2469a9be12a1a7ccecc12fb1fd6e186.vertex.bin",
+        "fd49d2b5c22fecf5782ae50154212a04.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Eye",
+      "structures": [
+        {
+          "name": "Palpebral Part of Orbicularis Oculi Muscle",
+          "cid": 15241,
+          "structureId": "11eb7438cf984a56e9032feb73a36dc6"
+        },
+        {
+          "name": "Central Retinal Artery",
+          "cid": 15971,
+          "structureId": "26a1fc504e7cee4d86396556c920b41c"
+        },
+        {
+          "name": "Optic Nerve",
+          "cid": 15732,
+          "structureId": "2a0e78d250e6af223d4e9b49a5419acf"
+        },
+        {
+          "name": "Vascular Circle of Optic Nerve",
+          "cid": 16183,
+          "structureId": "354789c09a980629eec970f5504a5241"
+        },
+        {
+          "name": "Optic Nerve",
+          "cid": 15732,
+          "structureId": "499a63914b5cee2e151c98d17362297f"
+        },
+        {
+          "name": "Outer Sheath of Optic Nerve",
+          "cid": 15159,
+          "structureId": "49b3818fbfa3e70e36fe033fbadbdc41"
+        },
+        {
+          "name": "Inner Sheath of Optic Nerve (Pial Sheath; Right)",
+          "cid": 15220,
+          "structureId": "4ea9b54f77dbb25848d38e837d9de982"
+        },
+        {
+          "name": "Inner Sheath of Optic Nerve (Arachnoid Sheath; Left)",
+          "cid": 15353,
+          "structureId": "7704c51067954984c8e8412347f14258"
+        },
+        {
+          "name": "Inner Sheath of Optic Nerve (Arachnoid Sheath; Right)",
+          "cid": 15771,
+          "structureId": "8c15e915563354c8446285e747131b58"
+        },
+        {
+          "name": "Vascular Circle of Optic Nerve",
+          "cid": 16183,
+          "structureId": "9b42d3e3fce78a62306816b7c57702df"
+        },
+        {
+          "name": "Inner Sheath of Optic Nerve (Pial Sheath; Left)",
+          "cid": 15597,
+          "structureId": "a3bdef397a1c234dc10ede6d22134a53"
+        },
+        {
+          "name": "Central Retinal Vein",
+          "cid": 15306,
+          "structureId": "aee9aa783e3ea619fe7fd5d7a2a955ba"
+        },
+        {
+          "name": "Outer Sheath of Optic Nerve",
+          "cid": 15159,
+          "structureId": "ea1c1c9274a1fd9c4fbb3367f0629a18"
+        },
+        {
+          "name": "Scleral Venous Sinus",
+          "cid": 15718,
+          "structureId": "0cad0387f38cb206a5c5b1b3e2eef920"
+        },
+        {
+          "name": "Trabecular Retinaculum",
+          "cid": 15483,
+          "structureId": "0d5235821496f5acf4fcade4fbbb9b3c"
+        },
+        {
+          "name": "Orbiculus ciliaris",
+          "cid": 15950,
+          "structureId": "40a3dcbccb7ea15112c819be6b02ec7d"
+        },
+        {
+          "name": "Zonular Fibers",
+          "cid": 15134,
+          "structureId": "8e614b481012ddaedb732ba6c9cd1692"
+        },
+        {
+          "name": "Meridional Fibers of Ciliary Muscle",
+          "cid": 15446,
+          "structureId": "0166425c74520a4aa244dce729192f5f"
+        },
+        {
+          "name": "Circular Fibers of Ciliary Muscle",
+          "cid": 15443,
+          "structureId": "032d58cee8843de17f9019f2cf79875c"
+        },
+        {
+          "name": "Radial Fibers of Ciliary Muscle",
+          "cid": 15973,
+          "structureId": "3a9fc3bad89d68851393623287493a70"
+        },
+        {
+          "name": "Radial Fibers of Ciliary Muscle",
+          "cid": 15973,
+          "structureId": "4097b9e368f29ce05d91f18e944b0334"
+        },
+        {
+          "name": "Circular Fibers of Ciliary Muscle",
+          "cid": 15443,
+          "structureId": "c3653dc449e42c21c7f1644ae3b01991"
+        },
+        {
+          "name": "Meridional Fibers of Ciliary Muscle",
+          "cid": 15446,
+          "structureId": "fac6491e00c4692d9b59854d3806bc43"
+        },
+        {
+          "name": "Corona Ciliaris",
+          "cid": 15970,
+          "structureId": "cfc2d11bc34ceb565f225bda0322974d"
+        },
+        {
+          "name": "Orbiculus ciliaris",
+          "cid": 15950,
+          "structureId": "e34247741e3b2fa45dedb94066458034"
+        },
+        {
+          "name": "Corona Ciliaris",
+          "cid": 15970,
+          "structureId": "fb04ee68df568d3b05d6247487506d9f"
+        },
+        {
+          "name": "Macula",
+          "cid": 15704,
+          "structureId": "066c2c071569e9c2de4f3b76f313b1b6"
+        },
+        {
+          "name": "Retina",
+          "cid": 15391,
+          "structureId": "19c80e8e807cd2f56730b2821766e9b8"
+        },
+        {
+          "name": "Fovea centralis",
+          "cid": 16089,
+          "structureId": "630732bfe7b08567e9bbfd7c21a86f0e"
+        },
+        {
+          "name": "Retina",
+          "cid": 15391,
+          "structureId": "ed31c9e3c8c60f1f9aa7a48e027de639"
+        },
+        {
+          "name": "Sphincter Pupillae",
+          "cid": 15363,
+          "structureId": "22820cbf3ee0622cf3d912783423e2da"
+        },
+        {
+          "name": "Dilator Pupillae",
+          "cid": 15590,
+          "structureId": "32d5da96f0a9baf6015b74662a39b37b"
+        },
+        {
+          "name": "Iris",
+          "cid": 15361,
+          "structureId": "3303e0035f2646ae2bce3a4eca375188"
+        },
+        {
+          "name": "Dilator Pupillae",
+          "cid": 15590,
+          "structureId": "37471ce45842620ba85e42d02671af87"
+        },
+        {
+          "name": "Sphincter Pupillae",
+          "cid": 15363,
+          "structureId": "816fa4da560103b89b68bc030d2a0688"
+        },
+        {
+          "name": "Pupil",
+          "cid": 15142,
+          "structureId": "8468f390641d9a9b2619e75c64b6e7f1"
+        },
+        {
+          "name": "Iris",
+          "cid": 15361,
+          "structureId": "cb4f0c5e864600d2f7d36d68417dfc9b"
+        },
+        {
+          "name": "Cornea",
+          "cid": 15318,
+          "structureId": "7847797380ddebbeed7370468d975230"
+        },
+        {
+          "name": "Cornea",
+          "cid": 15318,
+          "structureId": "85ec6d747e8b700ca35d7f126c0b6bd5"
+        },
+        {
+          "name": "Vitreous Humor",
+          "cid": 16194,
+          "structureId": "36def65ca2c2817c8609dcf8d27d163a"
+        },
+        {
+          "name": "Vitreous Humor",
+          "cid": 16194,
+          "structureId": "7410c931581c807876e712f0f6bbbca9"
+        },
+        {
+          "name": "Nucleus of Lens",
+          "cid": 15823,
+          "structureId": "19a8287ba751ce0516b3d7a8cbef09c0"
+        },
+        {
+          "name": "Capsule of Lens",
+          "cid": 15832,
+          "structureId": "532c41fc29bc66a9d255e01e4e262023"
+        },
+        {
+          "name": "Nucleus of Lens",
+          "cid": 15823,
+          "structureId": "6d700eb01c566c6b6f5c0deab3c0f396"
+        },
+        {
+          "name": "Cortex of Lens",
+          "cid": 16075,
+          "structureId": "b3fe311bacef28e3870b2c80c7b44a47"
+        },
+        {
+          "name": "Capsule of Lens",
+          "cid": 15832,
+          "structureId": "e173e21fa6664db740337ee8a7b3ffef"
+        },
+        {
+          "name": "Cortex of Lens",
+          "cid": 16075,
+          "structureId": "f1308c0825e1f216053afe31a837ede8"
+        },
+        {
+          "name": "Choroid",
+          "cid": 15934,
+          "structureId": "24b6fcebe0f24857de5baf65bc5013f2"
+        },
+        {
+          "name": "Choroid",
+          "cid": 15934,
+          "structureId": "661d95241b64ffdc8fb89ff2e1f66923"
+        },
+        {
+          "name": "Sclera",
+          "cid": 16148,
+          "structureId": "bcf956c33b4c629197138805fd38b43f"
+        },
+        {
+          "name": "Sclera",
+          "cid": 16148,
+          "structureId": "cc2d69cb019224ab14f05607dd973c33"
+        },
+        {
+          "name": "Medial Angle of Eye",
+          "cid": 15800,
+          "structureId": "72c4390656e0ec5a78f791d31fc2b137"
+        },
+        {
+          "name": "Superior Tarsal Muscle",
+          "cid": 15829,
+          "structureId": "0399eecd63c00d2b0766301885e72287"
+        },
+        {
+          "name": "Inferior Tarsus",
+          "cid": 16102,
+          "structureId": "1f0c3920f64a265a515e4c7653c5e69a"
+        },
+        {
+          "name": "Eyelashes",
+          "cid": 15653,
+          "structureId": "47aaf3622b03f426da6d488b263971fc"
+        },
+        {
+          "name": "Lateral Palpebral Ligament",
+          "cid": 15382,
+          "structureId": "4eef82b6d9771f0a0d2ee6d2b53531ce"
+        },
+        {
+          "name": "Goblet Cells",
+          "cid": 15886,
+          "structureId": "578a7528237deb8cc86b92d2d4aa9cb4"
+        },
+        {
+          "name": "Skin of Eyelid",
+          "cid": 16178,
+          "structureId": "5a3bb42b5b6814d644635e088e7e6be8"
+        },
+        {
+          "name": "Conjunctiva",
+          "cid": 15928,
+          "structureId": "6efe97607d4eef444a2a6f69feb4cc10"
+        },
+        {
+          "name": "Superior Tarsus",
+          "cid": 15268,
+          "structureId": "94dd52dee8f37b7c55fee1c338cade33"
+        },
+        {
+          "name": "Inferior Tarsal Muscle",
+          "cid": 15337,
+          "structureId": "98368f610d2e384ce0f39ae864b69dfa"
+        },
+        {
+          "name": "Medial Palpebral Ligament",
+          "cid": 15775,
+          "structureId": "ba292df8428024611e91c8728ee87799"
+        },
+        {
+          "name": "Inferior Marginal Arterial Arcade",
+          "cid": 16286,
+          "structureId": "037dec72940a18c7ddfbed79cbf68a85"
+        },
+        {
+          "name": "Lateral Palpebral Arteries",
+          "cid": 15534,
+          "structureId": "284fb4b4c3d10bbefd5d935b0faf235a"
+        },
+        {
+          "name": "Medial Palpebral Arteries",
+          "cid": 15371,
+          "structureId": "41f0c790a97fd16760a09a5fd08136ba"
+        },
+        {
+          "name": "Superior Marginal Arterial Arcade",
+          "cid": 15320,
+          "structureId": "4b5bcf0b4990deec9d4cac1663239fab"
+        },
+        {
+          "name": "Superior Peripheral Arterial Arcade",
+          "cid": 16141,
+          "structureId": "82f9d2e0794350ec5dafe279afc60f38"
+        },
+        {
+          "name": "Inferior Peripheral Venous Arcade",
+          "cid": 15633,
+          "structureId": "a8c1728e4140335b8899418a0bf4dd7a"
+        },
+        {
+          "name": "Superior Peripheral Venous Arcade",
+          "cid": 15581,
+          "structureId": "ad31397ece50ad2b1249f202d364029c"
+        },
+        {
+          "name": "Lacrimal Artery",
+          "cid": 16356,
+          "structureId": "c95d555b3bd17c31582e96d05f7cef25"
+        },
+        {
+          "name": "Tarsal Glands",
+          "cid": 15765,
+          "structureId": "e653fbf14bf1da14e3a1d9f36e36305c"
+        },
+        {
+          "name": "Zygomatic Branches of Facial Nerve",
+          "cid": 15874,
+          "structureId": "34685aa00341580e73a7f80524a27a83"
+        },
+        {
+          "name": "Supratrochlear Nerve",
+          "cid": 16130,
+          "structureId": "6b4adb7ef0fb080baf7f061ffd0d9be5"
+        },
+        {
+          "name": "Lacrimal Nerve",
+          "cid": 15835,
+          "structureId": "6c708ffbc90e4901b2629bd61caf346c"
+        },
+        {
+          "name": "Infraorbital Nerve",
+          "cid": 16057,
+          "structureId": "7ba460898141a6f635759ade08645b84"
+        },
+        {
+          "name": "Palpebral Branches of Infratrochlear Nerve",
+          "cid": 16254,
+          "structureId": "d5e1e1be8188ecac22b5702d40e0c56d"
+        },
+        {
+          "name": "Medial Branch of Supraorbital Nerve",
+          "cid": 15722,
+          "structureId": "edbad33cf3f962da04700fc33b752833"
+        },
+        {
+          "name": "Inferior Rectus Muscle",
+          "cid": 15441,
+          "structureId": "132bb6ed7028bcc0b58f47be5c06fb2b"
+        },
+        {
+          "name": "Lateral Rectus Muscle",
+          "cid": 15697,
+          "structureId": "3755f5be4a290c62f8362d022f520571"
+        },
+        {
+          "name": "Inferior Oblique Muscle",
+          "cid": 15797,
+          "structureId": "4b5c0bb01ee614d859dde5c71479185f"
+        },
+        {
+          "name": "Levator Palpebrae Superioris",
+          "cid": 16321,
+          "structureId": "528f156914444c5be6ac0543f097820f"
+        },
+        {
+          "name": "Superior Oblique Muscle",
+          "cid": 16257,
+          "structureId": "54ce82e4cf824a3080c201bc91576876"
+        },
+        {
+          "name": "Capsulopalpebral Fascia",
+          "cid": 15346,
+          "structureId": "54de58638b3c7787b939522184cb3c9c"
+        },
+        {
+          "name": "Superior Rectus Muscle",
+          "cid": 15529,
+          "structureId": "61ce92714490077e8d1fcc0a8f3cdce1"
+        },
+        {
+          "name": "Levator Aponeurosis",
+          "cid": 15749,
+          "structureId": "9654983ec35db765ac4a4611da535934"
+        },
+        {
+          "name": "Trochlea of Superior Oblique Muscle",
+          "cid": 15482,
+          "structureId": "c0052a6cf642b4c2732b7155f5d3883a"
+        },
+        {
+          "name": "Medial Rectus Muscle",
+          "cid": 15402,
+          "structureId": "e52a099e34a28239bad5b4d86ba82cb5"
+        },
+        {
+          "name": "Common Tendinous Ring",
+          "cid": 15078,
+          "structureId": "e75e6636f9240ca12dcdaca6ac29df1d"
+        },
+        {
+          "name": "Lacrimal Sac",
+          "cid": 15448,
+          "structureId": "1eed81b59ee452d8f59f764c1fb9bb13"
+        },
+        {
+          "name": "Nasolacrimal Duct",
+          "cid": 15206,
+          "structureId": "2eb80e4a04c93b38c8f0d21ce63b1496"
+        },
+        {
+          "name": "Lacrimal Gland",
+          "cid": 15892,
+          "structureId": "6ea8fd1f406c7516a2d8974c1f81ac00"
+        },
+        {
+          "name": "Glands of Wolfring",
+          "cid": 16041,
+          "structureId": "581b59b6d7e5215868fc493ec9ad0200"
+        },
+        {
+          "name": "Conjunctival Glands",
+          "cid": 15586,
+          "structureId": "db1e9898ff7e35725465760ced68dad5"
+        },
+        {
+          "name": "Lacrimal Canaliculus",
+          "cid": 16025,
+          "structureId": "a2e3cd024227f405936c7981aec7d44c"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/cef87283c97d00bfc7cb6582499a777e.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "transverse-colon",
+      "title": "Transverse Colon",
+      "appModelId": "47c1ae9a9d4fd79b0f9c50253cdd93a7",
+      "thumbnail": "/models/detailed/thumbnails/transverse-colon.png",
+      "previewFile": "/models/detailed/transverse-colon/preview.gltf",
+      "geometryBuffersAvailable": [
+        "7cb3b824e4e03c9cb18ef0e9d1f19fa7.vertex.bin",
+        "29d97785ea1fd8995e12507fda6ca8b6.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Transverse Colon",
+      "structures": [
+        {
+          "name": "Submucosa",
+          "cid": 15547,
+          "structureId": "11e0036d8ff5e50e062ac8ed7e5a6d54"
+        },
+        {
+          "name": "Straight Arteries",
+          "cid": 15719,
+          "structureId": "23c637c9a185027a5dd1bc9f36b35210"
+        },
+        {
+          "name": "Marginal Artery",
+          "cid": 15153,
+          "structureId": "444f9b732b851055509045ce76487065"
+        },
+        {
+          "name": "Veins of Transverse Colon",
+          "cid": 16240,
+          "structureId": "c1a847472ef196da0706c27d3c1b0c72"
+        },
+        {
+          "name": "Muscularis Mucosae",
+          "cid": 15208,
+          "structureId": "46bc0757013c31b48c9c3b53d653c5c4"
+        },
+        {
+          "name": "Submucosal Plexus",
+          "cid": 16398,
+          "structureId": "098c69861c38b9ed9cd08aabc0da0950"
+        },
+        {
+          "name": "Myenteric Plexus",
+          "cid": 15385,
+          "structureId": "507db3a3617965058b2bf0b9803e2c37"
+        },
+        {
+          "name": "Mesenteric Plexuses",
+          "cid": 15995,
+          "structureId": "aa03ba5393b5c8fc292101732a653364"
+        },
+        {
+          "name": "Mucosa",
+          "cid": 15083,
+          "structureId": "75dfea4460530ade2428c742900fe289"
+        },
+        {
+          "name": "Circular Muscular Layer",
+          "cid": 15543,
+          "structureId": "187518f65e4a2e574d17d6639eb5ce09"
+        },
+        {
+          "name": "Free Tenia",
+          "cid": 15246,
+          "structureId": "3a0b94b6778545fa0bc710ed7a1e1dd2"
+        },
+        {
+          "name": "Mesocolic Tenia",
+          "cid": 15245,
+          "structureId": "5a83cbcdf07df5b0c21f1307a5615080"
+        },
+        {
+          "name": "Omental Tenia",
+          "cid": 16357,
+          "structureId": "d8e99ecf61598cdec51232c964398ef8"
+        },
+        {
+          "name": "Transverse Mesocolon",
+          "cid": 15854,
+          "structureId": "7cafa4614153f99838a9498f3e8da2bd"
+        },
+        {
+          "name": "Omental Appendices",
+          "cid": 15819,
+          "structureId": "9a9232e5ca17e01404dd43e7b2090c55"
+        },
+        {
+          "name": "Greater Omentum",
+          "cid": 16395,
+          "structureId": "a8910833865b9c808bb1ed177d31149b"
+        },
+        {
+          "name": "Serosa",
+          "cid": 15846,
+          "structureId": "f15aa011373308fdd3a78b7363ace0b7"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/9aa7aebb6284599feeda33e60a8d821a.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "small-intestine",
+      "title": "Small Intestine",
+      "appModelId": "f7e17ab8002a5a2a44546d472d108411",
+      "thumbnail": "/models/detailed/thumbnails/small-intestine.png",
+      "previewFile": "/models/detailed/small-intestine/preview.gltf",
+      "geometryBuffersAvailable": [
+        "c998e4edda09a959bff51411785d8e8b.vertex.bin",
+        "8eeda84d78d184952e1f076a100b0da2.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Small Intestine",
+      "structures": [
+        {
+          "name": "Crypts of Small Intestine (Ileum)",
+          "cid": 16143,
+          "structureId": "258484dcc3701191f74799eec940edca"
+        },
+        {
+          "name": "Intestinal Villi (Ileum)",
+          "cid": 16167,
+          "structureId": "3db182a0e56daa08b5739f79e4bbb11a"
+        },
+        {
+          "name": "Muscularis mucosa (Ileum)",
+          "cid": 15626,
+          "structureId": "5324d8e40a0dd8a0de8e956fd7922293"
+        },
+        {
+          "name": "Transit Amplifying Cell (Ileum)",
+          "cid": 15173,
+          "structureId": "0ebbd7087cc823a136a584645b1f1436"
+        },
+        {
+          "name": "Enterocyte (Ileum)",
+          "cid": 15870,
+          "structureId": "2ac048414dc6aa11031075a916bbf03f"
+        },
+        {
+          "name": "Microfold Cell",
+          "cid": 16107,
+          "structureId": "2e96e174e2a64af7bdbd151d44026535"
+        },
+        {
+          "name": "Goblet Cell (Ileum)",
+          "cid": 15790,
+          "structureId": "a9910d6293df81404fdc6e8eb499983b"
+        },
+        {
+          "name": "Enteroendocrine Cell (Ileum)",
+          "cid": 15292,
+          "structureId": "d0a590829450e6a06bbc4a24ad0dae9a"
+        },
+        {
+          "name": "Paneth Cell (Ileum)",
+          "cid": 15396,
+          "structureId": "d13707bdce15444b7f862e0fed6ca8ee"
+        },
+        {
+          "name": "Gastrointestinal Stem Cell (Ileum)",
+          "cid": 15801,
+          "structureId": "d325323f25a66ff945fb54be4a911de4"
+        },
+        {
+          "name": "Lamina Propria (Ileum)",
+          "cid": 15424,
+          "structureId": "608322d759f0586fbdacc68350d3886b"
+        },
+        {
+          "name": "Central Lymphatic Vessel (Ileum)",
+          "cid": 16366,
+          "structureId": "a38452bea1c2a5b2d6529150521ceefc"
+        },
+        {
+          "name": "Longitudinal Muscular Layer of Small Intestine (Ileum)",
+          "cid": 16118,
+          "structureId": "0cd654084700b92700bd5f1a39728b58"
+        },
+        {
+          "name": "Myenteric Plexus (Ileum)",
+          "cid": 15514,
+          "structureId": "7522e422278869e436d398075b3a7cb9"
+        },
+        {
+          "name": "Circular Muscular Layer of Small Intestine (Ileum)",
+          "cid": 16213,
+          "structureId": "7c547a3353b442f41d687f58fe293f58"
+        },
+        {
+          "name": "Serosa of Small Intestine (Ileum)",
+          "cid": 16021,
+          "structureId": "750e65894efda999710befa580c9e2e4"
+        },
+        {
+          "name": "Submucosal Vascular Plexus (Ileum)",
+          "cid": 15774,
+          "structureId": "0f3b69cde58c6eb2ec4a79fef81a17c7"
+        },
+        {
+          "name": "Submucosal Plexus (Ileum)",
+          "cid": 15723,
+          "structureId": "574fe5631eba352eea91ded70a9798a6"
+        },
+        {
+          "name": "Aggregated Lymphoid Nodules of Ileum",
+          "cid": 16264,
+          "structureId": "72465a2ab9abe64c19103850084ac7db"
+        },
+        {
+          "name": "Submucosa of Small Intestine (Ileum)",
+          "cid": 16281,
+          "structureId": "86d09508386759ca2824069f14be05b7"
+        },
+        {
+          "name": "Submucosal Lymphatic Plexus (Ileum)",
+          "cid": 15218,
+          "structureId": "c6b3a96648cc493f655bb651c9429874"
+        },
+        {
+          "name": "Longitudinal Muscular Layer of Small Intestine (Duodenum)",
+          "cid": 15272,
+          "structureId": "33c9fae19de4d6bd498d8c06e842815c"
+        },
+        {
+          "name": "Myenteric Plexus (Duodenum)",
+          "cid": 15235,
+          "structureId": "3d6d91dd772cb49311d1d8c8f23d70e1"
+        },
+        {
+          "name": "Circular Muscular Layer of Small Intestine (Duodenum)",
+          "cid": 15615,
+          "structureId": "e320d8c343d7331248eb1f95f3a8bab5"
+        },
+        {
+          "name": "Serosa of Small Intestine (Duodenum)",
+          "cid": 15990,
+          "structureId": "159bd80a9a3f75352834f8ebf9e82ca2"
+        },
+        {
+          "name": "Intestinal Villi (Duodenum)",
+          "cid": 15871,
+          "structureId": "14ae2fee92af84633e8c8c6abdf73f23"
+        },
+        {
+          "name": "Crypts of Small Intestine (Duodenum)",
+          "cid": 15833,
+          "structureId": "294b30623cc19f34c8c291b8977d43c4"
+        },
+        {
+          "name": "Lamina Propria (Duodenum)",
+          "cid": 15465,
+          "structureId": "922a5caabb49712d102f77325ca09871"
+        },
+        {
+          "name": "Goblet Cell (Duodenum)",
+          "cid": 16031,
+          "structureId": "01af0c2bd332f1ca25ff9d66e33403bf"
+        },
+        {
+          "name": "Enterocyte (Duodenum)",
+          "cid": 15076,
+          "structureId": "0b7a131ce7191f42e2e92e6b23b81c5f"
+        },
+        {
+          "name": "Transit Amplifying Cell (Duodenum)",
+          "cid": 15914,
+          "structureId": "a58517a14f34fd8f4a76202be75b3328"
+        },
+        {
+          "name": "Gastrointestinal Stem Cell (Duodenum)",
+          "cid": 15824,
+          "structureId": "bede95cace363e704e1ce93678b7fa1a"
+        },
+        {
+          "name": "Enteroendocrine Cell (Duodenum)",
+          "cid": 16344,
+          "structureId": "dd8f9bc29a111ab0ad826ca0aa240784"
+        },
+        {
+          "name": "Paneth Cell (Duodenum)",
+          "cid": 15538,
+          "structureId": "f2b46327c7ea53885e0c04037b1b64b7"
+        },
+        {
+          "name": "Muscularis mucosa (Duodenum)",
+          "cid": 15902,
+          "structureId": "b3061ca7da6a6a5cd8214dcb598fdb58"
+        },
+        {
+          "name": "Central Lymphatic Vessel (Duodenum)",
+          "cid": 16279,
+          "structureId": "d16732f3d567c9fba9a9c1e4a4a7dea8"
+        },
+        {
+          "name": "Submucosal Lymphatic Plexus (Duodenum)",
+          "cid": 15368,
+          "structureId": "08ad6874751ffcaf4ffc61a0b93bdaf8"
+        },
+        {
+          "name": "Submucosa of Small Intestine (Duodenum)",
+          "cid": 15736,
+          "structureId": "264822882f5b6ad8965846fcd5e495a4"
+        },
+        {
+          "name": "Submucosal Vascular Plexus (Duodenum)",
+          "cid": 15420,
+          "structureId": "8c8dac1be60695263286d4a3125f8152"
+        },
+        {
+          "name": "Submucosal Plexus (Duodenum)",
+          "cid": 16216,
+          "structureId": "b378e295e4f94e2ab0d0472f04548853"
+        },
+        {
+          "name": "Duodenal Glands",
+          "cid": 15209,
+          "structureId": "e72168b3ee233bbb6551b93dbac17abc"
+        },
+        {
+          "name": "Submucosal Vascular Plexus (Jejunum)",
+          "cid": 15798,
+          "structureId": "552c8de6715a8f59f6ee347dfb2a84ac"
+        },
+        {
+          "name": "Submucosal Plexus (Jejunum)",
+          "cid": 16085,
+          "structureId": "a1b8894534892e9227ed3409bb0638bf"
+        },
+        {
+          "name": "Submucosal Lymphatic Plexus (Jejunum)",
+          "cid": 15681,
+          "structureId": "cc470c543f7489c567d086f7e1e04dbf"
+        },
+        {
+          "name": "Submucosa of Small Intestine (Jejunum)",
+          "cid": 15924,
+          "structureId": "e6b53031ae2bb0bea42b30217bc77bc6"
+        },
+        {
+          "name": "Serosa of Small Intestine (Jejunum)",
+          "cid": 16233,
+          "structureId": "7e759bc831c5516cad87104ae4a571de"
+        },
+        {
+          "name": "Myenteric Plexus (Jejunum)",
+          "cid": 16289,
+          "structureId": "1bb5e85935b0b9e2d595c50f12f3aad7"
+        },
+        {
+          "name": "Longitudinal Muscular Layer of Small Intestine (Jejunum)",
+          "cid": 15286,
+          "structureId": "3075ec341df738cf09ae10d466a8a3e2"
+        },
+        {
+          "name": "Circular Muscular Layer of Small Intestine (Jejunum)",
+          "cid": 15644,
+          "structureId": "4f5b07b461eaf1e6dfc03e1ce914e165"
+        },
+        {
+          "name": "Intestinal Villi (Jejunum)",
+          "cid": 15667,
+          "structureId": "55da6276ea6d364a34b6807a9b2c81c8"
+        },
+        {
+          "name": "Muscularis mucosa (Jejunum)",
+          "cid": 15639,
+          "structureId": "5b66dca9d632cab820102f3d3462dd6e"
+        },
+        {
+          "name": "Lamina Propria (Jejunum)",
+          "cid": 16315,
+          "structureId": "c803f4d1860b25b7c572f52c0e8da9e5"
+        },
+        {
+          "name": "Enterocyte (Jejunum)",
+          "cid": 16382,
+          "structureId": "4b1b881b6b5b12aedf40db4325d7c916"
+        },
+        {
+          "name": "Gastrointestinal Stem Cell (Jejunum)",
+          "cid": 15796,
+          "structureId": "6252673953d540823ab2523e7db106ed"
+        },
+        {
+          "name": "Enteroendocrine Cell (Jejunum)",
+          "cid": 15098,
+          "structureId": "64a9e233affa94ae67cb9d4880846694"
+        },
+        {
+          "name": "Paneth Cell (Jejunum)",
+          "cid": 15989,
+          "structureId": "b441abf4562784d11924439ddafe8131"
+        },
+        {
+          "name": "Transit Amplifying Cell (Jejunum)",
+          "cid": 16169,
+          "structureId": "ba4c5bdc4c4fd05f63f81e75efdcf6c7"
+        },
+        {
+          "name": "Goblet Cell (Jejunum)",
+          "cid": 15589,
+          "structureId": "f7d70c87a4ffa59dc2238f4026e05764"
+        },
+        {
+          "name": "Crypts of Small Intestine (Jejunum)",
+          "cid": 15075,
+          "structureId": "e00ed7e025060619be50ed8e5736b099"
+        },
+        {
+          "name": "Central Lymphatic Vessel (Jejunum)",
+          "cid": 15155,
+          "structureId": "e800378cdd7e72e3e2e918aef8f22ad2"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/b05b4dcdc3f73c1345cd2571165fffce.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "spermatogenesis",
+      "title": "Spermatogenesis",
+      "appModelId": "dea80a0553a10044f6f06de59825a0e4",
+      "thumbnail": "/models/detailed/thumbnails/spermatogenesis.png",
+      "previewFile": "/models/detailed/spermatogenesis/preview.gltf",
+      "geometryBuffersAvailable": [
+        "ddb532be880618698eb14b913a2e770f.vertex.bin",
+        "93864ff1a40a3cf8f1889da4f367cbd3.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Spermatogenesis",
+      "structures": [
+        {
+          "name": "Interstitial Endocrine Cell",
+          "cid": 15708,
+          "structureId": "030caba6fc42549244995d44adae50e4"
+        },
+        {
+          "name": "Capillaries (of Convoluted Seminiferous Tubules)",
+          "cid": 16385,
+          "structureId": "bd0a5e449130ca0a2b3ed4a3dc7ff71b"
+        },
+        {
+          "name": "Sperm",
+          "cid": 15460,
+          "structureId": "40352e018ee9c50aba981a53f8941023"
+        },
+        {
+          "name": "Sustentocyte",
+          "cid": 15536,
+          "structureId": "4d0dfd7f139d9e5d5890facd0b7a59f8"
+        },
+        {
+          "name": "Basement Membrane (of Convoluted Seminiferous Tubule)",
+          "cid": 15604,
+          "structureId": "44b402ecf9165fcd99d3b83c54bfe4e1"
+        },
+        {
+          "name": "Primary Spermatocyte",
+          "cid": 15177,
+          "structureId": "5d3d76a1076f69d9ee02e94915f25c33"
+        },
+        {
+          "name": "Spermatogonium",
+          "cid": 15282,
+          "structureId": "60422413e1d6fbc53ddf049497560329"
+        },
+        {
+          "name": "Myoid Cell",
+          "cid": 15761,
+          "structureId": "a91ffcc9c0730b30cbc55f3e9b4d078e"
+        },
+        {
+          "name": "Secondary Spermatocyte",
+          "cid": 15151,
+          "structureId": "1c7fe3f15f5128806486ff20e7493a79"
+        },
+        {
+          "name": "Elongated Spermatid",
+          "cid": 16317,
+          "structureId": "7a698dcad2be82e4925d16a0ea08463c"
+        },
+        {
+          "name": "Round Spermatid",
+          "cid": 15275,
+          "structureId": "8cd9245842ce305d9902dd7f254eb027"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/60fb2d6cb597e5c62b9c9ec7bd7565e5.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "olfactory-organ",
+      "title": "Olfactory Organ",
+      "appModelId": "cb0ea7054b88ce61157b0c0bf5da20e3",
+      "thumbnail": "/models/detailed/thumbnails/olfactory-organ.png",
+      "previewFile": "/models/detailed/olfactory-organ/preview.gltf",
+      "geometryBuffersAvailable": [
+        "48bdf379f8816546473f5fe2f8e90a02.vertex.bin",
+        "ec34f3a8719b3cabc2acd4bbdccbbb0a.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Olfactory Organ",
+      "structures": [
+        {
+          "name": "Cranial Dura Mater",
+          "cid": 15256,
+          "structureId": "036e3c8dc4770245a581a19432c8877c"
+        },
+        {
+          "name": "Odor Molecule",
+          "cid": 15112,
+          "structureId": "2a1ac08ee17254298d3d35653723c9f5"
+        },
+        {
+          "name": "Lamina Propria",
+          "cid": 15082,
+          "structureId": "5701978748f6e8c3f5ce15afa70af7d3"
+        },
+        {
+          "name": "Basement Membrane",
+          "cid": 16258,
+          "structureId": "72d9fdd5c20e51ee68ac4fa74d844def"
+        },
+        {
+          "name": "Centrifugal Nerve Fibers",
+          "cid": 16187,
+          "structureId": "0d985ca2766dfa22084927479743f231"
+        },
+        {
+          "name": "Olfactory Glomerulus",
+          "cid": 15187,
+          "structureId": "0fd555fb89c2a765a904a5cbb1d6be4d"
+        },
+        {
+          "name": "Periglomerular Cell",
+          "cid": 16050,
+          "structureId": "1bb601c605d1ca98de19db556aebe4e1"
+        },
+        {
+          "name": "Mitral Cell",
+          "cid": 15458,
+          "structureId": "5486b934d35ea0e89c03d97983860b76"
+        },
+        {
+          "name": "Olfactory Bulb",
+          "cid": 15916,
+          "structureId": "5ccc384bad979738a3c4ce1b1a405004"
+        },
+        {
+          "name": "Amacrine Granular Cell",
+          "cid": 16197,
+          "structureId": "7cab8540d4c9053c6a1279baeef4b15a"
+        },
+        {
+          "name": "Tufted Cell",
+          "cid": 15330,
+          "structureId": "dd642a43a454cfc473f9f25a76e6395a"
+        },
+        {
+          "name": "Mucus",
+          "cid": 15575,
+          "structureId": "9be65fadba9e44d00795b87953758636"
+        },
+        {
+          "name": "Olfactory Glia",
+          "cid": 16304,
+          "structureId": "ba25880fee7ac62293b1fe90a81c5c17"
+        },
+        {
+          "name": "Cranial Pia Mater",
+          "cid": 15510,
+          "structureId": "bdd1d1b48f4f9b8fbbfc08627915ecda"
+        },
+        {
+          "name": "Supporting Epithelial Cells",
+          "cid": 16260,
+          "structureId": "080224a99d8a215cc0a5dbe079e3bf1b"
+        },
+        {
+          "name": "Olfactory Gland",
+          "cid": 15988,
+          "structureId": "698aa7b8c07d1359ddda7baa4aef040f"
+        },
+        {
+          "name": "Basal Epithelial Cells",
+          "cid": 15795,
+          "structureId": "a65a103c7dc44b33f3d6efc3ae4527eb"
+        },
+        {
+          "name": "Cell Body (of Olfactory Sensory Neuron)",
+          "cid": 15901,
+          "structureId": "aec65b0fcd3d2ed283dbb126844e2af8"
+        },
+        {
+          "name": "Olfactory Axon",
+          "cid": 15752,
+          "structureId": "aedae885eaa1164c278e7ef9309f018d"
+        },
+        {
+          "name": "Cilia (of Olfactory Sensory Neuron)",
+          "cid": 15116,
+          "structureId": "c70b4e55ab878c36863be8ca5f4e7233"
+        },
+        {
+          "name": "Dendrite (of Olfactory Sensory Neuron)",
+          "cid": 16044,
+          "structureId": "d6bc8f949f1b02be38f15642afce6826"
+        },
+        {
+          "name": "Cribriform Plate of Ethmoid Bone",
+          "cid": 16259,
+          "structureId": "df0c9b79de8f7e16d054bcba59e94afa"
+        },
+        {
+          "name": "Cranial Arachnoid",
+          "cid": 15149,
+          "structureId": "fe2e3c007858051c4bb9a9ff9fa6ac42"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/ec90c0c0dfeb2d853b4b202ba53d5b3b.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "lymph-node",
+      "title": "Lymph Node",
+      "appModelId": "67ae6110b258ecc139e7e6f3661cb06e",
+      "thumbnail": "/models/detailed/thumbnails/lymph-node.png",
+      "previewFile": "/models/detailed/lymph-node/preview.gltf",
+      "geometryBuffersAvailable": [
+        "e359116e330356c99ee257636b9d5a3c.vertex.bin",
+        "7ea79dbd671fed033707991d42f4c414.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Lymph Node",
+      "structures": [
+        {
+          "name": "Trabeculae of Lymph Node",
+          "cid": 15596,
+          "structureId": "0cd15a48ff2ede6286fb869118dd7264"
+        },
+        {
+          "name": "Medullary Cords",
+          "cid": 15757,
+          "structureId": "22e629f6069bd1a2d8b61c37dd56efad"
+        },
+        {
+          "name": "Medullary Sinus",
+          "cid": 15205,
+          "structureId": "f9f9a6a2add4b098c4f98a1c2924d210"
+        },
+        {
+          "name": "Capsule of Lymph Node",
+          "cid": 16142,
+          "structureId": "53612ff86450675ecaa97835f9906bd7"
+        },
+        {
+          "name": "Trabecular Sinus",
+          "cid": 15416,
+          "structureId": "b991b04f4f06b47d7bcd9700496e310f"
+        },
+        {
+          "name": "Subcapsular sinus",
+          "cid": 15237,
+          "structureId": "bea81be6b274aac6dd784f30ac2c0b5e"
+        },
+        {
+          "name": "Primary Lymphoid Nodule",
+          "cid": 15124,
+          "structureId": "21c39c35be28055d69de171308c26770"
+        },
+        {
+          "name": "Cortex of Lymph Node",
+          "cid": 15903,
+          "structureId": "bec15d4fa76c47e577d02f0bbcc29bc3"
+        },
+        {
+          "name": "Germinal Center",
+          "cid": 16255,
+          "structureId": "24a4ec31366edf577995ac50c59d9a97"
+        },
+        {
+          "name": "Mantle Zone",
+          "cid": 15572,
+          "structureId": "773dcfd3b55485f9e482449e5b7c84c7"
+        },
+        {
+          "name": "Paracortical Region",
+          "cid": 15915,
+          "structureId": "d2e7932752dee69cab7869d204a7cffd"
+        },
+        {
+          "name": "Vein",
+          "cid": 15891,
+          "structureId": "0d90c9ce07045ed79dae1d433dd0f6e9"
+        },
+        {
+          "name": "Artery",
+          "cid": 16195,
+          "structureId": "0ffb032cd8f6b3f2d7055d05e6e6b97f"
+        },
+        {
+          "name": "High Endothelial Venule",
+          "cid": 15631,
+          "structureId": "1400bf0cfeeae3f70949cff2855284e0"
+        },
+        {
+          "name": "Outer Connective Tissue (of Afferent Lymphatic Vessel)",
+          "cid": 15088,
+          "structureId": "1db56351b6c5615427d85e5a21a5bb25"
+        },
+        {
+          "name": "Lymphatic Valve (of Afferent Lymphatic Vessels)",
+          "cid": 15491,
+          "structureId": "3d704b9e5275ae17d308444344c6b099"
+        },
+        {
+          "name": "Smooth Muscle Layer (of Afferent lymphatic Vessels)",
+          "cid": 15217,
+          "structureId": "84e18e5c222cec4eda039be5344fea6d"
+        },
+        {
+          "name": "Endothelial Layer (of Afferent Lymphatic Vessels)",
+          "cid": 15606,
+          "structureId": "e417377b969f2458ee08c35cbb329f9b"
+        },
+        {
+          "name": "Outer Connective Tissue (of Efferent Lymphatic Vessel)",
+          "cid": 15204,
+          "structureId": "5e97ae9226ef39958302006f115fac0c"
+        },
+        {
+          "name": "Smooth Muscle Layer (of Efferent Lymphatic Vessel)",
+          "cid": 15739,
+          "structureId": "819cd8024903adf54072d1a33b7be080"
+        },
+        {
+          "name": "Endothelial Layer (of Efferent Lymphatic Vessel)",
+          "cid": 15521,
+          "structureId": "b76741c54e0dcf7b5ba208eff65171f7"
+        },
+        {
+          "name": "Lymphatic valves (of Efferent lymphatic vessel)",
+          "cid": 15582,
+          "structureId": "cb82b1f24d45b252a0463bbbb4fd09ac"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/a9960dff8415a7e21d31ebece9fd3792.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "cardiac-striated-muscle",
+      "title": "Cardiac Striated Muscle",
+      "appModelId": "74a18d2bf604d896e4521b113074ee79",
+      "thumbnail": "/models/detailed/thumbnails/cardiac-striated-muscle.png",
+      "previewFile": "/models/detailed/cardiac-striated-muscle/preview.gltf",
+      "geometryBuffersAvailable": [
+        "20f47c7467bfe0282e867288dd7b208a.vertex.bin",
+        "197678f1c19f3e08c135014d7972e008.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Cardiac Striated Muscle",
+      "structures": [
+        {
+          "name": "Glycogen Granule (Cardiac Muscle Cell)",
+          "cid": 15591,
+          "structureId": "064e8aa7e472af13c59be0052b3638d9"
+        },
+        {
+          "name": "Nucleus (Cardiac Muscle Cell)",
+          "cid": 16028,
+          "structureId": "1412a95938c54de1b9e9d44ca59f6b2e"
+        },
+        {
+          "name": "Capillary (Cardiac Muscle Cell)",
+          "cid": 15712,
+          "structureId": "162af93761f8fa627c83afa92482612f"
+        },
+        {
+          "name": "Desmosome (Cardiac Muscle Cell)",
+          "cid": 16058,
+          "structureId": "239f1dc362906e5afe81c99401ca77ab"
+        },
+        {
+          "name": "Lipofuscin Granule (Cardiac Muscle Cell)",
+          "cid": 15965,
+          "structureId": "2d2c0874ada9118c55355c96d2f40011"
+        },
+        {
+          "name": "Nucleolus (Cardiac Muscle Cell)",
+          "cid": 15767,
+          "structureId": "2ede6bbd935a13e3325e89f66677e0b4"
+        },
+        {
+          "name": "Fascia Adherens (Cardiac Muscle Cell)",
+          "cid": 15132,
+          "structureId": "3e02e08dfaf68aee2fe07b185d7136b3"
+        },
+        {
+          "name": "Myofilament (Cardiac Muscle Cell)",
+          "cid": 15145,
+          "structureId": "41a1d34f04867d1540644a8f50d4c685"
+        },
+        {
+          "name": "Intercalated Disc",
+          "cid": 15215,
+          "structureId": "443640be0d0fa7fa2cd46b146474b13a"
+        },
+        {
+          "name": "Mitochondrion (Cardiac Muscle Cell)",
+          "cid": 15418,
+          "structureId": "51c7c9e130f765c40bf8198fe7fbfb79"
+        },
+        {
+          "name": "Sarcolemma (Cardiac Muscle Cell)",
+          "cid": 15485,
+          "structureId": "57cd95793d67941e44f9e04c31d1cef9"
+        },
+        {
+          "name": "T Tubule (Cardiac Muscle Cell)",
+          "cid": 15230,
+          "structureId": "70e13921bd433d72c8258a16af949bf8"
+        },
+        {
+          "name": "Ribosome (Cardiac Muscle Cell)",
+          "cid": 16380,
+          "structureId": "7267677ef73b82ef87b7644404b2f2e2"
+        },
+        {
+          "name": "Gap Junction (Cardiac Muscle Cell)",
+          "cid": 15900,
+          "structureId": "8c7410b0ac6757d41fb11cecfa8f8115"
+        },
+        {
+          "name": "Golgi Complex (Cardiac Muscle Cell)",
+          "cid": 15509,
+          "structureId": "b5f1c2cdd27fa4edb053c55ad622fc75"
+        },
+        {
+          "name": "Cardiac Myofibril",
+          "cid": 15118,
+          "structureId": "ba88f571da3ac2269654781753a69044"
+        },
+        {
+          "name": "Sarcoplasm (Cardiac Muscle Cell)",
+          "cid": 15312,
+          "structureId": "c6812797d56dba72833e1309eec2acf9"
+        },
+        {
+          "name": "Sarcoplasmic Reticulum (Cardiac Muscle Cell)",
+          "cid": 15066,
+          "structureId": "cdde90644c4ba75dda2c473f46ea3d61"
+        },
+        {
+          "name": "External Lamina (Cardiac Muscle Cell)",
+          "cid": 15875,
+          "structureId": "f53665adeb486f904daebebeb9fcb554"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/d9286a72880528996938c3305f5f302a.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "skeletal-muscle",
+      "title": "Skeletal Muscle",
+      "appModelId": "6ca0d6d7577c9ac5a3a5a758eb600d2d",
+      "thumbnail": "/models/detailed/thumbnails/skeletal-muscle.png",
+      "previewFile": "/models/detailed/skeletal-muscle/preview.gltf",
+      "geometryBuffersAvailable": [
+        "3650d959d6a3f6a4d3af1b5ecad1cda1.vertex.bin",
+        "c29d3065e7e60b62b4fdb48e30a028b4.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Skeletal Muscle",
+      "structures": [
+        {
+          "name": "Belly of Muscle",
+          "cid": 16284,
+          "structureId": "4e42ae141c91ece38fd73fa3ddc46c64"
+        },
+        {
+          "name": "Epimysium",
+          "cid": 15725,
+          "structureId": "b63a65adbad433b7b71bd66c5938ce61"
+        },
+        {
+          "name": "Tendon",
+          "cid": 15331,
+          "structureId": "fc8f4e70e5943c66bc8df5eac972e990"
+        },
+        {
+          "name": "Fascicular Arrangement",
+          "cid": 15993,
+          "structureId": "96218dd994015e8b69aad261b46a9300"
+        },
+        {
+          "name": "Veins of the Perimysium",
+          "cid": 16139,
+          "structureId": "a1000bc663677dddf985a9940676f408"
+        },
+        {
+          "name": "Muscle Fascicle",
+          "cid": 15946,
+          "structureId": "a5c0d454987198e909c8b355e3ae3a8e"
+        },
+        {
+          "name": "Perimysium",
+          "cid": 15629,
+          "structureId": "a83e8a1c75fe1b0e873e89b31038f012"
+        },
+        {
+          "name": "Extrafusal Muscle Fiber",
+          "cid": 15298,
+          "structureId": "b4d9199ffe5377e29c7f7e90ce45919e"
+        },
+        {
+          "name": "Endomysium",
+          "cid": 15683,
+          "structureId": "c2864ac33052ead6ee321f3bd163ec1c"
+        },
+        {
+          "name": "Arteries of Perimysium",
+          "cid": 16027,
+          "structureId": "cd5c9857cea54e37da64917919a575c1"
+        },
+        {
+          "name": "Motor Nerves of Perimysium",
+          "cid": 15423,
+          "structureId": "cee54c8c68cd77eb02925c7b4039cff5"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/082092c29b39c10bce740522befb7b1c.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "hepatic-lobule",
+      "title": "Hepatic Lobule",
+      "appModelId": "7973e1fad592e4c1b4ed524163ee18d8",
+      "thumbnail": "/models/detailed/thumbnails/hepatic-lobule.png",
+      "previewFile": "/models/detailed/hepatic-lobule/preview.gltf",
+      "geometryBuffersAvailable": [
+        "d27574f30c119c850c182d0a8ee3a0bc.vertex.bin",
+        "55b0846cdd44702f2a88aacb4a631ace.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Hepatic Lobule",
+      "structures": [
+        {
+          "name": "Sublobular Vein",
+          "cid": 15231,
+          "structureId": "1cef46fcca02b1a122ec5a1cc9fec75e"
+        },
+        {
+          "name": "Sinusoid",
+          "cid": 15748,
+          "structureId": "495d4b52eec2415f6a28efd335f72730"
+        },
+        {
+          "name": "Hepatocyte",
+          "cid": 16211,
+          "structureId": "8159fa14b5f47b408952208b6b79ffb1"
+        },
+        {
+          "name": "Central Vein",
+          "cid": 15405,
+          "structureId": "b0765a0def4f25344e2ab36f7731b674"
+        },
+        {
+          "name": "Interlobular Vein",
+          "cid": 15711,
+          "structureId": "5bc49f28f2b7d7938bde4ae8596cfadb"
+        },
+        {
+          "name": "Lymphatic Capillary",
+          "cid": 16350,
+          "structureId": "7440d5ccbda512ab40493af61e5cfbec"
+        },
+        {
+          "name": "Interlobular Bile Duct",
+          "cid": 15778,
+          "structureId": "7bfd05b6c8442074f91271462c63cb54"
+        },
+        {
+          "name": "Interlobular Artery",
+          "cid": 16227,
+          "structureId": "81424699663a46d8036ecc020cf0e262"
+        },
+        {
+          "name": "Hepatic Plexus",
+          "cid": 15374,
+          "structureId": "c4028603cb9880ff5981d9ad5510649a"
+        },
+        {
+          "name": "Perivascular Fibrous Capsule",
+          "cid": 15580,
+          "structureId": "dc03843a19a22d0758d424c9a8efe6c2"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/df967e3d34a0b80cc30d42f74223b245.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "kidney-lobe",
+      "title": "Kidney Lobe",
+      "appModelId": "67c586c91cfdd00acdec10281bcaa5d9",
+      "thumbnail": "/models/detailed/thumbnails/kidney-lobe.png",
+      "previewFile": "/models/detailed/kidney-lobe/preview.gltf",
+      "geometryBuffersAvailable": [
+        "f6f9778d247c59702732e59e34dea1b9.vertex.bin",
+        "f4ea274ba0b7f082dd38a9d1bf4583f6.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Kidney Lobe",
+      "structures": [
+        {
+          "name": "Perirenal Fat Capsule",
+          "cid": 15772,
+          "structureId": "02c7a453bb73780da49fc3b63e976711"
+        },
+        {
+          "name": "Renal Columns",
+          "cid": 15614,
+          "structureId": "38fd6e9fbe7825b477b4d898a9b6ffc3"
+        },
+        {
+          "name": "Descending Limb of Nephron Loop",
+          "cid": 15756,
+          "structureId": "2c0436d27b28fdf3023a6e53d13ccaf3"
+        },
+        {
+          "name": "Glomerular Capsule",
+          "cid": 15513,
+          "structureId": "163dbbe9dc3b35c33147dcdf71f56965"
+        },
+        {
+          "name": "Glomerulus",
+          "cid": 15706,
+          "structureId": "3b8a730fc9b11ad69846ad107a117c44"
+        },
+        {
+          "name": "Juxtamedullary Nephron",
+          "cid": 15316,
+          "structureId": "816527d5f9ace9ab231aa7f6405de327"
+        },
+        {
+          "name": "Distal Convoluted Tubule",
+          "cid": 15791,
+          "structureId": "8507a40611d4de683e04010c03eb4318"
+        },
+        {
+          "name": "Proximal Convoluted Tubule",
+          "cid": 15329,
+          "structureId": "cb80f6f2807d3ab692b33f0a5dd3593c"
+        },
+        {
+          "name": "Cortical Nephron",
+          "cid": 15826,
+          "structureId": "e05aa45c8c5ded689dc9e507e58f8af9"
+        },
+        {
+          "name": "Ascending Limb of Nephron Loop",
+          "cid": 15817,
+          "structureId": "e8841a77cbdd63febcabdf37428e624c"
+        },
+        {
+          "name": "Renal Papilla",
+          "cid": 15188,
+          "structureId": "62aeb64c11dd4fcb59c85311cac7e6c6"
+        },
+        {
+          "name": "Minor Renal Calyx",
+          "cid": 15079,
+          "structureId": "679aefd10cdca189182dced7206729e1"
+        },
+        {
+          "name": "Outer Zone of Renal Medulla",
+          "cid": 15553,
+          "structureId": "1dafba695bf335ae2dd47ba8a22f3d96"
+        },
+        {
+          "name": "Inner Zone of Renal Medulla",
+          "cid": 15651,
+          "structureId": "64658ff13bdcd484a90cd0d4a204e796"
+        },
+        {
+          "name": "Outer Zone of Renal Cortex",
+          "cid": 15473,
+          "structureId": "03f82fac2cebc3a255070fb64528c2be"
+        },
+        {
+          "name": "Inner Zone of Renal Cortex",
+          "cid": 16156,
+          "structureId": "cf2cced9d5b2a5730f3220e1dfdcd016"
+        },
+        {
+          "name": "Collecting Duct",
+          "cid": 15068,
+          "structureId": "bfcd438d836e7cdfec57b8dba7b02a13"
+        },
+        {
+          "name": "Papillary Duct",
+          "cid": 15634,
+          "structureId": "de58285cb3c8ad8be650f196ba09f0a5"
+        },
+        {
+          "name": "Interlobular Arteries of Kidney",
+          "cid": 15747,
+          "structureId": "073aed27bbdc190829c5095725969dde"
+        },
+        {
+          "name": "Arcuate Veins of Kidney",
+          "cid": 15455,
+          "structureId": "17bdf78a116806b7672a099831d0c5a5"
+        },
+        {
+          "name": "Arcuate Arteries of Kidney",
+          "cid": 16307,
+          "structureId": "48903b29006e5e4c72b86847c1e5b538"
+        },
+        {
+          "name": "Afferent Glomerular Arterioles",
+          "cid": 15427,
+          "structureId": "63b3ba4c6fbf1f9be6ad9aa776438061"
+        },
+        {
+          "name": "Efferent Glomerular Arterioles",
+          "cid": 15745,
+          "structureId": "6694a4f25353f4b6d89cf93fec29c466"
+        },
+        {
+          "name": "Interlobular Veins of Kidney",
+          "cid": 15668,
+          "structureId": "83a2fb4180007a4c65f535a697700df8"
+        },
+        {
+          "name": "Capsular Branches of Intrarenal Arteries",
+          "cid": 16088,
+          "structureId": "ac00df4d6cfcde5e7f9c984ecdc84f6c"
+        },
+        {
+          "name": "Straight Arterioles of Kidney",
+          "cid": 15746,
+          "structureId": "b48ba24d1ec3ab964917a6336006e1c4"
+        },
+        {
+          "name": "Peritubular Capillaries",
+          "cid": 16049,
+          "structureId": "da01b7c65be850a29f192db53055bd1e"
+        },
+        {
+          "name": "Interlobar Arteries of Kidney",
+          "cid": 16396,
+          "structureId": "e90d04d95d62511823b5f27eafd0e80e"
+        },
+        {
+          "name": "Interlobar Veins of Kidney",
+          "cid": 16354,
+          "structureId": "ea0b0be5ec9d8d6ff811abde3f0ab7e0"
+        },
+        {
+          "name": "Fibrous Capsule of Kidney",
+          "cid": 15449,
+          "structureId": "ffb710144c491287bdc12c98fae85820"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/c4ddbe9e82eed94fe7377595abe1e594.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "blood-air-barrier",
+      "title": "Blood-Air Barrier",
+      "appModelId": "6a643c76fe8d503c6e398a5e710376d9",
+      "thumbnail": "/models/detailed/thumbnails/blood-air-barrier.png",
+      "previewFile": "/models/detailed/blood-air-barrier/preview.gltf",
+      "geometryBuffersAvailable": [
+        "9b2567c211b5b61a1231ada2dd2782f2.vertex.bin",
+        "e747d01a8ee54dc28ad9e7e919402a38.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Blood-Air Barrier",
+      "displayTitle": "Blood Air Barrier",
+      "structures": [
+        {
+          "name": "Erythrocyte",
+          "cid": 15642,
+          "structureId": "3502b9ad32b8d9f5533622fd8260a4df"
+        },
+        {
+          "name": "Basal Lamina of Capillary",
+          "cid": 15822,
+          "structureId": "9069a3050ac9631ec34ede3a660406df"
+        },
+        {
+          "name": "Continuous Endothelium",
+          "cid": 15064,
+          "structureId": "bcee01801394e29c039f733568d21812"
+        },
+        {
+          "name": "Alveolar Macrophage",
+          "cid": 16346,
+          "structureId": "0509523262fb730bac7ddd70d95c7a1c"
+        },
+        {
+          "name": "Alveolar Pore",
+          "cid": 26673,
+          "structureId": "8149c7c54140612051796d0f039d47ca"
+        },
+        {
+          "name": "Alveolar Basal Lamina",
+          "cid": 15499,
+          "structureId": "8d2ad0a7a22d116cd0cfa13efcc5b4f7"
+        },
+        {
+          "name": "Type I Pneumocyte",
+          "cid": 15563,
+          "structureId": "3a1207c5690c8064c63599fbd51bc3ed"
+        },
+        {
+          "name": "Lamellar Body",
+          "cid": 15607,
+          "structureId": "80c8b4e77e64a1d6f44cc6afb7610633"
+        },
+        {
+          "name": "Type II Pneumocyte",
+          "cid": 15163,
+          "structureId": "979106489e57ed5cd5f371113c237e2d"
+        },
+        {
+          "name": "Surfactant",
+          "cid": 15818,
+          "structureId": "c40792e23cc027ddbfbc87e3c13bc6fb"
+        },
+        {
+          "name": "Alveolar Duct",
+          "cid": 26672,
+          "structureId": "896aebeef3c12976dc41b5f54d3ab689"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/215e872fe7b112b0b9e75683212bedc4.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "thyroid-gland",
+      "title": "Thyroid Gland",
+      "appModelId": "f69e597b703253af4c20828627620ffc",
+      "thumbnail": "/models/detailed/thumbnails/thyroid-gland.png",
+      "previewFile": "/models/detailed/thyroid-gland/preview.gltf",
+      "geometryBuffersAvailable": [
+        "361727257cfff4a9a29df905ccb089d7.vertex.bin",
+        "5546c4c9affdab8e0cfaf025299d5649.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Thyroid Gland",
+      "structures": [
+        {
+          "name": "Perifollicular Lymphocapillary Network",
+          "cid": 15663,
+          "structureId": "27dfad685eda9974e1d6f621778122be"
+        },
+        {
+          "name": "Connective Tissue Septum of Thyroid Gland",
+          "cid": 26649,
+          "structureId": "4437546eba50e532621cb5259157c0e4"
+        },
+        {
+          "name": "Parafollicular Cell",
+          "cid": 15528,
+          "structureId": "131ef7d72094c20b2ded41fff93916f1"
+        },
+        {
+          "name": "Basement Membrane (Thyroid Gland)",
+          "cid": 15595,
+          "structureId": "18b79dba47873c328ae85c1add340f14"
+        },
+        {
+          "name": "Thyroid Colloid",
+          "cid": 15785,
+          "structureId": "44af34cfed9fb13401abba6a54ee0fdf"
+        },
+        {
+          "name": "Basement Membrane (Thyroid Gland)",
+          "cid": 15595,
+          "structureId": "4bddac08e65631f63cc7a6f224e82e70"
+        },
+        {
+          "name": "Thyroid Follicular Cell",
+          "cid": 16163,
+          "structureId": "8015fec15f0733b0cb1eff8922ad6849"
+        },
+        {
+          "name": "Microvilli (Thyroid Follicular Cell)",
+          "cid": 15781,
+          "structureId": "aa860092cf863ebb8ee1410414f130d7"
+        },
+        {
+          "name": "Stroma of Thyroid Gland",
+          "cid": 26653,
+          "structureId": "9727a2fb63f05386004a72b2239187b4"
+        },
+        {
+          "name": "Perifollicular Capillary Network",
+          "cid": 15099,
+          "structureId": "bb2034867bad8ebafbc404a1c6893e4d"
+        },
+        {
+          "name": "Erythrocyte",
+          "cid": 16056,
+          "structureId": "d81fd7a42ae1a5cce994d2369802395a"
+        },
+        {
+          "name": "Thyroid Plexus",
+          "cid": 15425,
+          "structureId": "f4f5837cb73d5bb5657b424226ccfdbe"
+        },
+        {
+          "name": "Fibrous Capsule of Thyroid Gland",
+          "cid": 19906,
+          "structureId": "71c626643efa78de8f24e4ce07d10865"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/912f34378f9cd47bbf7e1670b4007f3e.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "photoreceptor-cells",
+      "title": "Photoreceptor Cells",
+      "appModelId": "438d37a2837731304335a34cc2e16535",
+      "thumbnail": "/models/detailed/thumbnails/photoreceptor-cells.png",
+      "previewFile": "/models/detailed/photoreceptor-cells/preview.gltf",
+      "geometryBuffersAvailable": [
+        "63a76ed9f50c0e777738e95ff0df564e.vertex.bin",
+        "2f2f811ea020bb40982da703c180c64e.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Photoreceptor Cells",
+      "structures": [
+        {
+          "name": "Melanosome",
+          "cid": 15240,
+          "structureId": "8126b935a8b92feb91e5c19fabf55263"
+        },
+        {
+          "name": "Pigment Cell of Retina",
+          "cid": 15658,
+          "structureId": "8edbe5ed7bc672523209be5473e7a2a0"
+        },
+        {
+          "name": "Inner Segment of Rod Cell",
+          "cid": 15296,
+          "structureId": "0213cc9523d18d7f0f7aa3b744b5d94a"
+        },
+        {
+          "name": "Outer Segment of Rod Cell",
+          "cid": 15294,
+          "structureId": "0a6208048611d0e393a1de82d6d2e829"
+        },
+        {
+          "name": "Soma of Rod Cell",
+          "cid": 15694,
+          "structureId": "1cc45057dc283e2c1bfa5f5adb4c38a0"
+        },
+        {
+          "name": "Nucleus (Rod Cell)",
+          "cid": 15242,
+          "structureId": "3a6253b9da82ee70ed1d32bf5894466e"
+        },
+        {
+          "name": "Mitochondria (Rod Cell)",
+          "cid": 15494,
+          "structureId": "4e1c6de4d98ba0016a044000537b641d"
+        },
+        {
+          "name": "Membranous Disc of Rod Cell",
+          "cid": 15647,
+          "structureId": "538d31a66942b13772358ae31dc0a3b4"
+        },
+        {
+          "name": "Rod Cell Spherule",
+          "cid": 15297,
+          "structureId": "750294f37a972ab10dc31954e1349362"
+        },
+        {
+          "name": "Connecting Stalk of Rod Cell",
+          "cid": 16181,
+          "structureId": "7bd6929ee033492fc3d904b6e7d883c0"
+        },
+        {
+          "name": "Golgi Complex (Rod Cell)",
+          "cid": 16034,
+          "structureId": "862f7ff0c2f4dbe87b0896d9fb31674a"
+        },
+        {
+          "name": "Connecting Cilium of Rod Cell",
+          "cid": 16019,
+          "structureId": "a2bf0f098e7583c32b6df067210f93e1"
+        },
+        {
+          "name": "Axonal Process of Rod Cell",
+          "cid": 15700,
+          "structureId": "a559dfd421a7413cd28d8372ced61379"
+        },
+        {
+          "name": "Calyceal Processes of Rod Cell",
+          "cid": 16224,
+          "structureId": "b3ad323260f6c6ca351fcf8b1661ad53"
+        },
+        {
+          "name": "Bipolar Neurons",
+          "cid": 16158,
+          "structureId": "bc3f39eda7fd4e5043635360edf55215"
+        },
+        {
+          "name": "Calyceal Processes of Cone Cell",
+          "cid": 16131,
+          "structureId": "259527065d452ce22f845cf9933e6659"
+        },
+        {
+          "name": "Soma of Cone Cell",
+          "cid": 15447,
+          "structureId": "2749addb816bcf750ff901435911d13c"
+        },
+        {
+          "name": "Nucleus (Cone Cell)",
+          "cid": 15333,
+          "structureId": "2c5fa4da95bc93510040439ac022ff4e"
+        },
+        {
+          "name": "Connecting Stalk of Cone Cell",
+          "cid": 16083,
+          "structureId": "52cb82efc144029ec17e3e79830a7b94"
+        },
+        {
+          "name": "Mitochondria (Cone Cell)",
+          "cid": 15906,
+          "structureId": "577f4c5b99ab0fd8b1ffe86f28430b60"
+        },
+        {
+          "name": "Outer Segment of Cone Cell",
+          "cid": 15922,
+          "structureId": "6a30ec60772e8315d6638974fa92cbea"
+        },
+        {
+          "name": "Axonal Process of Cone Cell",
+          "cid": 15830,
+          "structureId": "6aca139f7f1a1298c4386d7b92b324c5"
+        },
+        {
+          "name": "Connecting Cilium of Cone Cell",
+          "cid": 15375,
+          "structureId": "6e69b56c11285093bfb14e054bbc9283"
+        },
+        {
+          "name": "Cone Cell Pedicle",
+          "cid": 16060,
+          "structureId": "8a2e233c621d0c81531fa412486d8bdc"
+        },
+        {
+          "name": "Membranous Disc of Cone Cell",
+          "cid": 15355,
+          "structureId": "bc3cf3cab0e95f679f151e1c55f3058d"
+        },
+        {
+          "name": "Golgi Complex (Cone Cell)",
+          "cid": 15887,
+          "structureId": "c1164f9563660bacdbaf1cf1dba35c3e"
+        },
+        {
+          "name": "Inner Segment of Cone Cell",
+          "cid": 15847,
+          "structureId": "c309ec79ef6762b1edb3e9789d3ce76a"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/58b24be76918348bdc5b4e4312f66355.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "peripheral-nerve",
+      "title": "Peripheral Nerve",
+      "appModelId": "ba34cc84df25e5d96d57ebe6b7cf13af",
+      "thumbnail": "/models/detailed/thumbnails/peripheral-nerve.png",
+      "previewFile": "/models/detailed/peripheral-nerve/preview.gltf",
+      "geometryBuffersAvailable": [
+        "c6383fea268cd93d086ab917ef93a914.vertex.bin",
+        "b1e6c1fb57a3d55264be114c6016fa66.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Peripheral Nerve",
+      "structures": [
+        {
+          "name": "Superficial Epineurium",
+          "cid": 16370,
+          "structureId": "0c607e6ece39d642b347b2f9971e40f6"
+        },
+        {
+          "name": "Endoneurium",
+          "cid": 16249,
+          "structureId": "26c2356f689719dbd675341d32d02764"
+        },
+        {
+          "name": "Axon (Somatic Motor Efferent)",
+          "cid": 15110,
+          "structureId": "5a6018e926c0702246358942d7ee2352"
+        },
+        {
+          "name": "Myelin Sheath (Somatic Motor Efferent)",
+          "cid": 16247,
+          "structureId": "801813a1c8e7b040edca6556ac01b5a0"
+        },
+        {
+          "name": "Myelin Sheath (Somatic Sensory Afferent)",
+          "cid": 15738,
+          "structureId": "0a1271f19a5240d52506954998d729fb"
+        },
+        {
+          "name": "Axon (Somatic Sensory Afferent)",
+          "cid": 15737,
+          "structureId": "42d683e23be9beadaea674f37e5596a1"
+        },
+        {
+          "name": "Secondary Nerve Fascicle",
+          "cid": 15324,
+          "structureId": "5e06059ddf4c631a3121be0be6ea309d"
+        },
+        {
+          "name": "Axon (General Visceral Afferent)",
+          "cid": 16246,
+          "structureId": "93c08346399edf488123dfad246d5742"
+        },
+        {
+          "name": "Myelin Sheath (General Visceral Afferent)",
+          "cid": 16071,
+          "structureId": "e5d722d4bfbed4f52977f90bde89a76b"
+        },
+        {
+          "name": "Nonmyelinating Schwann cell",
+          "cid": 15367,
+          "structureId": "34c2e33d536940313547e9764b8ff43b"
+        },
+        {
+          "name": "Axon (General Visceral Efferent Sympathetic)",
+          "cid": 15740,
+          "structureId": "c5add8aa3dceb9e17273e782ce3037b0"
+        },
+        {
+          "name": "Myelin Sheath (General Visceral Efferent Parasympathetic)",
+          "cid": 15957,
+          "structureId": "9f58dfc2adb5199b320d71f26d706ff7"
+        },
+        {
+          "name": "Axon (General Visceral Efferent Parasympathetic)",
+          "cid": 16103,
+          "structureId": "e91f4c07b17214bfee403b64bf6034f0"
+        },
+        {
+          "name": "Perineurial Septum",
+          "cid": 15593,
+          "structureId": "da4f99a9bd88ea0168ca393ff10d64fc"
+        },
+        {
+          "name": "Perineurium",
+          "cid": 15147,
+          "structureId": "e2a4251d7c9a959778561a673e6e805b"
+        },
+        {
+          "name": "Adipose Tissue",
+          "cid": 15341,
+          "structureId": "cec7246b6152b523db8c9d4fe234814c"
+        },
+        {
+          "name": "Epineurial Nerves",
+          "cid": 15925,
+          "structureId": "6b816e1541e2e6fd69f1d7bda2c73d21"
+        },
+        {
+          "name": "Deep Epineurium",
+          "cid": 16135,
+          "structureId": "e6570308008d09411e911792521e10f4"
+        },
+        {
+          "name": "Intrafascicular Veins",
+          "cid": 15613,
+          "structureId": "22b270431d2c943d2616d2084b99f4a4"
+        },
+        {
+          "name": "Epineurial Veins",
+          "cid": 16320,
+          "structureId": "61b75a35f6e5a776814054846bd0b012"
+        },
+        {
+          "name": "Intrafascicular Arteries",
+          "cid": 15182,
+          "structureId": "6ffa2406688516d8bd4c8b2536a392a3"
+        },
+        {
+          "name": "Epineurial Arteries",
+          "cid": 16268,
+          "structureId": "9d1599a4a8b4987dbc5d30b38f2cd428"
+        },
+        {
+          "name": "Interfascicular Arteries",
+          "cid": 15408,
+          "structureId": "ba446526bab33b3fa1470eff29b6db51"
+        },
+        {
+          "name": "Interfascicular Veins",
+          "cid": 16175,
+          "structureId": "f4e593abaea04997dc7920291b2e000f"
+        },
+        {
+          "name": "Mesoneurium",
+          "cid": 16105,
+          "structureId": "f861001654c4ae175f05e51be7b45835"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/c9503955af58c3dd3be6d86ac8e44324.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "sperm",
+      "title": "Sperm",
+      "appModelId": "6aeaf14a0776602a5f1583cd1c86f583",
+      "thumbnail": "/models/detailed/thumbnails/sperm.png",
+      "previewFile": "/models/detailed/sperm/preview.gltf",
+      "geometryBuffersAvailable": [
+        "8aa58819267c229bd90230b4028a488e.vertex.bin",
+        "8e8ffc9989626859dd6388bdfa8cb820.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Sperm",
+      "structures": [
+        {
+          "name": "Plasma Membrane (Middle Piece; Left)",
+          "cid": 15882,
+          "structureId": "122dba609cfeb3b4c78bcbcdad614051"
+        },
+        {
+          "name": "End Ring",
+          "cid": 16115,
+          "structureId": "20fb7ad694cfecfe599d50c5e52124cb"
+        },
+        {
+          "name": "Cytoplasm (Middle Piece; Right)",
+          "cid": 15468,
+          "structureId": "6fdfdaf0035e136f70dc419ae5449d51"
+        },
+        {
+          "name": "Cytoplasm (Middle Piece; Left)",
+          "cid": 15398,
+          "structureId": "97e334d0d42a831093c2f03f706b0847"
+        },
+        {
+          "name": "Plasma Membrane (Middle Piece; Right)",
+          "cid": 15530,
+          "structureId": "a8f36e19f5214005cfdce246817263dd"
+        },
+        {
+          "name": "End Ring",
+          "cid": 16115,
+          "structureId": "c8bbddb401a34502fe3d14135246ce6d"
+        },
+        {
+          "name": "Mitochondrial Sheath",
+          "cid": 15309,
+          "structureId": "dc35fd094ecd922b2e47c5a68d0da542"
+        },
+        {
+          "name": "Axoneme (Middle Piece)",
+          "cid": 16256,
+          "structureId": "e5152639362b3b0ce36c7ae3535060d5"
+        },
+        {
+          "name": "Mitochondrial Sheath",
+          "cid": 15309,
+          "structureId": "f97cc76c32766d11df61fc0614f3fdc4"
+        },
+        {
+          "name": "Outer Dense Fibers (Middle Piece)",
+          "cid": 15699,
+          "structureId": "fe7d642267f8b4b76e35881edc492dd4"
+        },
+        {
+          "name": "Cytoplasm (Principal Piece; Right)",
+          "cid": 15677,
+          "structureId": "0b2cb7bc5c5dcb3a654f12fd63b3bf93"
+        },
+        {
+          "name": "Plasma Membrane (Principal Piece; Left)",
+          "cid": 15069,
+          "structureId": "2f4bdd450cb08712c9315702c8a801c1"
+        },
+        {
+          "name": "Cytoplasm (Principal Piece; Left)",
+          "cid": 15713,
+          "structureId": "4696779b9fe9ece04e8af1d4614c42cf"
+        },
+        {
+          "name": "Plasma Membrane (Principal Piece; Right)",
+          "cid": 15610,
+          "structureId": "55526fb3726b64340cb8d83d417f6181"
+        },
+        {
+          "name": "Axoneme (Principal Piece)",
+          "cid": 16359,
+          "structureId": "5f4e5c9e16254d19d975b1c82573bd66"
+        },
+        {
+          "name": "Outer Dense Fibers (Principal Piece)",
+          "cid": 16177,
+          "structureId": "7f43cffb520356cf0dcfb502528d8798"
+        },
+        {
+          "name": "Fibrous Sheath",
+          "cid": 16030,
+          "structureId": "82a3678891932b61264e813bd55f1036"
+        },
+        {
+          "name": "Cytoplasm (End Piece; Left)",
+          "cid": 15943,
+          "structureId": "19d223746050035f6261d6064ae4ce6f"
+        },
+        {
+          "name": "Axoneme (End Piece)",
+          "cid": 16043,
+          "structureId": "20a61b4185f0162c844bdbb33934340f"
+        },
+        {
+          "name": "Cytoplasm (End Piece; Right)",
+          "cid": 15659,
+          "structureId": "a44b3c5aced59f416e12a82544fc5733"
+        },
+        {
+          "name": "Plasma Membrane (End Piece; Left)",
+          "cid": 15409,
+          "structureId": "a44f317caedc02c9253c0c583de56a69"
+        },
+        {
+          "name": "Plasma Membrane (End Piece; Right)",
+          "cid": 15612,
+          "structureId": "fb10859f0b0f02179b65d06d870513e3"
+        },
+        {
+          "name": "Nucleus",
+          "cid": 16096,
+          "structureId": "23802357dc8fe187c77a201143f4defc"
+        },
+        {
+          "name": "Acrosome",
+          "cid": 15734,
+          "structureId": "441729a97f0ae351ecafb2f7ef53cb8f"
+        },
+        {
+          "name": "Nuclear Envelope",
+          "cid": 15524,
+          "structureId": "796147806cd605fc31e76ce0a9fbf5a5"
+        },
+        {
+          "name": "Cytoplasm (Head; Left)",
+          "cid": 16035,
+          "structureId": "7b6340f3321461e9c9ad4e31776cf5e6"
+        },
+        {
+          "name": "Postacrosomal Sheath",
+          "cid": 15293,
+          "structureId": "82bd524eaad48425d5d310f89b00461e"
+        },
+        {
+          "name": "Plasma Membrane (Head; Left)",
+          "cid": 15400,
+          "structureId": "92d295eacb30fbb0bc6fb6155e966b8f"
+        },
+        {
+          "name": "Cytoplasm (Head; Right)",
+          "cid": 16360,
+          "structureId": "9db25cbf8b16c9b93d80f36b2e429daf"
+        },
+        {
+          "name": "Plasma Membrane (Head; Right)",
+          "cid": 15551,
+          "structureId": "b749214e307beae9fafa0faee2178cca"
+        },
+        {
+          "name": "Postacrosomal Sheath",
+          "cid": 15293,
+          "structureId": "d8c1aaac4cd51ecd92e5a4a0b31c43c3"
+        },
+        {
+          "name": "Nuclear Envelope",
+          "cid": 15524,
+          "structureId": "e049966cbc9632475f8dfb3e648ebc33"
+        },
+        {
+          "name": "Acrosome",
+          "cid": 15734,
+          "structureId": "e27ff043f6dd5b5db2c6c79df78ccc26"
+        },
+        {
+          "name": "Nucleus",
+          "cid": 16096,
+          "structureId": "f95ea407aca37ba534e605f75779a6e5"
+        },
+        {
+          "name": "Nuclear Vacuole",
+          "cid": 15811,
+          "structureId": "fc09d3ca52058268a8af579078af1013"
+        },
+        {
+          "name": "Centriole",
+          "cid": 15444,
+          "structureId": "2d4f74aae4b30bf3851cb80f5f44ed83"
+        },
+        {
+          "name": "Articular Plate",
+          "cid": 16074,
+          "structureId": "2ef7b23a0d513298642bb04f4df95ae8"
+        },
+        {
+          "name": "Basal Plate",
+          "cid": 15808,
+          "structureId": "43eeeda18e45de8e5e9f6d9c43829b2a"
+        },
+        {
+          "name": "Striated Column",
+          "cid": 15274,
+          "structureId": "55b27700b3f907b97d3626a7d5fc4d1d"
+        },
+        {
+          "name": "Redundant Nuclear Envelope",
+          "cid": 16226,
+          "structureId": "6b11452134cd26568e50429bd7446336"
+        },
+        {
+          "name": "Plasma Membrane (Neck; Left)",
+          "cid": 15557,
+          "structureId": "6f8ff9c381b9c7b38c7704589c3ac5f1"
+        },
+        {
+          "name": "Cytoplasm (Neck; Right)",
+          "cid": 16112,
+          "structureId": "8a2b269c16f7adccd1165200146f138a"
+        },
+        {
+          "name": "Cytoplasm (Neck; Left)",
+          "cid": 16101,
+          "structureId": "a985131a840c1c0413cd51a22c0f4f1e"
+        },
+        {
+          "name": "Plasma Membrane (Neck; Right)",
+          "cid": 15158,
+          "structureId": "a9ca348624e9a8e4b5fd5d6de811cfe7"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/3ac397769f4c7665ae67a39c448c32dd.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "tongue",
+      "title": "Tongue",
+      "appModelId": "e6603395a570d06a42e62c96828545e4",
+      "thumbnail": "/models/detailed/thumbnails/tongue.png",
+      "previewFile": "/models/detailed/tongue/preview.gltf",
+      "geometryBuffersAvailable": [
+        "53ce895d1fd07f1ef7ae9241e4532e5f.vertex.bin",
+        "59a4a5129445a8c7c023b1c2d9d9e64b.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Tongue",
+      "structures": [
+        {
+          "name": "Gustatory Glands",
+          "cid": 15278,
+          "structureId": "351a680a0c848d5592e5a7224a6aa1f3"
+        },
+        {
+          "name": "Muscles of Tongue",
+          "cid": 15804,
+          "structureId": "4e41c679f48d92971e3d4ac655327858"
+        },
+        {
+          "name": "Taste Buds of Vallate Papillae",
+          "cid": 16392,
+          "structureId": "4811ee77fb1ab241e41c27d34e956a6b"
+        },
+        {
+          "name": "Taste Buds of Fungiform Papillae",
+          "cid": 15873,
+          "structureId": "6654a9f3a5d1bc65fc7e00c0b6df917a"
+        },
+        {
+          "name": "Taste Buds of Foliate Papillae",
+          "cid": 16059,
+          "structureId": "a37ea52589927e43e4efe0b7516a505e"
+        },
+        {
+          "name": "Sensory Nerve Fibers of Taste Buds",
+          "cid": 16353,
+          "structureId": "fab58136ed1972c528beb36d52aee3bd"
+        },
+        {
+          "name": "Lamina Propria",
+          "cid": 15325,
+          "structureId": "641fdc2b5ffb4a00a5dadfa70201166d"
+        },
+        {
+          "name": "Blood Vessels of Tongue",
+          "cid": 16351,
+          "structureId": "700478baf171996b4020c7573161d313"
+        },
+        {
+          "name": "Fungiform Papillae",
+          "cid": 16001,
+          "structureId": "8ed1d3cb0b40a2f298a7cd2169a9fc77"
+        },
+        {
+          "name": "Vallate Papillae",
+          "cid": 15101,
+          "structureId": "931a78f68191eb1e65b79c3406ececfa"
+        },
+        {
+          "name": "Filiform Papillae",
+          "cid": 16127,
+          "structureId": "ce739ebf875025b4e7b09187f5601108"
+        },
+        {
+          "name": "Foliate Papillae",
+          "cid": 15095,
+          "structureId": "ced3cef08b66d5873947ada7daf85413"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/358856a9e1f0e664cd04bd036526801f.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "smooth-muscle-tissue",
+      "title": "Smooth Muscle Tissue",
+      "appModelId": "11051ce42565329884264afb47005e02",
+      "thumbnail": "/models/detailed/thumbnails/smooth-muscle-tissue.png",
+      "previewFile": "/models/detailed/smooth-muscle-tissue/preview.gltf",
+      "geometryBuffersAvailable": [
+        "5393d1ba422d7bb40b4726511c696ef3.vertex.bin",
+        "df0519677eb438220e2c5f4585f9f97e.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Smooth Muscle Tissue",
+      "structures": [
+        {
+          "name": "Pinocytotic Vesicle (Contracted Smooth Muscle)",
+          "cid": 16193,
+          "structureId": "066bd795e48c44a43013e1f1681c0e0a"
+        },
+        {
+          "name": "Sarcoplasmic Reticulum (Contracted Smooth Muscle)",
+          "cid": 16208,
+          "structureId": "0749a2e5114a216632cccdc16f9e171c"
+        },
+        {
+          "name": "Intermediate Filament (Contracted Smooth Muscle)",
+          "cid": 15233,
+          "structureId": "1792790e6d70ddb85588c960adbac5da"
+        },
+        {
+          "name": "Sarcolemma (Contracted Smooth Muscle; Anterior)",
+          "cid": 16022,
+          "structureId": "2eae1ed1bcea536fcccb3de9df9c859e"
+        },
+        {
+          "name": "Sarcoplasm (Contracted Smooth Muscle; Anterior)",
+          "cid": 15201,
+          "structureId": "38553bf79aab585c9d03788022df4a30"
+        },
+        {
+          "name": "Sarcolemma (Contracted Smooth Muscle; Posterior)",
+          "cid": 16333,
+          "structureId": "56f7651e57c9995155c54bc51727c896"
+        },
+        {
+          "name": "Nucleus (Contracted Smooth Muscle)",
+          "cid": 15366,
+          "structureId": "7b8700809bb0809349d5ebd5a1f87bf2"
+        },
+        {
+          "name": "Sarcoplasm (Contracted Smooth Muscle; Posterior)",
+          "cid": 16325,
+          "structureId": "85e01f7cab1176a66ee19c65ac4cb191"
+        },
+        {
+          "name": "Caveola (Contracted Smooth Muscle; Posterior)",
+          "cid": 15435,
+          "structureId": "9210cad4b4fc7fe6a9df7fbee5c7af7a"
+        },
+        {
+          "name": "Thick Myofilament (Contracted Smooth Muscle)",
+          "cid": 16119,
+          "structureId": "60992611c9ead358eff40e248a6d5835"
+        },
+        {
+          "name": "Thin Myofilament (Contracted Smooth Muscle)",
+          "cid": 16299,
+          "structureId": "caec0c974ddae862eb21c64a9c0a180d"
+        },
+        {
+          "name": "Golgi Complex (Contracted Smooth Muscle)",
+          "cid": 15481,
+          "structureId": "cb0ca3ba1d53e12511868f72f7463a66"
+        },
+        {
+          "name": "Caveola (Contracted Smooth Muscle; Anterior)",
+          "cid": 16223,
+          "structureId": "cbdfe7772a50d505aeed6865e0aa63b2"
+        },
+        {
+          "name": "External Lamina (Contracted Smooth Muscle; Posterior)",
+          "cid": 16215,
+          "structureId": "cf0bcb62d9d50a06cebcbd5733db95c4"
+        },
+        {
+          "name": "External Lamina (Contracted Smooth Muscle; Anterior)",
+          "cid": 15372,
+          "structureId": "d0d11fbb4d6beb85a4dc6507e1a52e3f"
+        },
+        {
+          "name": "Dense Body (Contracted Smooth Muscle)",
+          "cid": 15515,
+          "structureId": "e99fb04a2ccdc2d4ad8b28fcc53d10d7"
+        },
+        {
+          "name": "Gap Junction (Contracted Smooth Muscle)",
+          "cid": 15876,
+          "structureId": "f2be017c99438113df2808ac541f9307"
+        },
+        {
+          "name": "Mitochondrion (Contracted Smooth Muscle)",
+          "cid": 15428,
+          "structureId": "f92d3b7ac7b46429be9e92871cf820c3"
+        },
+        {
+          "name": "Ribosome (Contracted Smooth Muscle)",
+          "cid": 15381,
+          "structureId": "fad4cbfd685a1edbfc26c509e202be8d"
+        },
+        {
+          "name": "Sarcoplasm (Uncontracted Smooth Muscle; Anterior)",
+          "cid": 15222,
+          "structureId": "0f69fe050fa49f31f5e3fd2be0e0eae3"
+        },
+        {
+          "name": "Mitochondrion (Uncontracted Smooth Muscle)",
+          "cid": 15133,
+          "structureId": "13d64c7b933e06363675f89d3e688f0a"
+        },
+        {
+          "name": "Ribosome (Uncontracted Smooth Muscle)",
+          "cid": 15439,
+          "structureId": "1577accc7a85e3aee16c99a021a0d409"
+        },
+        {
+          "name": "Caveola (Uncontracted Smooth Muscle; Anterior)",
+          "cid": 16024,
+          "structureId": "1ed81723414ae0aace6db09264b421c3"
+        },
+        {
+          "name": "Pinocytotic Vesicle (Uncontracted Smooth Muscle)",
+          "cid": 15983,
+          "structureId": "2b5f8b56ea300423d503d0a25a7cbb3e"
+        },
+        {
+          "name": "Dense Body (Uncontracted Smooth Muscle)",
+          "cid": 15433,
+          "structureId": "2f99a7cb79639fe5cbbb827f5c060a97"
+        },
+        {
+          "name": "External Lamina (Uncontracted Smooth Muscle; Anterior)",
+          "cid": 15269,
+          "structureId": "32a6a3ae7b661bf0d799173dd44b67af"
+        },
+        {
+          "name": "Sarcolemma (Uncontracted Smooth Muscle; Anterior)",
+          "cid": 16082,
+          "structureId": "3ec2bb82043e35d7c36a7f2e5d200db7"
+        },
+        {
+          "name": "Thin Myofilament (Uncontracted Smooth Muscle)",
+          "cid": 15277,
+          "structureId": "5ccd4a9983330e3157ad84382911d016"
+        },
+        {
+          "name": "Thick Myofilament (Uncontracted Smooth Muscle)",
+          "cid": 15315,
+          "structureId": "6b820ec4df21626c9535b74d6e57bb8f"
+        },
+        {
+          "name": "Gap Junction (Uncontracted Smooth Muscle)",
+          "cid": 15313,
+          "structureId": "7a4be4c1893ad24da944fea46e098094"
+        },
+        {
+          "name": "Nucleus (Uncontracted Smooth Muscle)",
+          "cid": 16109,
+          "structureId": "88be5996b61c4d755984a491128c21d7"
+        },
+        {
+          "name": "Sarcoplasmic Reticulum (Uncontracted Smooth Muscle)",
+          "cid": 16184,
+          "structureId": "9d1c6cb7f58730765cd6289bb9f4f5f0"
+        },
+        {
+          "name": "Caveola (Uncontracted Smooth Muscle; Posterior)",
+          "cid": 15841,
+          "structureId": "a8b389d9da63a3a45161624d366ccbc2"
+        },
+        {
+          "name": "External Lamina (Uncontracted Smooth Muscle; Posterior)",
+          "cid": 15710,
+          "structureId": "b64bab58999c0e67ebfcf4785bbdf84c"
+        },
+        {
+          "name": "Golgi Complex (Uncontracted Smooth Muscle)",
+          "cid": 15865,
+          "structureId": "bb49e157e2aa74c2349f22318a476358"
+        },
+        {
+          "name": "Sarcolemma (Uncontracted Smooth Muscle; Posterior)",
+          "cid": 15640,
+          "structureId": "d7f209709ea57eb53d23caea8aa7cda0"
+        },
+        {
+          "name": "Intermediate Filament (Uncontracted Smooth Muscle)",
+          "cid": 15764,
+          "structureId": "edd526ca40ecc942d2129ece19d4c0d0"
+        },
+        {
+          "name": "Sarcoplasm (Uncontracted Smooth Muscle; Posterior)",
+          "cid": 15784,
+          "structureId": "fd2be74a83960fee0bc5fb4cd7dfdef6"
+        },
+        {
+          "name": "Autonomic Nerve Fiber (Smooth Muscle Tissue)",
+          "cid": 16020,
+          "structureId": "efa2a7f5719e2a4f47282f49d2f89a64"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/3acbc75b42e53c4dcfa902bddfb6628d.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "skeletal-muscle-fiber",
+      "title": "Skeletal Muscle Fiber",
+      "appModelId": "12d1806d32dafd3bdf83c3cd58d7a431",
+      "thumbnail": "/models/detailed/thumbnails/skeletal-muscle-fiber.png",
+      "previewFile": "/models/detailed/skeletal-muscle-fiber/preview.gltf",
+      "geometryBuffersAvailable": [
+        "77e59c09d0a39cc374cefa5d6c460cf1.vertex.bin",
+        "3013606cd9ce36a974fbbe1be3a22076.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Skeletal Muscle Fiber",
+      "structures": [
+        {
+          "name": "Motor Neuron",
+          "cid": 16106,
+          "structureId": "06ed68614c14fda2112a9ab661c07c11"
+        },
+        {
+          "name": "Myelin Sheath",
+          "cid": 15809,
+          "structureId": "235ed3219dff6d1fabe318177e18ce72"
+        },
+        {
+          "name": "Terminal Schwann Cell",
+          "cid": 15143,
+          "structureId": "62dd6157e37c5db9ab55306c7b7e1b16"
+        },
+        {
+          "name": "Endoneurium",
+          "cid": 15335,
+          "structureId": "309adaaea882c0e10311fe54de2aa1e4"
+        },
+        {
+          "name": "Endomysium",
+          "cid": 15680,
+          "structureId": "3192723ee9153ab70471695b1e850fc4"
+        },
+        {
+          "name": "Basal Lamina",
+          "cid": 15839,
+          "structureId": "758ad412e5fceb1dd5cc973b3cf0f1be"
+        },
+        {
+          "name": "Capillary",
+          "cid": 15782,
+          "structureId": "82047e524006357ef5ca5e89065533a4"
+        },
+        {
+          "name": "Myofibril and Endomembrane System",
+          "cid": 16311,
+          "structureId": "01fc59ae63f3edd2d62753c78ae65444"
+        },
+        {
+          "name": "T Tubule",
+          "cid": 15855,
+          "structureId": "02b513109bcd2d6509649c6195a3d75d"
+        },
+        {
+          "name": "Sarcoplasmic Reticulum",
+          "cid": 15327,
+          "structureId": "24f4a30976c35afd850265a142b00a67"
+        },
+        {
+          "name": "Nucleus",
+          "cid": 15923,
+          "structureId": "35ec7b229c47e834451bfb2c59bcb715"
+        },
+        {
+          "name": "Myofibrils",
+          "cid": 15828,
+          "structureId": "7ec416d3703c6f78fea1c93ce9f42cd4"
+        },
+        {
+          "name": "Ribosomes",
+          "cid": 15567,
+          "structureId": "888ac302fe1053f6f693e75f1d6914f9"
+        },
+        {
+          "name": "Mitochondria",
+          "cid": 15849,
+          "structureId": "9775b371fdfdd38050553b5b44f9f961"
+        },
+        {
+          "name": "Myosatellite Cell",
+          "cid": 15470,
+          "structureId": "a294ecc2c4e4f1a7d6a506d91b430768"
+        },
+        {
+          "name": "Sarcolemma",
+          "cid": 15602,
+          "structureId": "a7fde7ebdc5b6d5da53fb0c72464d2f9"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/1212bd9d1a99943b7bdcea2260596b10.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "cell-membrane",
+      "title": "Cell Membrane",
+      "appModelId": "7d5428368df338a43e180820768569bd",
+      "thumbnail": "/models/detailed/thumbnails/cell-membrane.png",
+      "previewFile": "/models/detailed/cell-membrane/preview.gltf",
+      "geometryBuffersAvailable": [
+        "882a17539c02f9fce1f9aefd5181f196.vertex.bin",
+        "0b0c3081d73099556d7acfa765d8c134.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Cell Membrane",
+      "structures": [
+        {
+          "name": "Receptor Protein",
+          "cid": 15253,
+          "structureId": "63fd774f1b3ed57278d054a8a3195fa7"
+        },
+        {
+          "name": "Carrier Protein",
+          "cid": 15716,
+          "structureId": "72a1bb44d20b3d0bde60b1c0686fa3d0"
+        },
+        {
+          "name": "Enzyme Protein",
+          "cid": 15768,
+          "structureId": "816363e5b9eabb1c85268ec8823c3c4e"
+        },
+        {
+          "name": "Channel Proteins",
+          "cid": 15564,
+          "structureId": "b95812ecc91cc6fcc6852e7d8d716a96"
+        },
+        {
+          "name": "Cytoskeleton",
+          "cid": 16145,
+          "structureId": "5ba438f5c192c81ceb16e6e475f8523e"
+        },
+        {
+          "name": "Cholesterol",
+          "cid": 16063,
+          "structureId": "a413096c9af5f79edf110695579350b7"
+        },
+        {
+          "name": "Glycoprotein",
+          "cid": 15623,
+          "structureId": "aacc8c3c1d35f89163a5c66241391798"
+        },
+        {
+          "name": "Peripheral Membrane Protein",
+          "cid": 16391,
+          "structureId": "aef13ce3b0a6206d9567b19439190db0"
+        },
+        {
+          "name": "Hydrophobic Tail",
+          "cid": 16324,
+          "structureId": "01353f2d5e0f0ee57a843810fa3e6c02"
+        },
+        {
+          "name": "Hydrophilic Head",
+          "cid": 15431,
+          "structureId": "1646b311c61afb3b932888f4918bec85"
+        },
+        {
+          "name": "Glycolipid",
+          "cid": 15270,
+          "structureId": "d2950c457c7938f068197e411699132a"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/707410d2b69b0608afe31cd405f44490.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "cochlea",
+      "title": "Cochlea",
+      "appModelId": "af9103e988e16093162c9cfed119e44a",
+      "thumbnail": "/models/detailed/thumbnails/cochlea.png",
+      "previewFile": "/models/detailed/cochlea/preview.gltf",
+      "geometryBuffersAvailable": [
+        "84fa52464f36254d9f1d0e2234fff83e.vertex.bin",
+        "0fb149c13715c9ed47cdb33063015f5d.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Cochlea",
+      "structures": [
+        {
+          "name": "Perilymph of Scala Tympani",
+          "cid": 15777,
+          "structureId": "2042e16e7d309147f6b5b15cbfc48b2b"
+        },
+        {
+          "name": "Perilymphatic Cells of Scala Tympani",
+          "cid": 15930,
+          "structureId": "e7ad8fd8774cd5b2776419dbe9af2e8f"
+        },
+        {
+          "name": "Tympanic Lamella",
+          "cid": 15878,
+          "structureId": "35932c09c22241a7fcbc8f2cd9235091"
+        },
+        {
+          "name": "Bony Labyrinth (Cochlear Part)",
+          "cid": 16239,
+          "structureId": "480f9a5fdefb41d6e930104c8533ce3b"
+        },
+        {
+          "name": "Cochlear Nerve",
+          "cid": 15859,
+          "structureId": "614cafb7462acc019abf69ee6e06a7f8"
+        },
+        {
+          "name": "Perilymphatic Cells of Scala Vestibuli",
+          "cid": 15519,
+          "structureId": "53677c6cc3401e5eba70c274ff1eb797"
+        },
+        {
+          "name": "Vestibular Membrane",
+          "cid": 16232,
+          "structureId": "b134959a6ffd9c11d58c2bcc3f1e936e"
+        },
+        {
+          "name": "Perilymph of Scala Vestibuli",
+          "cid": 16285,
+          "structureId": "c29b1e87e6f2278d822ee7996cef2218"
+        },
+        {
+          "name": "Periosteum",
+          "cid": 15637,
+          "structureId": "7ff703310ca2e85fd0e15e73d71a3ae3"
+        },
+        {
+          "name": "Cochlear Ganglion",
+          "cid": 16261,
+          "structureId": "97a28770bfd164fdb81103c85fa08510"
+        },
+        {
+          "name": "Spiral Ligament of Cochlea",
+          "cid": 16358,
+          "structureId": "a3cb4e77964a3a24c8e73a323aa8df3d"
+        },
+        {
+          "name": "Perilymph of Cochlear Duct",
+          "cid": 15802,
+          "structureId": "03ea6798fad6745fbbd84efd4d3f7e79"
+        },
+        {
+          "name": "Spiral Limbus",
+          "cid": 15354,
+          "structureId": "07091df8198ddf13454292cfb025515b"
+        },
+        {
+          "name": "Tectorial Membrane",
+          "cid": 15130,
+          "structureId": "3a2578892d9b0c0e3fbfd0b3d9f7ab86"
+        },
+        {
+          "name": "Zona Arcuata",
+          "cid": 15210,
+          "structureId": "65e0779ffb7e57bce9f212b49f15fa08"
+        },
+        {
+          "name": "Zona Pectinata",
+          "cid": 16327,
+          "structureId": "79c546122030ab3967169cd2df0fbca0"
+        },
+        {
+          "name": "Epithelial Cell of Spiral Limbus",
+          "cid": 16133,
+          "structureId": "91fd45b1a830bb9d6df06c601e2e2c64"
+        },
+        {
+          "name": "Endolymph",
+          "cid": 15565,
+          "structureId": "aafa28ed59270d010f89ebc349f3af70"
+        },
+        {
+          "name": "Stria Vascularis",
+          "cid": 15185,
+          "structureId": "1100e8f91dc7cc17401f3eedd57091ca"
+        },
+        {
+          "name": "Capillary Plexus of Stria Vascularis",
+          "cid": 15397,
+          "structureId": "82f9b0cfc9ac57e4436f64a6c8b11b39"
+        },
+        {
+          "name": "Inner Phalangeal Epithelial Cell",
+          "cid": 15239,
+          "structureId": "7f6d574af765a155ddeb9430bf07daa7"
+        },
+        {
+          "name": "Columnar External Supporting Cell",
+          "cid": 15750,
+          "structureId": "94a69d7f6eb432c20769159847b82458"
+        },
+        {
+          "name": "Inner Hair Cell",
+          "cid": 15338,
+          "structureId": "88fbb1240546fe164eebdd6aa3d023d4"
+        },
+        {
+          "name": "Stereocilium (Inner Hair Cell)",
+          "cid": 15858,
+          "structureId": "d956f6acd9d8fbe6ac8ab83f081d53b6"
+        },
+        {
+          "name": "Cuboid External Supporting Cell",
+          "cid": 15378,
+          "structureId": "af01aa800bb06d5a8766db8ea59acf29"
+        },
+        {
+          "name": "Internal Supporting Cell",
+          "cid": 15450,
+          "structureId": "dfb93539616e04318881bf60c75b1190"
+        },
+        {
+          "name": "Pillar Epithelial Cells",
+          "cid": 15959,
+          "structureId": "eedef513f65afc2335f1a6e7bfae01e6"
+        },
+        {
+          "name": "Stereocilium (Outer Hair Cells)",
+          "cid": 15679,
+          "structureId": "45f25b8d6e759dc4ecad77fffe0acb56"
+        },
+        {
+          "name": "Outer Hair Cell",
+          "cid": 15359,
+          "structureId": "5875591aea8aa1ffd4b37e9c5285c072"
+        },
+        {
+          "name": "Outer Phalangeal Epithelial Cell",
+          "cid": 15406,
+          "structureId": "f7158709b7e95c801757490e2e1e9e23"
+        },
+        {
+          "name": "Blood Vessels of Cochlea",
+          "cid": 15837,
+          "structureId": "d2d336831e4c6671c2f15669f55807cb"
+        },
+        {
+          "name": "Vas Spirale",
+          "cid": 15879,
+          "structureId": "f7c2c67382a533d4e8e43e90e2c15baf"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/a0774a771d04473dd0f567c42bc90c98.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "clitoris-penis",
+      "title": "Clitoris Penis",
+      "appModelId": "cad5151700f64942ab93c90d8c0b79cc",
+      "thumbnail": "/models/detailed/thumbnails/clitoris-penis.png",
+      "previewFile": "/models/detailed/clitoris-penis/preview.gltf",
+      "geometryBuffersAvailable": [
+        "2e6a82e9eb7f6ad5510980b90ef6537e.vertex.bin",
+        "f1b9ddb4631682eb7e85e0cda217b4c2.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Clitoris Penis",
+      "displayTitle": "Cross Section of Clitoris & Penis",
+      "structures": [
+        {
+          "name": "Dorsal Nerve of Penis",
+          "cid": 15947,
+          "structureId": "1daa6de9d51499afa8f2bc5af9b02375"
+        },
+        {
+          "name": "Deep Veins of Penis",
+          "cid": 15105,
+          "structureId": "7078b325633c33fbacca7962358efc1b"
+        },
+        {
+          "name": "Cavernous Nerves of Penis",
+          "cid": 16388,
+          "structureId": "77ad0f0773134826dc4cd6cedfc30db8"
+        },
+        {
+          "name": "Circumflex Veins of Penis",
+          "cid": 15348,
+          "structureId": "7e01c915b6be5f24b779bf736cf76ede"
+        },
+        {
+          "name": "Superficial Dorsal Veins of Penis",
+          "cid": 15533,
+          "structureId": "8b3b37943966b4c36b74070cba97b12c"
+        },
+        {
+          "name": "Urethral Artery",
+          "cid": 15120,
+          "structureId": "9bcacbb65ea6db9a0a8f9fa696a1c186"
+        },
+        {
+          "name": "Dorsal Artery of Penis",
+          "cid": 16120,
+          "structureId": "a245d843d0b25f4d1246de873fd52b5e"
+        },
+        {
+          "name": "Emissary Veins of Penis",
+          "cid": 15652,
+          "structureId": "c1757a540b658d4fea181f1fb5f11ff1"
+        },
+        {
+          "name": "Deep Dorsal Vein of Penis",
+          "cid": 16236,
+          "structureId": "c4e434c9822ee216da5a3459c065e05e"
+        },
+        {
+          "name": "Deep Artery of Penis",
+          "cid": 15954,
+          "structureId": "f7713b09d89c4d76982ce6326d14aa96"
+        },
+        {
+          "name": "Urethral Veins",
+          "cid": 15273,
+          "structureId": "fb7f419c72dbae3c655e44fc23d9d1d0"
+        },
+        {
+          "name": "Corpus Spongiosum Penis",
+          "cid": 15546,
+          "structureId": "2df72e69ca0097487799ee94596718d0"
+        },
+        {
+          "name": "Spongy Urethra",
+          "cid": 15332,
+          "structureId": "5c5728eeef65b17b6e5bc91b06ccaff9"
+        },
+        {
+          "name": "Corpora Cavernosa of Penis",
+          "cid": 15254,
+          "structureId": "73acd83a109739505ad36293a87cb855"
+        },
+        {
+          "name": "Tunica Albuginea of Corpora Cavernosa Penis",
+          "cid": 15489,
+          "structureId": "7e1b93de65149e780d79eb0382c9278d"
+        },
+        {
+          "name": "Tunica Albuginea of Corpus Spongiosum Penis",
+          "cid": 15964,
+          "structureId": "820eb9db03a4271a182b3e6b5e18d03e"
+        },
+        {
+          "name": "Subcutaneous Tissue of Penis",
+          "cid": 16276,
+          "structureId": "ba8cb9d1eadbe918989db159bdee64b3"
+        },
+        {
+          "name": "Fascia of Penis",
+          "cid": 16146,
+          "structureId": "de3e27de8757496e739ee2fd9df84f79"
+        },
+        {
+          "name": "Skin of Penis",
+          "cid": 15544,
+          "structureId": "ecbe07b05c95587cec3b227ce143b5d3"
+        },
+        {
+          "name": "Corpora Cavernosa of Clitoris",
+          "cid": 16306,
+          "structureId": "071e34a93a8b9be8cce2c96b124d6fe0"
+        },
+        {
+          "name": "Fascia of Clitoris",
+          "cid": 15850,
+          "structureId": "5070b40e2da2ddb00a66a8d06a97ed2b"
+        },
+        {
+          "name": "Prepuce of Clitoris",
+          "cid": 15671,
+          "structureId": "8a112f95dd19abedc86afc527cdec1bb"
+        },
+        {
+          "name": "Tunica Albuginea of Corpora Cavernosa of Clitoris",
+          "cid": 16389,
+          "structureId": "9b1df90bb97644b04d7b035622259abf"
+        },
+        {
+          "name": "Dorsal Nerve of Clitoris",
+          "cid": 15093,
+          "structureId": "25a0412fd436a49623883aace6bf6907"
+        },
+        {
+          "name": "Cavernous Nerve of Clitoris",
+          "cid": 15139,
+          "structureId": "51242b4c099fbf00a62c5b197688274e"
+        },
+        {
+          "name": "Deep Dorsal Vein of Clitoris",
+          "cid": 16218,
+          "structureId": "b71168d238bbd5e71c544eda124bafbc"
+        },
+        {
+          "name": "Dorsal Artery of Clitoris",
+          "cid": 15617,
+          "structureId": "bd581def9901d3ef833b6ce8d7c3cf6a"
+        },
+        {
+          "name": "Superficial Dorsal Veins of Clitoris",
+          "cid": 15868,
+          "structureId": "ea0d5f7468afa2988ac74b5873d0ce9c"
+        },
+        {
+          "name": "Deep Artery of Clitoris",
+          "cid": 16097,
+          "structureId": "ebf41f280a5aca30915733054f25b38b"
+        },
+        {
+          "name": "Subcutaneous Tissue of Clitoris",
+          "cid": 15949,
+          "structureId": "e889a2a957fe12e40d80b64d818e72fe"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/83c02dfad683f6a989b84c3c94d50163.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "cells-of-nervous-tissue",
+      "title": "Cells of Nervous Tissue",
+      "appModelId": "c6778f9b69c3370c105c7c5f028002a9",
+      "thumbnail": "/models/detailed/thumbnails/cells-of-nervous-tissue.png",
+      "previewFile": "/models/detailed/cells-of-nervous-tissue/preview.gltf",
+      "geometryBuffersAvailable": [
+        "2db0d2847b7eae5784b5ff9c868d40e4.vertex.bin",
+        "dc6edf4b7ef9868296fecd0db9bb44b2.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Cells of Nervous Tissue",
+      "structures": [
+        {
+          "name": "Myelin Lamella (Longitudinal Section)",
+          "cid": 15931,
+          "structureId": "a97af0774907a93490cff1ba47885f69"
+        },
+        {
+          "name": "Myelin Sheath",
+          "cid": 15379,
+          "structureId": "cf6a1b263c798660641fb4f77582efae"
+        },
+        {
+          "name": "Myelin Lamella (Cross Section)",
+          "cid": 15156,
+          "structureId": "d78a73b635febd45c2184a407786e542"
+        },
+        {
+          "name": "Microglial Cell",
+          "cid": 15720,
+          "structureId": "0b38bcdd324ec821477719a0a2fba597"
+        },
+        {
+          "name": "Vascular Process of Astrocyte",
+          "cid": 16348,
+          "structureId": "0a160165f27124ade705c5867e4f673f"
+        },
+        {
+          "name": "Astrocytes",
+          "cid": 15799,
+          "structureId": "8dd33fcebf44819585b0ed50d5846d07"
+        },
+        {
+          "name": "Myelinating Process",
+          "cid": 15340,
+          "structureId": "4f60f8e8db6aafd9820ac5b5984cc52d"
+        },
+        {
+          "name": "Oligodendrocytes",
+          "cid": 15261,
+          "structureId": "5521c348075a06fc287a24703c1e8160"
+        },
+        {
+          "name": "Cilia (of Ependymal Cell)",
+          "cid": 16386,
+          "structureId": "39ba814d7678ff26b3f7d6f55dcac759"
+        },
+        {
+          "name": "Ciliated Ependymal Cell",
+          "cid": 15479,
+          "structureId": "980d7ef873dedf0127687f40680dd6ef"
+        },
+        {
+          "name": "Continuous Capillary",
+          "cid": 15608,
+          "structureId": "7ff349544b3791d7b890db66f0bb1df2"
+        },
+        {
+          "name": "Nerve Cell Body",
+          "cid": 16244,
+          "structureId": "039ba893aec9b947b81f78f5edfe4ab5"
+        },
+        {
+          "name": "Cytoplasm",
+          "cid": 15232,
+          "structureId": "04c2ab79d5b43a121cc9b4111b4e7cc1"
+        },
+        {
+          "name": "Smooth Endoplasmic Reticulum",
+          "cid": 15390,
+          "structureId": "3cd68c5a66db14447afb75807a88b018"
+        },
+        {
+          "name": "Ribosomes",
+          "cid": 15486,
+          "structureId": "52a3d6a70d7b79ec3305e01d90680dfb"
+        },
+        {
+          "name": "Mitochondrion",
+          "cid": 15755,
+          "structureId": "64a26fe43f8facc4c7f8a04d275d1dfa"
+        },
+        {
+          "name": "Rough Endoplasmic Reticulum",
+          "cid": 15347,
+          "structureId": "78c3784012f8bbbe8b1a001998d2d18b"
+        },
+        {
+          "name": "Axon Hillock",
+          "cid": 15276,
+          "structureId": "c1f31fb511455cffa305d37d2bb7eafd"
+        },
+        {
+          "name": "Golgi Complex",
+          "cid": 15436,
+          "structureId": "cb70ec2428f83c0bb10a88d118279140"
+        },
+        {
+          "name": "Nucleolus",
+          "cid": 15848,
+          "structureId": "0247da1544aaecc588d718bb8582b353"
+        },
+        {
+          "name": "Nucleus",
+          "cid": 16196,
+          "structureId": "1e5dd9a030785aca81f77d0a7199792b"
+        },
+        {
+          "name": "Myelin Sheath Gap",
+          "cid": 16293,
+          "structureId": "5ead010d46c431bba97823cb59cb9dad"
+        },
+        {
+          "name": "Terminal Bouton",
+          "cid": 16016,
+          "structureId": "8a80c148727c34e9595ab4080b683a70"
+        },
+        {
+          "name": "Axon",
+          "cid": 15636,
+          "structureId": "d13f4ac9dcda3a5f9892536c81cc17ad"
+        },
+        {
+          "name": "Dendrites",
+          "cid": 16017,
+          "structureId": "e4deabb7fba440beb510a0576a09d307"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/6e61a7c981ba41e5f55584595183dca5.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "eukaryotic-cell",
+      "title": "Eukaryotic Cell",
+      "appModelId": "7a0064bf939e1d818115c33e38b74ddc",
+      "thumbnail": "/models/detailed/thumbnails/eukaryotic-cell.png",
+      "previewFile": "/models/detailed/eukaryotic-cell/preview.gltf",
+      "geometryBuffersAvailable": [
+        "186095ff8b90d144da4dc638de922309.vertex.bin",
+        "f9d3db5e4ff51f1cc2ad5981ba9a5a31.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Eukaryotic Cell",
+      "structures": [
+        {
+          "name": "Golgi Complex (Anterior)",
+          "cid": 16064,
+          "structureId": "10452f234598b40db7442b4c854e0a3a"
+        },
+        {
+          "name": "Lysosome",
+          "cid": 15500,
+          "structureId": "1c02768ca08ec43006f0509b898861b4"
+        },
+        {
+          "name": "Smooth Endoplasmic Reticulum",
+          "cid": 15702,
+          "structureId": "28b431f06457e293918900a4ceb9ee5f"
+        },
+        {
+          "name": "Rough Endoplasmic Reticulum",
+          "cid": 15170,
+          "structureId": "3a86a93903bec81aec2d6d5ac88a0836"
+        },
+        {
+          "name": "Transport Vesicle",
+          "cid": 15141,
+          "structureId": "3bd9c6a87a6522a28c4e1a7e1aec4949"
+        },
+        {
+          "name": "Endosome",
+          "cid": 15834,
+          "structureId": "4c1da296aa65111b1d9a24b6e652fddf"
+        },
+        {
+          "name": "Smooth Endoplasmic Reticulum (Anterosuperior Cut)",
+          "cid": 16121,
+          "structureId": "5f5dc31f14add5d7adf5c1972b1313d5"
+        },
+        {
+          "name": "Clathrin-coated Vesicle",
+          "cid": 15654,
+          "structureId": "67b1a5e13b0314cb2cfa2865b290611b"
+        },
+        {
+          "name": "Golgi Complex (Posterior)",
+          "cid": 15128,
+          "structureId": "87cc6a7450cf45d4fe75efaec26f5133"
+        },
+        {
+          "name": "Secretory Vesicle",
+          "cid": 15692,
+          "structureId": "cc4f88ab3ff5be782931e350947d5f8d"
+        },
+        {
+          "name": "Mitochondria",
+          "cid": 15259,
+          "structureId": "df079350e2076c3ca39640bafa45a4bc"
+        },
+        {
+          "name": "Rough Endoplasmic Reticulum (Anterosuperior Cut)",
+          "cid": 15108,
+          "structureId": "e9172224e90c440817b8e8b1be4cab6b"
+        },
+        {
+          "name": "Peroxisome",
+          "cid": 15437,
+          "structureId": "f6178fcc90540dd5e6637cda4e78e56b"
+        },
+        {
+          "name": "Proteasome",
+          "cid": 15927,
+          "structureId": "a7af4c1f9d722c7132a2316c4bddad80"
+        },
+        {
+          "name": "Pigment Granule",
+          "cid": 15471,
+          "structureId": "2a27f171d6f5256c3bede0d4691de6db"
+        },
+        {
+          "name": "Lipid Droplet",
+          "cid": 15579,
+          "structureId": "57f056a9a0e52dcc92ae2bfe077fd9e9"
+        },
+        {
+          "name": "Glycogen Granule",
+          "cid": 16144,
+          "structureId": "f651f6f0ea2832d5d923eb35832c0356"
+        },
+        {
+          "name": "Ribosome",
+          "cid": 15709,
+          "structureId": "ad93bf8609742ba7bfc48ed66ef6d278"
+        },
+        {
+          "name": "Microtubule (Anterior)",
+          "cid": 16252,
+          "structureId": "0aa76249559418c157f28f8b256058dc"
+        },
+        {
+          "name": "Microfilament (Posterior)",
+          "cid": 15627,
+          "structureId": "310ee3c56259e125f1c6ba3d5f307489"
+        },
+        {
+          "name": "Microfilament (Anterior)",
+          "cid": 16341,
+          "structureId": "6e9216f6fe01f2748969ee7cc71021e7"
+        },
+        {
+          "name": "Microtubule (Posterior)",
+          "cid": 15123,
+          "structureId": "90236aec84503daddadd8493a1221897"
+        },
+        {
+          "name": "Intermediate Filament (Anterior)",
+          "cid": 16273,
+          "structureId": "b960872932b64758f3b42de9359968e8"
+        },
+        {
+          "name": "Intermediate Filament (Posterior)",
+          "cid": 15853,
+          "structureId": "d2874fe9efe4ce9fca90c146246b0c83"
+        },
+        {
+          "name": "Centriole",
+          "cid": 15860,
+          "structureId": "4f091204baa7ef336e777af806358cb1"
+        },
+        {
+          "name": "Centrosomal Matrix",
+          "cid": 15793,
+          "structureId": "de5860f8ad25fa8e806accb14e961553"
+        },
+        {
+          "name": "Cytosol",
+          "cid": 15295,
+          "structureId": "409b1c3f629ad9ffbd1d767b33c7927c"
+        },
+        {
+          "name": "Cytosol (Anterosuperior Cut)",
+          "cid": 15942,
+          "structureId": "b45af0a54a57491610cf65efd750e4e4"
+        },
+        {
+          "name": "Nuclear Envelope",
+          "cid": 15225,
+          "structureId": "0f99be52f8d288f01ca5b5afb472d01c"
+        },
+        {
+          "name": "Nucleoplasm (Anterosuperior Cut)",
+          "cid": 15587,
+          "structureId": "3a0c01a8693759d8f33090e0969f7692"
+        },
+        {
+          "name": "Nucleolus",
+          "cid": 15599,
+          "structureId": "68033151a1a36250c396e4af0432e864"
+        },
+        {
+          "name": "Nuclear Pores (Anterosuperior Cut)",
+          "cid": 16393,
+          "structureId": "99691496d02a4bce0e80deb2f5155f15"
+        },
+        {
+          "name": "Heterochromatin (Anterosuperior Cut)",
+          "cid": 15913,
+          "structureId": "0060d87074d52e16059dd19625bd379a"
+        },
+        {
+          "name": "Heterochromatin",
+          "cid": 16238,
+          "structureId": "4095c3cafb23154d88206c52fa83e1f1"
+        },
+        {
+          "name": "Euchromatin (Anterosuperior Cut)",
+          "cid": 15578,
+          "structureId": "44526a315a420cab429213009443f17b"
+        },
+        {
+          "name": "Euchromatin",
+          "cid": 15810,
+          "structureId": "561e0ab8e1a3383f8a37f5181ec79d49"
+        },
+        {
+          "name": "Nucleoplasm",
+          "cid": 15592,
+          "structureId": "c7340949bacd07e712c374c4fb008629"
+        },
+        {
+          "name": "Nuclear Envelope (Anterosuperior Cut)",
+          "cid": 15715,
+          "structureId": "d9e0fd67a5dd71155385be3f6c4d56f1"
+        },
+        {
+          "name": "Nuclear Pores",
+          "cid": 15932,
+          "structureId": "e660c375d8494af384b05e865b32a6b2"
+        },
+        {
+          "name": "Microvilli (Anterior)",
+          "cid": 15689,
+          "structureId": "0dddf33803ef3ce9aeb1c08228c4a7b3"
+        },
+        {
+          "name": "Exocytosis (Anterior)",
+          "cid": 15714,
+          "structureId": "3334851cd79fd9805d36651b0a3227b6"
+        },
+        {
+          "name": "Cell Membrane (Posterior)",
+          "cid": 16055,
+          "structureId": "59540e4f63aa0f27ebf332a5aa21b430"
+        },
+        {
+          "name": "Endocytosis (Posterior)",
+          "cid": 15779,
+          "structureId": "6c35abbc89a14d2b83780a704400dfdf"
+        },
+        {
+          "name": "Exocytosis (Posterior)",
+          "cid": 16171,
+          "structureId": "80bb18e1476600ff0aec9b876b42f2d8"
+        },
+        {
+          "name": "Microvilli (Posterior)",
+          "cid": 15457,
+          "structureId": "821be1cba9fbda581b7453fb5665c044"
+        },
+        {
+          "name": "Cell Membrane (Anterior)",
+          "cid": 16029,
+          "structureId": "cc899c83cbd398bbf8e81704c522cfbb"
+        },
+        {
+          "name": "Endocytosis (Anterior)",
+          "cid": 15977,
+          "structureId": "ed35529a9d38d283c6906bd14e9eba4b"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/351e1022bb17ca23e071a902c29b5233.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "tooth",
+      "title": "Tooth",
+      "appModelId": "3b978a0adcecd9c90d34cc3b166595db",
+      "thumbnail": "/models/detailed/thumbnails/tooth.png",
+      "previewFile": "/models/detailed/tooth/preview.gltf",
+      "geometryBuffersAvailable": [
+        "a8a84b606695b48cbdb366965078fb80.vertex.bin",
+        "983714a6da41e4093aaabcefbc5a6b09.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Tooth",
+      "structures": [
+        {
+          "name": "Apical Foramen",
+          "cid": 15594,
+          "structureId": "03669e5c68b512c427ac6e3071566cff"
+        },
+        {
+          "name": "Enamel Spindles",
+          "cid": 15845,
+          "structureId": "21a236cb2ad5976883fe08eb37133bab"
+        },
+        {
+          "name": "Enamel",
+          "cid": 15283,
+          "structureId": "4f10f6fbec7c9032c41dc6df6126b322"
+        },
+        {
+          "name": "Enamel Striae",
+          "cid": 16186,
+          "structureId": "65ee54f7dcb77f0f2e134a09d8857231"
+        },
+        {
+          "name": "Enamel Prisms",
+          "cid": 15168,
+          "structureId": "6e5ddc976e770897637a58f6ec63fa85"
+        },
+        {
+          "name": "Mandibular Canal",
+          "cid": 15122,
+          "structureId": "1d6c7e92953e4bfbb24dfb02841a0dfa"
+        },
+        {
+          "name": "Granular Layer of Dentin",
+          "cid": 15135,
+          "structureId": "656c0bb468ee71874c38a9f990efe8fb"
+        },
+        {
+          "name": "Cellular Cement",
+          "cid": 15357,
+          "structureId": "03ece2668beefa684c9eb3a525708a00"
+        },
+        {
+          "name": "Acellular Cement",
+          "cid": 15838,
+          "structureId": "4bfadd1afc830d83614509b3f235339b"
+        },
+        {
+          "name": "Connecting Canal",
+          "cid": 15317,
+          "structureId": "8d46b42a69e0d3fc712e993f4e06a03b"
+        },
+        {
+          "name": "Dental Pulp",
+          "cid": 16123,
+          "structureId": "83404049d8d06ae93061f57c98319d8b"
+        },
+        {
+          "name": "Dental Pulp (Cross Section)",
+          "cid": 15541,
+          "structureId": "9c0aace5fe36b246b3a250d8d92eac25"
+        },
+        {
+          "name": "Pulpal Blood Vessels",
+          "cid": 15248,
+          "structureId": "d8472a6e5e4affc19954ef01ef969787"
+        },
+        {
+          "name": "Subodontoblastic Nerve Plexus",
+          "cid": 15301,
+          "structureId": "f51b7aa0b91000d245cca7eb18b3dfbe"
+        },
+        {
+          "name": "Lateral Canals",
+          "cid": 15490,
+          "structureId": "f54ef2d3aba0cf1afafefc1e62e3902c"
+        },
+        {
+          "name": "Pulpal Sensory Nerves",
+          "cid": 15074,
+          "structureId": "f6825673dbc62906602a7737f769e12c"
+        },
+        {
+          "name": "Predentin",
+          "cid": 16272,
+          "structureId": "9d1db88cd022c3bf39753009fe799fcd"
+        },
+        {
+          "name": "Dentinocemental Junction",
+          "cid": 15179,
+          "structureId": "a4fa4f503d241ad0840f1ecc53907324"
+        },
+        {
+          "name": "Alveolar Blood Vessels",
+          "cid": 15966,
+          "structureId": "cad7ae3043eb3c2ae0fba1786abe4c3f"
+        },
+        {
+          "name": "Odontoblast Layer",
+          "cid": 15380,
+          "structureId": "d08082ace1526a88b72cc719129f6250"
+        },
+        {
+          "name": "Alveolar Process of Mandible",
+          "cid": 16319,
+          "structureId": "d51cba620077ef0c11e38eaa3a3ddd28"
+        },
+        {
+          "name": "Alveolar Nerves",
+          "cid": 16308,
+          "structureId": "d57b667ea759a8d16cc22373383fc9b7"
+        },
+        {
+          "name": "Dentin",
+          "cid": 15558,
+          "structureId": "e362e553fb5c904a3d2073b8f19fe719"
+        },
+        {
+          "name": "Lamina Propria (Gingiva)",
+          "cid": 15696,
+          "structureId": "351dfb93738cdbe3c702eaeb4047921b"
+        },
+        {
+          "name": "Gingival Nerves",
+          "cid": 16117,
+          "structureId": "56d48b37b08c56428cf0ffad60c334d3"
+        },
+        {
+          "name": "Gingival Epithelium",
+          "cid": 15550,
+          "structureId": "7b22b373b3596600ae8a0f9c7b44dff0"
+        },
+        {
+          "name": "Gingival Blood Vessels",
+          "cid": 15186,
+          "structureId": "d3e6df541541aa850ef2eda7936b1ea5"
+        },
+        {
+          "name": "Circular Fibers",
+          "cid": 15452,
+          "structureId": "05bac862fdae3ae40f2cbee7b40dcafa"
+        },
+        {
+          "name": "Interradicular Fibers",
+          "cid": 15216,
+          "structureId": "10b820c1663bb48f08345be9a38328de"
+        },
+        {
+          "name": "Dentogingival Fibers",
+          "cid": 15912,
+          "structureId": "15358324b6681ee428d5f6bafa1adf4a"
+        },
+        {
+          "name": "Oblique Fibers",
+          "cid": 15463,
+          "structureId": "23767c65506b3a1facfe9bccb130ff1d"
+        },
+        {
+          "name": "Apical Fibers",
+          "cid": 16394,
+          "structureId": "49af8c11f3c987f13f83a72fa4dab366"
+        },
+        {
+          "name": "Alveolar Crest Fibers",
+          "cid": 15426,
+          "structureId": "50f7251ace268a757615c5dc8b43a79f"
+        },
+        {
+          "name": "Horizontal Fibers",
+          "cid": 15783,
+          "structureId": "5b2541146c0613cb2fba1b310e6e38b2"
+        },
+        {
+          "name": "Alveologingival Fibers",
+          "cid": 15622,
+          "structureId": "67ccecc916f3f24124199279ee912d46"
+        },
+        {
+          "name": "Dentoperiosteal Fibers",
+          "cid": 15577,
+          "structureId": "c875754ea3e46a0ec3e7bbfa43816f31"
+        },
+        {
+          "name": "Transseptal Fibers",
+          "cid": 15304,
+          "structureId": "e40a58a88ae3c81dfb6cd7fe9ee5d1d0"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/5dde1dafe1cf1eaa2c5c6ac0a3e4896c.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "pancreas",
+      "title": "Pancreas",
+      "appModelId": "6a8bd6549111b4d916d5bfbfe5fa08b4",
+      "thumbnail": "/models/detailed/thumbnails/pancreas.png",
+      "previewFile": "/models/detailed/pancreas/preview.gltf",
+      "geometryBuffersAvailable": [
+        "2e844c0bdbccce055feb256f7ae22c52.vertex.bin",
+        "f4ba626ec2e1ec58c722e74d83390c4f.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Pancreas",
+      "structures": [
+        {
+          "name": "Intercalated Duct (Inferior)",
+          "cid": 16375,
+          "structureId": "1db96daf6b85c09a53e9635de557de55"
+        },
+        {
+          "name": "Exocrine Cell of Pancreas",
+          "cid": 15224,
+          "structureId": "14caf29755b891ef75fda172fb98f1db"
+        },
+        {
+          "name": "Pancreatic Acinus (Inferior)",
+          "cid": 15803,
+          "structureId": "14e8b5057599c809dd11d7a38bb22c36"
+        },
+        {
+          "name": "Pancreatic Acinus (Superior)",
+          "cid": 15867,
+          "structureId": "b8e2305f9535b5a8d4bdc923040dd20b"
+        },
+        {
+          "name": "Centroacinar Cell",
+          "cid": 16068,
+          "structureId": "e0ba60c09a4a43603ab38eba09c28441"
+        },
+        {
+          "name": "Intercalated Duct (Superior)",
+          "cid": 15181,
+          "structureId": "a714046940dc2962c5ada7c8fba02b90"
+        },
+        {
+          "name": "Intralobular Duct",
+          "cid": 15091,
+          "structureId": "d4b9385ba7d1392c57c6eeefcc757a23"
+        },
+        {
+          "name": "A Cell",
+          "cid": 15763,
+          "structureId": "03764347acf3cd27ecf90a77aaf3cadb"
+        },
+        {
+          "name": "D Cell",
+          "cid": 15926,
+          "structureId": "391d6e74126bf56ec1eb9077d9ba9b48"
+        },
+        {
+          "name": "Pancreatic Islet (Inferior)",
+          "cid": 15705,
+          "structureId": "3cd1fca753fe9c2861865edc961ba37e"
+        },
+        {
+          "name": "Pancreatic Islet (Superior)",
+          "cid": 16092,
+          "structureId": "764d2181d2716d68390e19939a2ea574"
+        },
+        {
+          "name": "Pancreatic Polypeptide Cell",
+          "cid": 15672,
+          "structureId": "a0eaedf4a309f05f09e9fc2134de01e3"
+        },
+        {
+          "name": "B Cell",
+          "cid": 16294,
+          "structureId": "eddd44d345a12e8b7b84ee58072cbbd8"
+        },
+        {
+          "name": "Capillary Vessel (Pancreas; Inferior)",
+          "cid": 15893,
+          "structureId": "e02c073690b1318becf81df09ca62f2c"
+        },
+        {
+          "name": "Capillary Vessel (Pancreas; Superior)",
+          "cid": 16174,
+          "structureId": "e452259e8f9461981a7f8eb01be2daef"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/622c1cfcee3777c0271fa4489a526797.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "secondary-oocyte",
+      "title": "Secondary Oocyte",
+      "appModelId": "6039bd2cbc63a4f7d6a6e4771dd84292",
+      "thumbnail": "/models/detailed/thumbnails/secondary-oocyte.png",
+      "previewFile": "/models/detailed/secondary-oocyte/preview.gltf",
+      "geometryBuffersAvailable": [
+        "eeec5c0c3be9728fd81b5028d36e5b57.vertex.bin",
+        "d60f351fe67b95edf6a5566790e7a0c1.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Secondary Oocyte",
+      "structures": [
+        {
+          "name": "Cortical Granule (Inferior)",
+          "cid": 15904,
+          "structureId": "5a590d1345aa84e919b4fad3beb87c49"
+        },
+        {
+          "name": "Cortical Granule (Superior)",
+          "cid": 16270,
+          "structureId": "af269c8043a4e497c69fda4c9928213f"
+        },
+        {
+          "name": "First Polar Body (Inferior)",
+          "cid": 15948,
+          "structureId": "3ff99f23dff0511eb4c4baafa72b2ab4"
+        },
+        {
+          "name": "First Polar Body (Superior)",
+          "cid": 15303,
+          "structureId": "a7570f3e596c2d477263f25b13fe21cb"
+        },
+        {
+          "name": "Nucleus (Superior)",
+          "cid": 15103,
+          "structureId": "6405a18339e4c17e91a1245bf8873c67"
+        },
+        {
+          "name": "Nucleus (Inferior)",
+          "cid": 16152,
+          "structureId": "be99d8be06231e05687cd2aa29616665"
+        },
+        {
+          "name": "Cytoplasm (Inferior)",
+          "cid": 15466,
+          "structureId": "44c92d0a42b290aa3a14b20e2df62220"
+        },
+        {
+          "name": "Cytoplasm (Superior)",
+          "cid": 15884,
+          "structureId": "a4b7269ba3724e8bc0e25afb24028d8d"
+        },
+        {
+          "name": "Corona Radiata (Inferior)",
+          "cid": 16048,
+          "structureId": "6bcf437b1abbe06301993fad19e0fdd4"
+        },
+        {
+          "name": "Corona Radiata (Superior)",
+          "cid": 15760,
+          "structureId": "e259f635c4d5bcfd335f0409504b3990"
+        },
+        {
+          "name": "Plasma Membrane (Superior)",
+          "cid": 15851,
+          "structureId": "73b6831bf0f14ee7916cc093543579e1"
+        },
+        {
+          "name": "Plasma Membrane (Inferior)",
+          "cid": 16061,
+          "structureId": "e342a2a708830469d9de00e80cf998e0"
+        },
+        {
+          "name": "Zona Pellucida (Superior)",
+          "cid": 16371,
+          "structureId": "4469ce0c1808104b80122a083a2bb3e3"
+        },
+        {
+          "name": "Zona Pellucida (Inferior)",
+          "cid": 15559,
+          "structureId": "79f7fd8c73e9a5a8a3bd2287ead0ee71"
+        },
+        {
+          "name": "Mitochondria (Superior)",
+          "cid": 15735,
+          "structureId": "430f4fedb118a5bcdefb9443b77dc5ce"
+        },
+        {
+          "name": "Mitochondria (Inferior)",
+          "cid": 15195,
+          "structureId": "c802a71a9ecb0568d6ff439ad813336c"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/5b893e65c5fd834310fa0a5c674abfad.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "synapse",
+      "title": "Synapse",
+      "appModelId": "8221cdc2f7e0bf62ef0cd2567cc00bcd",
+      "thumbnail": "/models/detailed/thumbnails/synapse.png",
+      "previewFile": "/models/detailed/synapse/preview.gltf",
+      "geometryBuffersAvailable": [
+        "3ae3886e29f9e04f80458d00a7196427.vertex.bin",
+        "b8aba066f302fa7beede8e7750495961.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Synapse",
+      "structures": [
+        {
+          "name": "Neurotransmitter",
+          "cid": 16245,
+          "structureId": "16f619f458fb3bd40f5dac0339388864"
+        },
+        {
+          "name": "Synaptic Vesicle",
+          "cid": 15649,
+          "structureId": "c67e6a7955d6ed0fef0d9cbcf7614cbd"
+        },
+        {
+          "name": "Intracellular Membrane Fusion Proteins",
+          "cid": 15998,
+          "structureId": "d24cf56758b97851bf96f85f53306b89"
+        },
+        {
+          "name": "Docked Synaptic Vesicle",
+          "cid": 15171,
+          "structureId": "6fb4b7a0244108a5329b3044e289893a"
+        },
+        {
+          "name": "Myelinating Process",
+          "cid": 15203,
+          "structureId": "7432ad378d34601b8aae05c0193b08b8"
+        },
+        {
+          "name": "Neural Microtubule",
+          "cid": 15421,
+          "structureId": "7a6736e4e2faf088da3e9cc336cbf34e"
+        },
+        {
+          "name": "Myelin Sheath",
+          "cid": 15459,
+          "structureId": "7f6d5a81060c485ad6e3afb7221cbf12"
+        },
+        {
+          "name": "Intracellular Membrane Fusion Proteins",
+          "cid": 15998,
+          "structureId": "87d13bc06899e1531d11e60fa8188fa3"
+        },
+        {
+          "name": "Calcium Ions",
+          "cid": 15980,
+          "structureId": "8e70a25640ecbb6042b8b98bf2f83b73"
+        },
+        {
+          "name": "Axoplasm",
+          "cid": 16269,
+          "structureId": "51176044e1bd75628d453c88d2a0378e"
+        },
+        {
+          "name": "Axolemma",
+          "cid": 15655,
+          "structureId": "6ea46acbc3ac74c4e56feb926c376c95"
+        },
+        {
+          "name": "Sodium-potassium Pump",
+          "cid": 15072,
+          "structureId": "c7f90a09de48909bc8773ab3fd175816"
+        },
+        {
+          "name": "Mitochondria",
+          "cid": 15414,
+          "structureId": "c9a2c8b3fa4f93ff340c4023547b25ef"
+        },
+        {
+          "name": "Voltage-Gated Potassium Channel",
+          "cid": 16161,
+          "structureId": "9f575049d54e5f922ee82d5481c8ac6d"
+        },
+        {
+          "name": "Voltage-Gated Sodium Channel",
+          "cid": 16129,
+          "structureId": "b7b773652aa637f8a1bb710d9917596a"
+        },
+        {
+          "name": "Voltage-Gated Calcium Channel (Open)",
+          "cid": 15703,
+          "structureId": "d49855443767ef01a91aef88093e8a0d"
+        },
+        {
+          "name": "Dense-core Vesicle",
+          "cid": 15334,
+          "structureId": "d6a9812fd4591999e0132244183c0846"
+        },
+        {
+          "name": "Neurotransmitter Reuptake Pump",
+          "cid": 15555,
+          "structureId": "f40d6c2f62675f84f9cf50e4dd8217da"
+        },
+        {
+          "name": "Sodium Ions",
+          "cid": 15936,
+          "structureId": "70b07912511b3efb397410420b1d5540"
+        },
+        {
+          "name": "Ligand-Gated Ion Channel (Open)",
+          "cid": 15260,
+          "structureId": "4c3163158471df1441fd416208a09be2"
+        },
+        {
+          "name": "Ligand-Gated Ion Channel (Closed)",
+          "cid": 15856,
+          "structureId": "5ab6e5b6684c90d4dcf32bb2fd924aeb"
+        },
+        {
+          "name": "Postsynaptic Membrane",
+          "cid": 15603,
+          "structureId": "ba5d70bc1f0b2681b3ae9fc69b540253"
+        },
+        {
+          "name": "Synaptic Cleft Material",
+          "cid": 15086,
+          "structureId": "b4628bbbb156d8bc756275cde99ba2cf"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/48bb9635658e5283bf74bb09013da1ed.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "blood",
+      "title": "Blood",
+      "appModelId": "47ccbb27bb25a8db8497ceb3d7740a92",
+      "thumbnail": "/models/detailed/thumbnails/blood.png",
+      "previewFile": "/models/detailed/blood/preview.gltf",
+      "geometryBuffersAvailable": [
+        "7b9077764e7a68af1b81ff54c366c5d6.vertex.bin",
+        "2a2ae2caec394b8d46b394fe6e9bf2d9.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Blood",
+      "structures": [
+        {
+          "name": "Blood Plasma",
+          "cid": 15071,
+          "structureId": "463b08b9ef3e1e6248b92b36bfdd7be3"
+        },
+        {
+          "name": "Basophilic Granule",
+          "cid": 15994,
+          "structureId": "31b384d2dbb8d4ad6f868a5a9b21610a"
+        },
+        {
+          "name": "Neutrophil",
+          "cid": 16077,
+          "structureId": "46729f76c8d7fa120e19047e84549caf"
+        },
+        {
+          "name": "Nucleus (Neutrophil)",
+          "cid": 15605,
+          "structureId": "48facfcb090abbf7f93783534ec654bf"
+        },
+        {
+          "name": "Nucleus (Eosinophil)",
+          "cid": 16040,
+          "structureId": "5370dcb58f70e8507a51b098256de9d9"
+        },
+        {
+          "name": "Eosinophilic Granule",
+          "cid": 15638,
+          "structureId": "618b39bd62552d2ed957b61a6dba5657"
+        },
+        {
+          "name": "Nucleus (Lymphocyte)",
+          "cid": 15861,
+          "structureId": "7476b88cf22a3093ed3197e14d7fe016"
+        },
+        {
+          "name": "Eosinophil",
+          "cid": 16210,
+          "structureId": "9d58065a38dd96ebe332824eaacc0361"
+        },
+        {
+          "name": "Nucleus (Monocyte)",
+          "cid": 15456,
+          "structureId": "bbd865b9780bbef8e61c80ca8c0da3b8"
+        },
+        {
+          "name": "Lymphocyte",
+          "cid": 16180,
+          "structureId": "c0fa06d5b43bc4cb33827eaa310df34f"
+        },
+        {
+          "name": "Monocyte",
+          "cid": 15548,
+          "structureId": "d7792e384f0514bf2a234681652728b5"
+        },
+        {
+          "name": "Basophil",
+          "cid": 15744,
+          "structureId": "ef08aabe036c7c80622211878b231327"
+        },
+        {
+          "name": "Neutrophilic Granule",
+          "cid": 15238,
+          "structureId": "ef20e79e4a28a2a6312b23d087330b04"
+        },
+        {
+          "name": "Nucleus (Basophil)",
+          "cid": 15908,
+          "structureId": "fcb6c57999e098adf830351489e71750"
+        },
+        {
+          "name": "Erythrocyte",
+          "cid": 16056,
+          "structureId": "742b3d2f334b3e844b8e2172aa134be3"
+        },
+        {
+          "name": "Platelet",
+          "cid": 16053,
+          "structureId": "b7e0a8fa927f8b6c40c9594bf34cfaf3"
+        },
+        {
+          "name": "Tunica Externa of Vessel",
+          "cid": 15202,
+          "structureId": "83cb86259ed3aad1badd1a980bedcb80"
+        },
+        {
+          "name": "Tunica Media of Vessel",
+          "cid": 15909,
+          "structureId": "849258fffc70a29dac508319c8fcd28a"
+        },
+        {
+          "name": "Tunica Intima of Vessel",
+          "cid": 16323,
+          "structureId": "c79ba601eee443f396e0b8efc8671695"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/8b18422d99f20bba9dce42ab035bfd5c.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    },
+    {
+      "id": "retinal-layers",
+      "title": "Retinal Layers",
+      "appModelId": "1fbf33336e22e34d921e37b2bbfe87eb",
+      "thumbnail": "/models/detailed/thumbnails/retinal-layers.png",
+      "previewFile": "/models/detailed/retinal-layers/preview.gltf",
+      "geometryBuffersAvailable": [
+        "a959ade5e28cbeb6e7b5840f68965075.vertex.bin",
+        "eef451a29a3fb215c2c43636950aba53.index.bin"
+      ],
+      "geometryAvailable": true,
+      "complete": false,
+      "description": "Retinal Layers",
+      "structures": [
+        {
+          "name": "Choroidocapillary Lamina",
+          "cid": 15300,
+          "structureId": "39c6027171980d9b7b462b5f2552546a"
+        },
+        {
+          "name": "Basal Complex",
+          "cid": 15937,
+          "structureId": "ed68a6eb3d9bc97b88aa15f2c1a2b1aa"
+        },
+        {
+          "name": "Inner Limiting Layer of Retina",
+          "cid": 15727,
+          "structureId": "14e728448baf60f5ff2cd4162e5582c9"
+        },
+        {
+          "name": "Retinal Blood Vessels",
+          "cid": 16369,
+          "structureId": "288c06c3c63609e60ec585b3cef909ca"
+        },
+        {
+          "name": "Horizontal Neurons",
+          "cid": 16132,
+          "structureId": "3909fe50f6d0857b0b535e8d72f0dc46"
+        },
+        {
+          "name": "Pigment Cell of Retina",
+          "cid": 15207,
+          "structureId": "69c867b3fb8e97e9b7bb78107053b866"
+        },
+        {
+          "name": "Retinal Ganglion Cells",
+          "cid": 15661,
+          "structureId": "759a5bb77876706ab1edd44eaf692942"
+        },
+        {
+          "name": "Protoplasmic Astrocyte",
+          "cid": 16098,
+          "structureId": "77bb5ac66d473e1067f4714d34fed665"
+        },
+        {
+          "name": "Pigment Cell Microvilli",
+          "cid": 16051,
+          "structureId": "89c1c84ec7590f93f08b091134c61bc4"
+        },
+        {
+          "name": "Bipolar Neurons",
+          "cid": 16158,
+          "structureId": "9067b7be1f5f74610cd77404c53d9833"
+        },
+        {
+          "name": "Cone Cell",
+          "cid": 16231,
+          "structureId": "97235b21a69d552988143d8c3994d78a"
+        },
+        {
+          "name": "Rod Cell",
+          "cid": 15542,
+          "structureId": "a633b9e929d18ba9838b61e690946332"
+        },
+        {
+          "name": "Displaced Amacrine Cell",
+          "cid": 15352,
+          "structureId": "b0146a7b2504e248049924cab8afdf29"
+        },
+        {
+          "name": "Interplexiform Neuron",
+          "cid": 15152,
+          "structureId": "cf2fe2219de4691f550baebb89449583"
+        },
+        {
+          "name": "Amacrine Cells",
+          "cid": 15776,
+          "structureId": "e6d513e3ae7d892bb6be525ec110820a"
+        },
+        {
+          "name": "Radial Glial Cell",
+          "cid": 15144,
+          "structureId": "f962f41e7f131b6ab03eef2a256d487d"
+        }
+      ],
+      "textureBuffersAvailable": [
+        "dds/70220c8a428dec533359c80df8eebb5c.bin"
+      ],
+      "texturesAvailable": true,
+      "platformComplete": true,
+      "platform": "macOS"
+    }
+  ]
+}

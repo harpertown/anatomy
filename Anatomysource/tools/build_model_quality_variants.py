@@ -3,8 +3,8 @@
 
 The source anatomy and original-quality assets are left intact. Reduced tiers
 use meshoptimizer simplification with locked mesh borders, then EXT_meshopt
-compression and a scene-wide quantization grid. Heart geometry is never
-simplified: its compact tiers preserve the original surface topology.
+compression and a scene-wide quantization grid. Heart and integumentary meshes
+retain their source topology to avoid disturbing thin or layered surfaces.
 """
 
 from __future__ import annotations
@@ -21,9 +21,9 @@ PUBLIC = ROOT / "public/models"
 CATALOG_PATH = PUBLIC / "catalog.json"
 TEXTURE_DIR = PUBLIC / "textures"
 TIERS = {
-    "low": {"ratio": "0.60", "error": "0.01", "position": "12", "normal": "10", "texcoord": "10"},
-    "medium": {"ratio": "0.82", "error": "0.005", "position": "14", "normal": "12", "texcoord": "12"},
-    "high": {"ratio": "0.94", "error": "0.001", "position": "16", "normal": "14", "texcoord": "14"},
+    "low": {"ratio": "0.60", "error": "0.0005", "position": "16", "normal": "12", "texcoord": "12"},
+    "medium": {"ratio": "0.82", "error": "0.00025", "position": "16", "normal": "14", "texcoord": "14"},
+    "high": {"ratio": "0.94", "error": "0.0001", "position": "16", "normal": "16", "texcoord": "16"},
 }
 TEXTURE_TIERS = {
     "low": (512, 68, 80),
@@ -127,16 +127,17 @@ def model_output_path(model: dict, quality: str) -> Path:
     return PUBLIC / "catalog" / "quality" / f"{stem}-{quality}.glb"
 
 
-def make_variant(source: Path, output: Path, quality: str, heart: bool) -> None:
+def make_variant(source: Path, output: Path, quality: str, system: str) -> None:
     tier = TIERS[quality]
+    preserve_topology = system in {"Heart", "Integumentary System"}
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="anatomy-quality-") as temp_dir:
         prepared = Path(temp_dir) / "prepared.glb"
         prepare_source(source, prepared)
         working = prepared
-        # Keep heart surfaces untouched to avoid amplifying known seams at
-        # clipped part boundaries. Other systems get progressively reduced LOD.
-        if not heart:
+        # Keep heart and skin surfaces untouched to avoid amplifying seams,
+        # clipping, and depth-fighting at thin or layered part boundaries.
+        if not preserve_topology:
             simplified = Path(temp_dir) / "simplified.glb"
             subprocess.run([
                 "npx", "--yes", "@gltf-transform/cli", "simplify",
@@ -148,7 +149,7 @@ def make_variant(source: Path, output: Path, quality: str, heart: bool) -> None:
             "npx", "--yes", "@gltf-transform/cli", "meshopt",
             str(working), str(output), "--level", "medium",
             "--quantization-volume", "scene",
-            "--quantize-position", tier["position"],
+            "--quantize-position", "16" if preserve_topology else tier["position"],
             "--quantize-normal", tier["normal"],
             "--quantize-texcoord", tier["texcoord"],
         ], check=True, cwd=ROOT)
@@ -269,7 +270,7 @@ def prepare_catalog(models: list[dict], force: bool = False) -> list[dict]:
                 continue
             output = model_output_path(model, quality)
             if force or not output.exists():
-                make_variant(PUBLIC / model["file"], output, quality, model.get("system") == "Heart")
+                make_variant(PUBLIC / model["file"], output, quality, model.get("system", ""))
             variant = dict(model)
             variant.update({
                 "id": f"{model['id']}-{quality}",

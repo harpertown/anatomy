@@ -16,6 +16,7 @@
           <input id="model-input" type="file" accept=".glb,.gltf,.bin,.png,.jpg,.jpeg,.webp,.ktx2" multiple hidden />
           <section class="library-picker" aria-labelledby="library-title">
             <div class="library-heading"><h2 id="library-title">Model library</h2><button id="collapse-left" class="icon-button quiet" title="Hide model library" aria-label="Hide model library" aria-expanded="true"><svg viewBox="0 0 24 24"><path d="m14.5 5-7 7 7 7"/></svg></button></div>
+            <button id="open-detailed-models" class="button button-outline detailed-models-entry" type="button"><span>Detailed Models</span><span class="detailed-model-count">38</span></button>
             <div class="sex-switch" role="group" aria-label="Select model sex">
               <button id="model-sex-male" type="button" aria-pressed="true">Male</button>
               <button id="model-sex-female" type="button" aria-pressed="false">Female</button>
@@ -109,6 +110,14 @@
           <div class="inspector-bottom"><span class="source-label">Source</span><span id="source-value">No file selected</span></div>
         </aside>
       </main>
+      <section id="detailed-gallery" class="detailed-gallery" aria-labelledby="detailed-gallery-title" hidden>
+        <header class="detailed-gallery-header">
+          <div><p class="eyebrow">Anatomy library</p><h1 id="detailed-gallery-title">Detailed Models</h1><p class="detailed-gallery-intro">Explore the focused models from the app library. Copies with recovered geometry can be opened in the viewer.</p></div>
+          <button id="close-detailed-models" class="button button-outline" type="button">Back to viewer</button>
+        </header>
+        <div class="detailed-gallery-tools"><label class="detailed-search"><span aria-hidden="true">⌕</span><input id="detailed-search" type="search" placeholder="Search detailed models" autocomplete="off" /></label><span id="detailed-model-count" class="detailed-count-label">38 models</span></div>
+        <div id="detailed-model-grid" class="detailed-model-grid" aria-live="polite"></div>
+      </section>
     </div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script type="module" src="/src/main.js"></script>
