@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build:wasm": "emcc src/wasm/mesh_core.c -O3 -sSTANDALONE_WASM=1 -Wl,--no-entry -Wl,--export=compute_fit -Wl,--export-memory -o public/mesh-core.wasm",
+    "build:model-quality": "python3 tools/build_model_quality_variants.py",
     "build:viewer": "vite build && node tools/chunk_cloudflare_models.mjs",
     "build": "npm run build:wasm && vite build",
     "preview": "vite preview --host 127.0.0.1"

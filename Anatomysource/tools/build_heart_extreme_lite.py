@@ -15,34 +15,21 @@ from build_heart_super_lite import (
     build_heart_texture_tiers,
     read_glb_document,
 )
+from build_heart_lite import SOURCE, prepare_glb
 
 
 OUTPUT = ROOT / "public/models/catalog/male-heart-extreme-lite.glb"
-SIMPLIFICATION_RATIO = "0.50"
-SIMPLIFICATION_ERROR = "0.003"
-
-
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="heart-extreme-lite-") as temp_dir:
-        simplified_source = Path(temp_dir) / "male-heart-extreme-lite-simplified.glb"
-        subprocess.run(
-            [
-                "npx", "--yes", "@gltf-transform/cli", "simplify",
-                str(LITE_SOURCE), str(simplified_source),
-                "--ratio", SIMPLIFICATION_RATIO,
-                "--error", SIMPLIFICATION_ERROR,
-                "--lock-border", "true",
-            ],
-            check=True,
-            cwd=ROOT,
-        )
+        clean_source = Path(temp_dir) / "male-heart-clean.glb"
+        prepare_glb(SOURCE, clean_source)
         texture_sizes = build_heart_texture_tiers(read_glb_document(LITE_SOURCE))
         subprocess.run(
             [
                 "npx", "--yes", "@gltf-transform/cli", "meshopt",
-                str(simplified_source), str(OUTPUT),
-                "--level", "high",
+                str(clean_source), str(OUTPUT),
+                "--level", "medium",
                 "--quantization-volume", "scene",
                 "--quantize-position", POSITION_QUANTIZATION_BITS,
                 "--quantize-normal", ATTRIBUTE_QUANTIZATION_BITS,

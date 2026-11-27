@@ -36,6 +36,7 @@
 	"private": true,
 	"scripts": {
 		"build": "npm --prefix Anatomysource run build:viewer",
+		"build:model-quality": "npm --prefix Anatomysource run build:model-quality",
 		"cf-typegen": "wrangler types && react-router typegen",
 		"check": "npm run build && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",

@@ -406,6 +406,13 @@ body { color: var(--ink); background: #ebe9e5; }
 .sex-switch button { min-height: 27px; border: 0; border-radius: 3px; background: transparent; color: #596583; font-size: 10px; font-weight: 600; cursor: pointer; }
 .sex-switch button[aria-pressed="true"] { background: #123eb6; color: #fff; box-shadow: 0 1px 3px rgba(16,28,67,.18); }
 .sex-switch button:focus-visible { outline: 2px solid #123eb6; outline-offset: 1px; }
+.model-quality-control { margin: 0 0 8px; }
+.model-quality-label { display: block; margin: 0 0 4px 2px; color: #596583; font-size: 9px; font-weight: 600; }
+.model-quality-switch { padding: 2px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; border: 1px solid #c9cbd0; border-radius: 4px; background: #e7e6e2; }
+.model-quality-switch button { min-width: 0; min-height: 25px; padding: 0 2px; border: 0; border-radius: 3px; background: transparent; color: #596583; font-size: 9px; font-weight: 600; cursor: pointer; }
+.model-quality-switch button[aria-pressed="true"] { background: #123eb6; color: #fff; box-shadow: 0 1px 3px rgba(16,28,67,.18); }
+.model-quality-switch button:disabled { opacity: .42; cursor: not-allowed; }
+.model-quality-switch button:focus-visible { outline: 2px solid #123eb6; outline-offset: 1px; }
 
 /* Compact screens use reachable slide-over panels instead of hiding tools. */
 .mobile-panel-toggle { display: none; }

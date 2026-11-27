@@ -20,6 +20,15 @@
               <button id="model-sex-male" type="button" aria-pressed="true">Male</button>
               <button id="model-sex-female" type="button" aria-pressed="false">Female</button>
             </div>
+            <div class="model-quality-control">
+              <span class="model-quality-label">Model quality</span>
+              <div id="model-quality-switch" class="model-quality-switch" role="group" aria-label="Model quality">
+                <button type="button" data-model-quality="low" aria-pressed="false">Low</button>
+                <button type="button" data-model-quality="medium" aria-pressed="false">Medium</button>
+                <button type="button" data-model-quality="high" aria-pressed="false">High</button>
+                <button type="button" data-model-quality="original" aria-pressed="true">Original</button>
+              </div>
+            </div>
             <div id="model-library" class="model-checklist" role="group" aria-label="Choose anatomy systems" aria-busy="true">
               <p class="library-loading">Loading bundled models…</p>
             </div>

@@ -7,34 +7,9 @@
       "system": "Heart",
       "file": "heart.glb",
       "structures": 48,
-      "meshes": 48
-    },
-    {
-      "id": "male-2024-heart-lite",
-      "label": "Male \u00b7 Heart Lite",
-      "model": "Male",
-      "system": "Heart Lite",
-      "file": "catalog/male-heart-lite.glb",
-      "structures": 48,
-      "meshes": 48
-    },
-    {
-      "id": "male-2024-heart-super-lite",
-      "label": "Male \u00b7 Heart Super Lite",
-      "model": "Male",
-      "system": "Heart Super Lite",
-      "file": "catalog/male-heart-super-lite.glb",
-      "structures": 48,
-      "meshes": 48
-    },
-    {
-      "id": "male-2024-heart-extreme-lite",
-      "label": "Male \u00b7 Heart Extreme Lite",
-      "model": "Male",
-      "system": "Heart Extreme Lite",
-      "file": "catalog/male-heart-extreme-lite.glb",
-      "structures": 48,
-      "meshes": 48
+      "meshes": 48,
+      "quality": "original",
+      "qualityBaseId": "male-2024-heart"
     },
     {
       "id": "male-2024-skeletal-system",
@@ -43,7 +18,9 @@
       "system": "Skeletal System",
       "file": "catalog/male-2024-skeletal-system.glb",
       "structures": 642,
-      "meshes": 642
+      "meshes": 642,
+      "quality": "original",
+      "qualityBaseId": "male-2024-skeletal-system"
     },
     {
       "id": "male-2024-muscular-system",
@@ -52,7 +29,9 @@
       "system": "Muscular System",
       "file": "catalog/male-2024-muscular-system.glb",
       "structures": 628,
-      "meshes": 628
+      "meshes": 628,
+      "quality": "original",
+      "qualityBaseId": "male-2024-muscular-system"
     },
     {
       "id": "male-2024-lymphatic-system",
@@ -61,7 +40,9 @@
       "system": "Lymphatic System",
       "file": "catalog/male-2024-lymphatic-system.glb",
       "structures": 351,
-      "meshes": 351
+      "meshes": 351,
+      "quality": "original",
+      "qualityBaseId": "male-2024-lymphatic-system"
     },
     {
       "id": "male-2024-endocrine-system",
@@ -70,7 +51,9 @@
       "system": "Endocrine System",
       "file": "catalog/male-2024-endocrine-system.glb",
       "structures": 4,
-      "meshes": 4
+      "meshes": 4,
+      "quality": "original",
+      "qualityBaseId": "male-2024-endocrine-system"
     },
     {
       "id": "male-2024-integumentary-system",
@@ -79,7 +62,9 @@
       "system": "Integumentary System",
       "file": "catalog/male-2024-integumentary-system.glb",
       "structures": 83,
-      "meshes": 87
+      "meshes": 87,
+      "quality": "original",
+      "qualityBaseId": "male-2024-integumentary-system"
     },
     {
       "id": "male-2024-respiratory-system",
@@ -88,7 +73,9 @@
       "system": "Respiratory System",
       "file": "catalog/male-2024-respiratory-system.glb",
       "structures": 114,
-      "meshes": 114
+      "meshes": 114,
+      "quality": "original",
+      "qualityBaseId": "male-2024-respiratory-system"
     },
     {
       "id": "male-2024-digestive-system",
@@ -97,7 +84,9 @@
       "system": "Digestive System",
       "file": "catalog/male-2024-digestive-system.glb",
       "structures": 209,
-      "meshes": 209
+      "meshes": 209,
+      "quality": "original",
+      "qualityBaseId": "male-2024-digestive-system"
     },
     {
       "id": "male-2024-cardiovascular-system",
@@ -106,7 +95,9 @@
       "system": "Cardiovascular System",
       "file": "catalog/male-2024-cardiovascular-system.glb",
       "structures": 1937,
-      "meshes": 1937
+      "meshes": 1937,
+      "quality": "original",
+      "qualityBaseId": "male-2024-cardiovascular-system"
     },
     {
       "id": "male-2024-connective-tissue",
@@ -115,7 +106,9 @@
       "system": "Connective Tissue",
       "file": "catalog/male-2024-connective-tissue.glb",
       "structures": 927,
-      "meshes": 927
+      "meshes": 927,
+      "quality": "original",
+      "qualityBaseId": "male-2024-connective-tissue"
     },
     {
       "id": "male-2024-urinary-and-reproductive-systems",
@@ -124,7 +117,9 @@
       "system": "Urinary and Reproductive Systems",
       "file": "catalog/male-2024-urinary-and-reproductive-systems.glb",
       "structures": 123,
-      "meshes": 123
+      "meshes": 123,
+      "quality": "original",
+      "qualityBaseId": "male-2024-urinary-and-reproductive-systems"
     },
     {
       "id": "male-2024-nervous-system",
@@ -133,7 +128,9 @@
       "system": "Nervous System",
       "file": "catalog/male-2024-nervous-system.glb",
       "structures": 1664,
-      "meshes": 1664
+      "meshes": 1664,
+      "quality": "original",
+      "qualityBaseId": "male-2024-nervous-system"
     },
     {
       "id": "male-2024-arteries",
@@ -142,7 +139,9 @@
       "system": "Arteries",
       "file": "catalog/male-2024-arteries.glb",
       "structures": 1149,
-      "meshes": 1149
+      "meshes": 1149,
+      "quality": "original",
+      "qualityBaseId": "male-2024-arteries"
     },
     {
       "id": "male-2024-veins",
@@ -151,7 +150,9 @@
       "system": "Veins",
       "file": "catalog/male-2024-veins.glb",
       "structures": 736,
-      "meshes": 736
+      "meshes": 736,
+      "quality": "original",
+      "qualityBaseId": "male-2024-veins"
     },
     {
       "id": "female-2024-heart",
@@ -160,7 +161,9 @@
       "system": "Heart",
       "file": "catalog/female-2024-heart.glb",
       "structures": 48,
-      "meshes": 48
+      "meshes": 48,
+      "quality": "original",
+      "qualityBaseId": "female-2024-heart"
     },
     {
       "id": "female-2024-skeletal-system",
@@ -169,7 +172,9 @@
       "system": "Skeletal System",
       "file": "catalog/female-2024-skeletal-system.glb",
       "structures": 642,
-      "meshes": 642
+      "meshes": 642,
+      "quality": "original",
+      "qualityBaseId": "female-2024-skeletal-system"
     },
     {
       "id": "female-2024-muscular-system",
@@ -178,7 +183,9 @@
       "system": "Muscular System",
       "file": "catalog/female-2024-muscular-system.glb",
       "structures": 624,
-      "meshes": 624
+      "meshes": 624,
+      "quality": "original",
+      "qualityBaseId": "female-2024-muscular-system"
     },
     {
       "id": "female-2024-lymphatic-system",
@@ -187,7 +194,9 @@
       "system": "Lymphatic System",
       "file": "catalog/female-2024-lymphatic-system.glb",
       "structures": 363,
-      "meshes": 363
+      "meshes": 363,
+      "quality": "original",
+      "qualityBaseId": "female-2024-lymphatic-system"
     },
     {
       "id": "female-2024-endocrine-system",
@@ -196,7 +205,9 @@
       "system": "Endocrine System",
       "file": "catalog/female-2024-endocrine-system.glb",
       "structures": 4,
-      "meshes": 4
+      "meshes": 4,
+      "quality": "original",
+      "qualityBaseId": "female-2024-endocrine-system"
     },
     {
       "id": "female-2024-integumentary-system",
@@ -205,7 +216,9 @@
       "system": "Integumentary System",
       "file": "catalog/female-2024-integumentary-system.glb",
       "structures": 141,
-      "meshes": 141
+      "meshes": 141,
+      "quality": "original",
+      "qualityBaseId": "female-2024-integumentary-system"
     },
     {
       "id": "female-2024-respiratory-system",
@@ -214,7 +227,9 @@
       "system": "Respiratory System",
       "file": "catalog/female-2024-respiratory-system.glb",
       "structures": 114,
-      "meshes": 114
+      "meshes": 114,
+      "quality": "original",
+      "qualityBaseId": "female-2024-respiratory-system"
     },
     {
       "id": "female-2024-digestive-system",
@@ -223,7 +238,9 @@
       "system": "Digestive System",
       "file": "catalog/female-2024-digestive-system.glb",
       "structures": 219,
-      "meshes": 219
+      "meshes": 219,
+      "quality": "original",
+      "qualityBaseId": "female-2024-digestive-system"
     },
     {
       "id": "female-2024-cardiovascular-system",
@@ -232,7 +249,9 @@
       "system": "Cardiovascular System",
       "file": "catalog/female-2024-cardiovascular-system.glb",
       "structures": 1956,
-      "meshes": 1956
+      "meshes": 1956,
+      "quality": "original",
+      "qualityBaseId": "female-2024-cardiovascular-system"
     },
     {
       "id": "female-2024-connective-tissue",
@@ -241,7 +260,9 @@
       "system": "Connective Tissue",
       "file": "catalog/female-2024-connective-tissue.glb",
       "structures": 923,
-      "meshes": 923
+      "meshes": 923,
+      "quality": "original",
+      "qualityBaseId": "female-2024-connective-tissue"
     },
     {
       "id": "female-2024-urinary-and-reproductive-systems",
@@ -250,7 +271,9 @@
       "system": "Urinary and Reproductive Systems",
       "file": "catalog/female-2024-urinary-and-reproductive-systems.glb",
       "structures": 118,
-      "meshes": 118
+      "meshes": 118,
+      "quality": "original",
+      "qualityBaseId": "female-2024-urinary-and-reproductive-systems"
     },
     {
       "id": "female-2024-nervous-system",
@@ -259,7 +282,9 @@
       "system": "Nervous System",
       "file": "catalog/female-2024-nervous-system.glb",
       "structures": 1666,
-      "meshes": 1666
+      "meshes": 1666,
+      "quality": "original",
+      "qualityBaseId": "female-2024-nervous-system"
     },
     {
       "id": "female-2024-arteries",
@@ -268,7 +293,9 @@
       "system": "Arteries",
       "file": "catalog/female-2024-arteries.glb",
       "structures": 1161,
-      "meshes": 1161
+      "meshes": 1161,
+      "quality": "original",
+      "qualityBaseId": "female-2024-arteries"
     },
     {
       "id": "female-2024-veins",
@@ -277,7 +304,1014 @@
       "system": "Veins",
       "file": "catalog/female-2024-veins.glb",
       "structures": 743,
-      "meshes": 743
+      "meshes": 743,
+      "quality": "original",
+      "qualityBaseId": "female-2024-veins"
+    },
+    {
+      "id": "male-2024-heart-extreme-lite",
+      "label": "Male \u00b7 Heart",
+      "model": "Male",
+      "system": "Heart",
+      "file": "catalog/male-heart-extreme-lite.glb",
+      "structures": 48,
+      "meshes": 48,
+      "quality": "low",
+      "qualityBaseId": "male-2024-heart"
+    },
+    {
+      "id": "male-2024-heart-super-lite",
+      "label": "Male \u00b7 Heart",
+      "model": "Male",
+      "system": "Heart",
+      "file": "catalog/male-heart-super-lite.glb",
+      "structures": 48,
+      "meshes": 48,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-heart"
+    },
+    {
+      "id": "male-2024-heart-lite",
+      "label": "Male \u00b7 Heart",
+      "model": "Male",
+      "system": "Heart",
+      "file": "catalog/male-heart-lite.glb",
+      "structures": 48,
+      "meshes": 48,
+      "quality": "high",
+      "qualityBaseId": "male-2024-heart"
+    },
+    {
+      "id": "male-2024-skeletal-system-low",
+      "label": "Male \u00b7 Skeletal System",
+      "model": "Male",
+      "system": "Skeletal System",
+      "file": "catalog/quality/male-2024-skeletal-system-low.glb",
+      "structures": 642,
+      "meshes": 642,
+      "quality": "low",
+      "qualityBaseId": "male-2024-skeletal-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-skeletal-system-medium",
+      "label": "Male \u00b7 Skeletal System",
+      "model": "Male",
+      "system": "Skeletal System",
+      "file": "catalog/quality/male-2024-skeletal-system-medium.glb",
+      "structures": 642,
+      "meshes": 642,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-skeletal-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-skeletal-system-high",
+      "label": "Male \u00b7 Skeletal System",
+      "model": "Male",
+      "system": "Skeletal System",
+      "file": "catalog/quality/male-2024-skeletal-system-high.glb",
+      "structures": 642,
+      "meshes": 642,
+      "quality": "high",
+      "qualityBaseId": "male-2024-skeletal-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-muscular-system-low",
+      "label": "Male \u00b7 Muscular System",
+      "model": "Male",
+      "system": "Muscular System",
+      "file": "catalog/quality/male-2024-muscular-system-low.glb",
+      "structures": 628,
+      "meshes": 628,
+      "quality": "low",
+      "qualityBaseId": "male-2024-muscular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-muscular-system-medium",
+      "label": "Male \u00b7 Muscular System",
+      "model": "Male",
+      "system": "Muscular System",
+      "file": "catalog/quality/male-2024-muscular-system-medium.glb",
+      "structures": 628,
+      "meshes": 628,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-muscular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-muscular-system-high",
+      "label": "Male \u00b7 Muscular System",
+      "model": "Male",
+      "system": "Muscular System",
+      "file": "catalog/quality/male-2024-muscular-system-high.glb",
+      "structures": 628,
+      "meshes": 628,
+      "quality": "high",
+      "qualityBaseId": "male-2024-muscular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-lymphatic-system-low",
+      "label": "Male \u00b7 Lymphatic System",
+      "model": "Male",
+      "system": "Lymphatic System",
+      "file": "catalog/quality/male-2024-lymphatic-system-low.glb",
+      "structures": 351,
+      "meshes": 351,
+      "quality": "low",
+      "qualityBaseId": "male-2024-lymphatic-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-lymphatic-system-medium",
+      "label": "Male \u00b7 Lymphatic System",
+      "model": "Male",
+      "system": "Lymphatic System",
+      "file": "catalog/quality/male-2024-lymphatic-system-medium.glb",
+      "structures": 351,
+      "meshes": 351,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-lymphatic-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-lymphatic-system-high",
+      "label": "Male \u00b7 Lymphatic System",
+      "model": "Male",
+      "system": "Lymphatic System",
+      "file": "catalog/quality/male-2024-lymphatic-system-high.glb",
+      "structures": 351,
+      "meshes": 351,
+      "quality": "high",
+      "qualityBaseId": "male-2024-lymphatic-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-endocrine-system-low",
+      "label": "Male \u00b7 Endocrine System",
+      "model": "Male",
+      "system": "Endocrine System",
+      "file": "catalog/quality/male-2024-endocrine-system-low.glb",
+      "structures": 4,
+      "meshes": 4,
+      "quality": "low",
+      "qualityBaseId": "male-2024-endocrine-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-endocrine-system-medium",
+      "label": "Male \u00b7 Endocrine System",
+      "model": "Male",
+      "system": "Endocrine System",
+      "file": "catalog/quality/male-2024-endocrine-system-medium.glb",
+      "structures": 4,
+      "meshes": 4,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-endocrine-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-endocrine-system-high",
+      "label": "Male \u00b7 Endocrine System",
+      "model": "Male",
+      "system": "Endocrine System",
+      "file": "catalog/quality/male-2024-endocrine-system-high.glb",
+      "structures": 4,
+      "meshes": 4,
+      "quality": "high",
+      "qualityBaseId": "male-2024-endocrine-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-integumentary-system-low",
+      "label": "Male \u00b7 Integumentary System",
+      "model": "Male",
+      "system": "Integumentary System",
+      "file": "catalog/quality/male-2024-integumentary-system-low.glb",
+      "structures": 83,
+      "meshes": 87,
+      "quality": "low",
+      "qualityBaseId": "male-2024-integumentary-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-integumentary-system-medium",
+      "label": "Male \u00b7 Integumentary System",
+      "model": "Male",
+      "system": "Integumentary System",
+      "file": "catalog/quality/male-2024-integumentary-system-medium.glb",
+      "structures": 83,
+      "meshes": 87,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-integumentary-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-integumentary-system-high",
+      "label": "Male \u00b7 Integumentary System",
+      "model": "Male",
+      "system": "Integumentary System",
+      "file": "catalog/quality/male-2024-integumentary-system-high.glb",
+      "structures": 83,
+      "meshes": 87,
+      "quality": "high",
+      "qualityBaseId": "male-2024-integumentary-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-respiratory-system-low",
+      "label": "Male \u00b7 Respiratory System",
+      "model": "Male",
+      "system": "Respiratory System",
+      "file": "catalog/quality/male-2024-respiratory-system-low.glb",
+      "structures": 114,
+      "meshes": 114,
+      "quality": "low",
+      "qualityBaseId": "male-2024-respiratory-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-respiratory-system-medium",
+      "label": "Male \u00b7 Respiratory System",
+      "model": "Male",
+      "system": "Respiratory System",
+      "file": "catalog/quality/male-2024-respiratory-system-medium.glb",
+      "structures": 114,
+      "meshes": 114,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-respiratory-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-respiratory-system-high",
+      "label": "Male \u00b7 Respiratory System",
+      "model": "Male",
+      "system": "Respiratory System",
+      "file": "catalog/quality/male-2024-respiratory-system-high.glb",
+      "structures": 114,
+      "meshes": 114,
+      "quality": "high",
+      "qualityBaseId": "male-2024-respiratory-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-digestive-system-low",
+      "label": "Male \u00b7 Digestive System",
+      "model": "Male",
+      "system": "Digestive System",
+      "file": "catalog/quality/male-2024-digestive-system-low.glb",
+      "structures": 209,
+      "meshes": 209,
+      "quality": "low",
+      "qualityBaseId": "male-2024-digestive-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-digestive-system-medium",
+      "label": "Male \u00b7 Digestive System",
+      "model": "Male",
+      "system": "Digestive System",
+      "file": "catalog/quality/male-2024-digestive-system-medium.glb",
+      "structures": 209,
+      "meshes": 209,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-digestive-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-digestive-system-high",
+      "label": "Male \u00b7 Digestive System",
+      "model": "Male",
+      "system": "Digestive System",
+      "file": "catalog/quality/male-2024-digestive-system-high.glb",
+      "structures": 209,
+      "meshes": 209,
+      "quality": "high",
+      "qualityBaseId": "male-2024-digestive-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-cardiovascular-system-low",
+      "label": "Male \u00b7 Cardiovascular System",
+      "model": "Male",
+      "system": "Cardiovascular System",
+      "file": "catalog/quality/male-2024-cardiovascular-system-low.glb",
+      "structures": 1937,
+      "meshes": 1937,
+      "quality": "low",
+      "qualityBaseId": "male-2024-cardiovascular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-cardiovascular-system-medium",
+      "label": "Male \u00b7 Cardiovascular System",
+      "model": "Male",
+      "system": "Cardiovascular System",
+      "file": "catalog/quality/male-2024-cardiovascular-system-medium.glb",
+      "structures": 1937,
+      "meshes": 1937,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-cardiovascular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-cardiovascular-system-high",
+      "label": "Male \u00b7 Cardiovascular System",
+      "model": "Male",
+      "system": "Cardiovascular System",
+      "file": "catalog/quality/male-2024-cardiovascular-system-high.glb",
+      "structures": 1937,
+      "meshes": 1937,
+      "quality": "high",
+      "qualityBaseId": "male-2024-cardiovascular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-connective-tissue-low",
+      "label": "Male \u00b7 Connective Tissue",
+      "model": "Male",
+      "system": "Connective Tissue",
+      "file": "catalog/quality/male-2024-connective-tissue-low.glb",
+      "structures": 927,
+      "meshes": 927,
+      "quality": "low",
+      "qualityBaseId": "male-2024-connective-tissue",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-connective-tissue-medium",
+      "label": "Male \u00b7 Connective Tissue",
+      "model": "Male",
+      "system": "Connective Tissue",
+      "file": "catalog/quality/male-2024-connective-tissue-medium.glb",
+      "structures": 927,
+      "meshes": 927,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-connective-tissue",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-connective-tissue-high",
+      "label": "Male \u00b7 Connective Tissue",
+      "model": "Male",
+      "system": "Connective Tissue",
+      "file": "catalog/quality/male-2024-connective-tissue-high.glb",
+      "structures": 927,
+      "meshes": 927,
+      "quality": "high",
+      "qualityBaseId": "male-2024-connective-tissue",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-urinary-and-reproductive-systems-low",
+      "label": "Male \u00b7 Urinary and Reproductive Systems",
+      "model": "Male",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/quality/male-2024-urinary-and-reproductive-systems-low.glb",
+      "structures": 123,
+      "meshes": 123,
+      "quality": "low",
+      "qualityBaseId": "male-2024-urinary-and-reproductive-systems",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-urinary-and-reproductive-systems-medium",
+      "label": "Male \u00b7 Urinary and Reproductive Systems",
+      "model": "Male",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/quality/male-2024-urinary-and-reproductive-systems-medium.glb",
+      "structures": 123,
+      "meshes": 123,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-urinary-and-reproductive-systems",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-urinary-and-reproductive-systems-high",
+      "label": "Male \u00b7 Urinary and Reproductive Systems",
+      "model": "Male",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/quality/male-2024-urinary-and-reproductive-systems-high.glb",
+      "structures": 123,
+      "meshes": 123,
+      "quality": "high",
+      "qualityBaseId": "male-2024-urinary-and-reproductive-systems",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-nervous-system-low",
+      "label": "Male \u00b7 Nervous System",
+      "model": "Male",
+      "system": "Nervous System",
+      "file": "catalog/quality/male-2024-nervous-system-low.glb",
+      "structures": 1664,
+      "meshes": 1664,
+      "quality": "low",
+      "qualityBaseId": "male-2024-nervous-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-nervous-system-medium",
+      "label": "Male \u00b7 Nervous System",
+      "model": "Male",
+      "system": "Nervous System",
+      "file": "catalog/quality/male-2024-nervous-system-medium.glb",
+      "structures": 1664,
+      "meshes": 1664,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-nervous-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-nervous-system-high",
+      "label": "Male \u00b7 Nervous System",
+      "model": "Male",
+      "system": "Nervous System",
+      "file": "catalog/quality/male-2024-nervous-system-high.glb",
+      "structures": 1664,
+      "meshes": 1664,
+      "quality": "high",
+      "qualityBaseId": "male-2024-nervous-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-arteries-low",
+      "label": "Male \u00b7 Arteries",
+      "model": "Male",
+      "system": "Arteries",
+      "file": "catalog/quality/male-2024-arteries-low.glb",
+      "structures": 1149,
+      "meshes": 1149,
+      "quality": "low",
+      "qualityBaseId": "male-2024-arteries",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-arteries-medium",
+      "label": "Male \u00b7 Arteries",
+      "model": "Male",
+      "system": "Arteries",
+      "file": "catalog/quality/male-2024-arteries-medium.glb",
+      "structures": 1149,
+      "meshes": 1149,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-arteries",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-arteries-high",
+      "label": "Male \u00b7 Arteries",
+      "model": "Male",
+      "system": "Arteries",
+      "file": "catalog/quality/male-2024-arteries-high.glb",
+      "structures": 1149,
+      "meshes": 1149,
+      "quality": "high",
+      "qualityBaseId": "male-2024-arteries",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-veins-low",
+      "label": "Male \u00b7 Veins",
+      "model": "Male",
+      "system": "Veins",
+      "file": "catalog/quality/male-2024-veins-low.glb",
+      "structures": 736,
+      "meshes": 736,
+      "quality": "low",
+      "qualityBaseId": "male-2024-veins",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-veins-medium",
+      "label": "Male \u00b7 Veins",
+      "model": "Male",
+      "system": "Veins",
+      "file": "catalog/quality/male-2024-veins-medium.glb",
+      "structures": 736,
+      "meshes": 736,
+      "quality": "medium",
+      "qualityBaseId": "male-2024-veins",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "male-2024-veins-high",
+      "label": "Male \u00b7 Veins",
+      "model": "Male",
+      "system": "Veins",
+      "file": "catalog/quality/male-2024-veins-high.glb",
+      "structures": 736,
+      "meshes": 736,
+      "quality": "high",
+      "qualityBaseId": "male-2024-veins",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-heart-low",
+      "label": "Female \u00b7 Heart",
+      "model": "Female",
+      "system": "Heart",
+      "file": "catalog/quality/female-2024-heart-low.glb",
+      "structures": 48,
+      "meshes": 48,
+      "quality": "low",
+      "qualityBaseId": "female-2024-heart",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-heart-medium",
+      "label": "Female \u00b7 Heart",
+      "model": "Female",
+      "system": "Heart",
+      "file": "catalog/quality/female-2024-heart-medium.glb",
+      "structures": 48,
+      "meshes": 48,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-heart",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-heart-high",
+      "label": "Female \u00b7 Heart",
+      "model": "Female",
+      "system": "Heart",
+      "file": "catalog/quality/female-2024-heart-high.glb",
+      "structures": 48,
+      "meshes": 48,
+      "quality": "high",
+      "qualityBaseId": "female-2024-heart",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-skeletal-system-low",
+      "label": "Female \u00b7 Skeletal System",
+      "model": "Female",
+      "system": "Skeletal System",
+      "file": "catalog/quality/female-2024-skeletal-system-low.glb",
+      "structures": 642,
+      "meshes": 642,
+      "quality": "low",
+      "qualityBaseId": "female-2024-skeletal-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-skeletal-system-medium",
+      "label": "Female \u00b7 Skeletal System",
+      "model": "Female",
+      "system": "Skeletal System",
+      "file": "catalog/quality/female-2024-skeletal-system-medium.glb",
+      "structures": 642,
+      "meshes": 642,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-skeletal-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-skeletal-system-high",
+      "label": "Female \u00b7 Skeletal System",
+      "model": "Female",
+      "system": "Skeletal System",
+      "file": "catalog/quality/female-2024-skeletal-system-high.glb",
+      "structures": 642,
+      "meshes": 642,
+      "quality": "high",
+      "qualityBaseId": "female-2024-skeletal-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-muscular-system-low",
+      "label": "Female \u00b7 Muscular System",
+      "model": "Female",
+      "system": "Muscular System",
+      "file": "catalog/quality/female-2024-muscular-system-low.glb",
+      "structures": 624,
+      "meshes": 624,
+      "quality": "low",
+      "qualityBaseId": "female-2024-muscular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-muscular-system-medium",
+      "label": "Female \u00b7 Muscular System",
+      "model": "Female",
+      "system": "Muscular System",
+      "file": "catalog/quality/female-2024-muscular-system-medium.glb",
+      "structures": 624,
+      "meshes": 624,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-muscular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-muscular-system-high",
+      "label": "Female \u00b7 Muscular System",
+      "model": "Female",
+      "system": "Muscular System",
+      "file": "catalog/quality/female-2024-muscular-system-high.glb",
+      "structures": 624,
+      "meshes": 624,
+      "quality": "high",
+      "qualityBaseId": "female-2024-muscular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-lymphatic-system-low",
+      "label": "Female \u00b7 Lymphatic System",
+      "model": "Female",
+      "system": "Lymphatic System",
+      "file": "catalog/quality/female-2024-lymphatic-system-low.glb",
+      "structures": 363,
+      "meshes": 363,
+      "quality": "low",
+      "qualityBaseId": "female-2024-lymphatic-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-lymphatic-system-medium",
+      "label": "Female \u00b7 Lymphatic System",
+      "model": "Female",
+      "system": "Lymphatic System",
+      "file": "catalog/quality/female-2024-lymphatic-system-medium.glb",
+      "structures": 363,
+      "meshes": 363,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-lymphatic-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-lymphatic-system-high",
+      "label": "Female \u00b7 Lymphatic System",
+      "model": "Female",
+      "system": "Lymphatic System",
+      "file": "catalog/quality/female-2024-lymphatic-system-high.glb",
+      "structures": 363,
+      "meshes": 363,
+      "quality": "high",
+      "qualityBaseId": "female-2024-lymphatic-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-endocrine-system-low",
+      "label": "Female \u00b7 Endocrine System",
+      "model": "Female",
+      "system": "Endocrine System",
+      "file": "catalog/quality/female-2024-endocrine-system-low.glb",
+      "structures": 4,
+      "meshes": 4,
+      "quality": "low",
+      "qualityBaseId": "female-2024-endocrine-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-endocrine-system-medium",
+      "label": "Female \u00b7 Endocrine System",
+      "model": "Female",
+      "system": "Endocrine System",
+      "file": "catalog/quality/female-2024-endocrine-system-medium.glb",
+      "structures": 4,
+      "meshes": 4,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-endocrine-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-endocrine-system-high",
+      "label": "Female \u00b7 Endocrine System",
+      "model": "Female",
+      "system": "Endocrine System",
+      "file": "catalog/quality/female-2024-endocrine-system-high.glb",
+      "structures": 4,
+      "meshes": 4,
+      "quality": "high",
+      "qualityBaseId": "female-2024-endocrine-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-integumentary-system-low",
+      "label": "Female \u00b7 Integumentary System",
+      "model": "Female",
+      "system": "Integumentary System",
+      "file": "catalog/quality/female-2024-integumentary-system-low.glb",
+      "structures": 141,
+      "meshes": 141,
+      "quality": "low",
+      "qualityBaseId": "female-2024-integumentary-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-integumentary-system-medium",
+      "label": "Female \u00b7 Integumentary System",
+      "model": "Female",
+      "system": "Integumentary System",
+      "file": "catalog/quality/female-2024-integumentary-system-medium.glb",
+      "structures": 141,
+      "meshes": 141,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-integumentary-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-integumentary-system-high",
+      "label": "Female \u00b7 Integumentary System",
+      "model": "Female",
+      "system": "Integumentary System",
+      "file": "catalog/quality/female-2024-integumentary-system-high.glb",
+      "structures": 141,
+      "meshes": 141,
+      "quality": "high",
+      "qualityBaseId": "female-2024-integumentary-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-respiratory-system-low",
+      "label": "Female \u00b7 Respiratory System",
+      "model": "Female",
+      "system": "Respiratory System",
+      "file": "catalog/quality/female-2024-respiratory-system-low.glb",
+      "structures": 114,
+      "meshes": 114,
+      "quality": "low",
+      "qualityBaseId": "female-2024-respiratory-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-respiratory-system-medium",
+      "label": "Female \u00b7 Respiratory System",
+      "model": "Female",
+      "system": "Respiratory System",
+      "file": "catalog/quality/female-2024-respiratory-system-medium.glb",
+      "structures": 114,
+      "meshes": 114,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-respiratory-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-respiratory-system-high",
+      "label": "Female \u00b7 Respiratory System",
+      "model": "Female",
+      "system": "Respiratory System",
+      "file": "catalog/quality/female-2024-respiratory-system-high.glb",
+      "structures": 114,
+      "meshes": 114,
+      "quality": "high",
+      "qualityBaseId": "female-2024-respiratory-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-digestive-system-low",
+      "label": "Female \u00b7 Digestive System",
+      "model": "Female",
+      "system": "Digestive System",
+      "file": "catalog/quality/female-2024-digestive-system-low.glb",
+      "structures": 219,
+      "meshes": 219,
+      "quality": "low",
+      "qualityBaseId": "female-2024-digestive-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-digestive-system-medium",
+      "label": "Female \u00b7 Digestive System",
+      "model": "Female",
+      "system": "Digestive System",
+      "file": "catalog/quality/female-2024-digestive-system-medium.glb",
+      "structures": 219,
+      "meshes": 219,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-digestive-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-digestive-system-high",
+      "label": "Female \u00b7 Digestive System",
+      "model": "Female",
+      "system": "Digestive System",
+      "file": "catalog/quality/female-2024-digestive-system-high.glb",
+      "structures": 219,
+      "meshes": 219,
+      "quality": "high",
+      "qualityBaseId": "female-2024-digestive-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-cardiovascular-system-low",
+      "label": "Female \u00b7 Cardiovascular System",
+      "model": "Female",
+      "system": "Cardiovascular System",
+      "file": "catalog/quality/female-2024-cardiovascular-system-low.glb",
+      "structures": 1956,
+      "meshes": 1956,
+      "quality": "low",
+      "qualityBaseId": "female-2024-cardiovascular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-cardiovascular-system-medium",
+      "label": "Female \u00b7 Cardiovascular System",
+      "model": "Female",
+      "system": "Cardiovascular System",
+      "file": "catalog/quality/female-2024-cardiovascular-system-medium.glb",
+      "structures": 1956,
+      "meshes": 1956,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-cardiovascular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-cardiovascular-system-high",
+      "label": "Female \u00b7 Cardiovascular System",
+      "model": "Female",
+      "system": "Cardiovascular System",
+      "file": "catalog/quality/female-2024-cardiovascular-system-high.glb",
+      "structures": 1956,
+      "meshes": 1956,
+      "quality": "high",
+      "qualityBaseId": "female-2024-cardiovascular-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-connective-tissue-low",
+      "label": "Female \u00b7 Connective Tissue",
+      "model": "Female",
+      "system": "Connective Tissue",
+      "file": "catalog/quality/female-2024-connective-tissue-low.glb",
+      "structures": 923,
+      "meshes": 923,
+      "quality": "low",
+      "qualityBaseId": "female-2024-connective-tissue",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-connective-tissue-medium",
+      "label": "Female \u00b7 Connective Tissue",
+      "model": "Female",
+      "system": "Connective Tissue",
+      "file": "catalog/quality/female-2024-connective-tissue-medium.glb",
+      "structures": 923,
+      "meshes": 923,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-connective-tissue",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-connective-tissue-high",
+      "label": "Female \u00b7 Connective Tissue",
+      "model": "Female",
+      "system": "Connective Tissue",
+      "file": "catalog/quality/female-2024-connective-tissue-high.glb",
+      "structures": 923,
+      "meshes": 923,
+      "quality": "high",
+      "qualityBaseId": "female-2024-connective-tissue",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-urinary-and-reproductive-systems-low",
+      "label": "Female \u00b7 Urinary and Reproductive Systems",
+      "model": "Female",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/quality/female-2024-urinary-and-reproductive-systems-low.glb",
+      "structures": 118,
+      "meshes": 118,
+      "quality": "low",
+      "qualityBaseId": "female-2024-urinary-and-reproductive-systems",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-urinary-and-reproductive-systems-medium",
+      "label": "Female \u00b7 Urinary and Reproductive Systems",
+      "model": "Female",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/quality/female-2024-urinary-and-reproductive-systems-medium.glb",
+      "structures": 118,
+      "meshes": 118,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-urinary-and-reproductive-systems",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-urinary-and-reproductive-systems-high",
+      "label": "Female \u00b7 Urinary and Reproductive Systems",
+      "model": "Female",
+      "system": "Urinary and Reproductive Systems",
+      "file": "catalog/quality/female-2024-urinary-and-reproductive-systems-high.glb",
+      "structures": 118,
+      "meshes": 118,
+      "quality": "high",
+      "qualityBaseId": "female-2024-urinary-and-reproductive-systems",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-nervous-system-low",
+      "label": "Female \u00b7 Nervous System",
+      "model": "Female",
+      "system": "Nervous System",
+      "file": "catalog/quality/female-2024-nervous-system-low.glb",
+      "structures": 1666,
+      "meshes": 1666,
+      "quality": "low",
+      "qualityBaseId": "female-2024-nervous-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-nervous-system-medium",
+      "label": "Female \u00b7 Nervous System",
+      "model": "Female",
+      "system": "Nervous System",
+      "file": "catalog/quality/female-2024-nervous-system-medium.glb",
+      "structures": 1666,
+      "meshes": 1666,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-nervous-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-nervous-system-high",
+      "label": "Female \u00b7 Nervous System",
+      "model": "Female",
+      "system": "Nervous System",
+      "file": "catalog/quality/female-2024-nervous-system-high.glb",
+      "structures": 1666,
+      "meshes": 1666,
+      "quality": "high",
+      "qualityBaseId": "female-2024-nervous-system",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-arteries-low",
+      "label": "Female \u00b7 Arteries",
+      "model": "Female",
+      "system": "Arteries",
+      "file": "catalog/quality/female-2024-arteries-low.glb",
+      "structures": 1161,
+      "meshes": 1161,
+      "quality": "low",
+      "qualityBaseId": "female-2024-arteries",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-arteries-medium",
+      "label": "Female \u00b7 Arteries",
+      "model": "Female",
+      "system": "Arteries",
+      "file": "catalog/quality/female-2024-arteries-medium.glb",
+      "structures": 1161,
+      "meshes": 1161,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-arteries",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-arteries-high",
+      "label": "Female \u00b7 Arteries",
+      "model": "Female",
+      "system": "Arteries",
+      "file": "catalog/quality/female-2024-arteries-high.glb",
+      "structures": 1161,
+      "meshes": 1161,
+      "quality": "high",
+      "qualityBaseId": "female-2024-arteries",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-veins-low",
+      "label": "Female \u00b7 Veins",
+      "model": "Female",
+      "system": "Veins",
+      "file": "catalog/quality/female-2024-veins-low.glb",
+      "structures": 743,
+      "meshes": 743,
+      "quality": "low",
+      "qualityBaseId": "female-2024-veins",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-veins-medium",
+      "label": "Female \u00b7 Veins",
+      "model": "Female",
+      "system": "Veins",
+      "file": "catalog/quality/female-2024-veins-medium.glb",
+      "structures": 743,
+      "meshes": 743,
+      "quality": "medium",
+      "qualityBaseId": "female-2024-veins",
+      "generatedQualityVariant": true
+    },
+    {
+      "id": "female-2024-veins-high",
+      "label": "Female \u00b7 Veins",
+      "model": "Female",
+      "system": "Veins",
+      "file": "catalog/quality/female-2024-veins-high.glb",
+      "structures": 743,
+      "meshes": 743,
+      "quality": "high",
+      "qualityBaseId": "female-2024-veins",
+      "generatedQualityVariant": true
     }
   ]
 }

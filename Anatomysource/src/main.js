@@ -16,6 +16,7 @@ const ui = {
   input: el('model-input'),
   library: el('model-library'),
   libraryLoad: el('load-library-models'),
+  modelQuality: el('model-quality-switch'),
   emptyModelPicker: el('empty-model-picker'),
   emptyModelLoad: el('empty-load-model'),
   fps: el('viewport-fps'),
@@ -237,29 +238,89 @@ let toastTimer = 0;
 let nodeMap = new Map();
 let libraryModels = [];
 let selectedLibrarySex = 'Male';
+const QUALITY_ORDER = ['low', 'medium', 'high', 'original'];
+const LEGACY_HEART_QUALITY = { 'Heart Extreme Lite': 'low', 'Heart Super Lite': 'medium', 'Heart Lite': 'high', Heart: 'original' };
+const selectedModelQuality = new Map([['Male', 'original'], ['Female', 'original']]);
+function modelQuality(model) {
+  return model?.quality || LEGACY_HEART_QUALITY[model?.system] || 'original';
+}
+function modelSystem(model) {
+  return ['Heart', 'Heart Lite', 'Heart Super Lite', 'Heart Extreme Lite'].includes(model?.system) ? 'Heart' : model?.system;
+}
 function isHeartLibraryModel(model) {
-  return ['Heart', 'Heart Lite', 'Heart Super Lite', 'Heart Extreme Lite'].includes(model?.system);
+  return modelSystem(model) === 'Heart';
+}
+function modelForQuality(sex, system, quality = selectedModelQuality.get(sex) || 'original') {
+  return libraryModels.find((model) => model.model === sex && modelSystem(model) === system && modelQuality(model) === quality)
+    || libraryModels.find((model) => model.model === sex && modelSystem(model) === system && modelQuality(model) === 'original');
+}
+function baseLibraryModels(sex = selectedLibrarySex) {
+  return libraryModels.filter((model) => model.model === sex && modelQuality(model) === 'original');
+}
+function visibleLibraryModels(sex = selectedLibrarySex) {
+  const quality = selectedModelQuality.get(sex) || 'original';
+  return baseLibraryModels(sex).map((base) => modelForQuality(sex, modelSystem(base), quality) || base);
+}
+function syncModelSelectionForQuality(sex = selectedLibrarySex, quality = selectedModelQuality.get(sex) || 'original') {
+  const selection = librarySelectionsBySex.get(sex);
+  if (!selection) return;
+  const selectedSystems = new Set([...selection]
+    .map((id) => libraryModels.find((model) => model.id === id))
+    .filter(Boolean)
+    .map(modelSystem));
+  if (!selectedSystems.size) return;
+  for (const model of libraryModels) {
+    if (model.model === sex && selectedSystems.has(modelSystem(model))) selection.delete(model.id);
+  }
+  for (const system of selectedSystems) {
+    const model = modelForQuality(sex, system, quality);
+    if (model) selection.add(model.id);
+  }
+}
+function renderModelQualityControl() {
+  if (!ui.modelQuality) return;
+  const quality = selectedModelQuality.get(selectedLibrarySex) || 'original';
+  for (const button of ui.modelQuality.querySelectorAll('[data-model-quality]')) {
+    button.disabled = !QUALITY_ORDER.includes(button.dataset.modelQuality);
+    button.setAttribute('aria-pressed', String(quality === button.dataset.modelQuality));
+  }
+}
+function setModelQuality(quality) {
+  if (!QUALITY_ORDER.includes(quality)) return;
+  selectedModelQuality.set(selectedLibrarySex, quality);
+  syncModelSelectionForQuality(selectedLibrarySex, quality);
+  const emptySelection = emptyModelSelectionBySex.get(selectedLibrarySex);
+  const emptyModel = libraryModels.find((model) => model.id === emptySelection);
+  if (emptyModel) {
+    const variant = modelForQuality(selectedLibrarySex, modelSystem(emptyModel), quality);
+    if (variant) emptyModelSelectionBySex.set(selectedLibrarySex, variant.id);
+  }
+  renderModelQualityControl();
+  renderLibrarySexOptions();
+  renderEmptyModelOptions();
 }
 function isHeartModelId(modelId) {
   const model = libraryModels.find((entry) => entry.id === modelId);
-  return model ? isHeartLibraryModel(model) : /-heart(?:-(?:(?:super|extreme)-)?lite)?$/.test(modelId || '');
+  return model ? isHeartLibraryModel(model) : /-heart(?:-(?:(?:super|extreme)-)?lite)?(?:-(?:low|medium|high))?$/.test(modelId || '');
 }
 function isReducedHeartModelId(modelId) {
   const model = libraryModels.find((entry) => entry.id === modelId);
-  return model
-    ? ['Heart Lite', 'Heart Super Lite', 'Heart Extreme Lite'].includes(model.system)
-    : /-heart-(?:(?:super|extreme)-)?lite$/.test(modelId || '');
+  return model ? isHeartLibraryModel(model) && modelQuality(model) !== 'original'
+    : /-heart-(?:(?:super|extreme)-)?lite(?:-(?:low|medium|high))?$/.test(modelId || '');
 }
 function heartTextureVariant(modelId) {
   const model = libraryModels.find((entry) => entry.id === modelId);
-  if (model?.system === 'Heart Extreme Lite' || /-heart-extreme-lite$/.test(modelId || '')) return 'extremelite';
-  if (model?.system === 'Heart Super Lite' || /-heart-super-lite$/.test(modelId || '')) return 'superlite';
-  if (model?.system === 'Heart Lite' || /-heart-lite$/.test(modelId || '')) return 'lite';
+  if (model) return modelQuality(model);
+  if (/-heart-extreme-lite$/.test(modelId || '')) return 'low';
+  if (/-heart-super-lite$/.test(modelId || '')) return 'medium';
+  if (/-heart-lite$/.test(modelId || '')) return 'high';
   return 'original';
 }
 function compatibleLibraryModelAsset(model) {
-  if (!['Heart Super Lite', 'Heart Extreme Lite'].includes(model?.system) || MeshoptDecoder.supported) return model;
-  const fallback = libraryModels.find((entry) => entry.model === model.model && entry.system === 'Heart Lite');
+  if (modelQuality(model) === 'original' || MeshoptDecoder.supported) return model;
+  const fallback = libraryModels.find((entry) => entry.id === model.qualityBaseId)
+    || libraryModels.find((entry) => entry.model === model.model
+      && modelSystem(entry) === modelSystem(model) && modelQuality(entry) === 'original');
   return fallback ? { ...model, file: fallback.file, chunks: fallback.chunks, fileSizeBytes: fallback.fileSizeBytes } : model;
 }
 const librarySelectionsBySex = new Map([
@@ -2360,7 +2421,8 @@ async function ensureECGSupportModels() {
   if (!activeHeartModelId || !libraryModels.length) return true;
   const sex = activeHeartModelId.startsWith('female-') ? 'female' : 'male';
   const required = libraryModels.filter((model) =>
-    model.id.startsWith(`${sex}-2024-`) && /^(Skeletal System|Connective Tissue)$/i.test(model.system),
+    model.id.startsWith(`${sex}-2024-`) && modelQuality(model) === 'original'
+      && /^(Skeletal System|Connective Tissue)$/i.test(model.system),
   );
   const loadedIds = new Set(loadedLibraryModels.map((model) => model.id));
   const missing = required.filter((model) => !loadedIds.has(model.id));
@@ -2500,7 +2562,21 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', cata
   ui.source.textContent = displayName;
   if (catalogId) {
     const catalogModel = libraryModels.find((model) => model.id === catalogId);
-    if (catalogModel) librarySelectionsBySex.get(catalogModel.model)?.add(catalogId);
+    if (catalogModel) {
+      const selection = librarySelectionsBySex.get(catalogModel.model);
+      selectedModelQuality.set(catalogModel.model, modelQuality(catalogModel));
+      if (selection) {
+        for (const model of libraryModels) {
+          if (model.model === catalogModel.model && modelSystem(model) === modelSystem(catalogModel)) selection.delete(model.id);
+        }
+        selection.add(catalogId);
+      }
+      if (catalogModel.model === selectedLibrarySex) {
+        renderModelQualityControl();
+        renderLibrarySexOptions();
+        renderEmptyModelOptions();
+      }
+    }
     const checkbox = Array.from(ui.library.querySelectorAll('input[type="checkbox"]'))
       .find((input) => input.value === catalogId);
     if (checkbox) checkbox.checked = true;
@@ -2533,7 +2609,9 @@ async function loadFiles(fileList, { displayName = '', catalogId = '' } = {}) {
       await applySourceMaterials(heartRoot, { heart: true, textureVariant });
       textureBytes += getAppliedTextureBytes(heartRoot, { heart: true, textureVariant });
     }
-    else if (catalogId) await applySourceMaterials(gltf.scene);
+    else if (catalogId) await applySourceMaterials(gltf.scene, {
+      textureVariant: modelQuality(libraryModels.find((model) => model.id === catalogId)),
+    });
     await installLoadedScene({
       root: gltf.scene,
       displayName: displayName || modelFile.name,
@@ -2656,7 +2734,8 @@ async function preloadECGAssets(modelId) {
   if (!isHeartModelId(modelId) || isReducedHeartModelId(modelId)) return;
   const sex = modelId.startsWith('female-2024') ? 'female' : 'male';
   const required = libraryModels.filter((model) =>
-    model.id.startsWith(`${sex}-2024-`) && /^(Skeletal System|Connective Tissue)$/i.test(model.system),
+    model.id.startsWith(`${sex}-2024-`) && modelQuality(model) === 'original'
+      && /^(Skeletal System|Connective Tissue)$/i.test(model.system),
   );
   const loadedIds = new Set(loadedLibraryModels.map((model) => model.id));
   const metadataPromise = loadECGLandmarks(modelId).catch((error) => {
@@ -2707,10 +2786,10 @@ async function loadSelectedLibraryModels(requestedModels = null) {
   try {
     setStatus(`Loading ${models.length} offline model${models.length === 1 ? '' : 's'}…`);
     const loaded = [];
-    let usedCompatibleHeartFallback = false;
+    let usedCompatibleQualityFallback = false;
     for (const [index, model] of models.entries()) {
       const assetModel = compatibleLibraryModelAsset(model);
-      usedCompatibleHeartFallback ||= assetModel.file !== model.file;
+      usedCompatibleQualityFallback ||= assetModel.file !== model.file;
       setStatus(`Loading ${model.label} (${index + 1}/${models.length})…`);
       setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${models.length}`, (index / models.length) * 100);
       const blob = await fetchECGSupportModelBlob(assetModel, (fraction) => {
@@ -2726,9 +2805,8 @@ async function loadSelectedLibraryModels(requestedModels = null) {
       root.name = model.system;
       setModelLoadProgress(`Applying materials · ${model.system} · ${index + 1} of ${models.length}`);
       const heart = isHeartModelId(model.id);
-      const textureVariant = heart ? heartTextureVariant(model.id) : 'original';
-      if (heart) await applySourceMaterials(root, { heart: true, textureVariant });
-      else await applySourceMaterials(root);
+      const textureVariant = modelQuality(model);
+      await applySourceMaterials(root, { heart, textureVariant });
       loaded.push({
         model,
         root,
@@ -2756,8 +2834,8 @@ async function loadSelectedLibraryModels(requestedModels = null) {
       blobUrls: loaded.flatMap(({ blobUrls }) => blobUrls),
       modelFileBytes: loaded.reduce((total, entry) => total + entry.modelFileBytes, 0),
       textureBytes: loaded.reduce((total, entry) => total + entry.textureBytes, 0),
-      loadNotice: usedCompatibleHeartFallback
-        ? `Loaded ${displayName} with the compatible Lite mesh for this browser.`
+      loadNotice: usedCompatibleQualityFallback
+        ? `Loaded original geometry where this browser could not decode a compressed quality variant.`
         : '',
     });
     restoreViewerPose(viewerPose);
@@ -2781,11 +2859,11 @@ async function appendLibraryModelsToScene(models) {
   ui.libraryLoad.disabled = true;
   ui.emptyModelLoad.disabled = true;
   const prepared = [];
-  let usedCompatibleHeartFallback = false;
+  let usedCompatibleQualityFallback = false;
   try {
     for (const [index, model] of additions.entries()) {
       const assetModel = compatibleLibraryModelAsset(model);
-      usedCompatibleHeartFallback ||= assetModel.file !== model.file;
+      usedCompatibleQualityFallback ||= assetModel.file !== model.file;
       setStatus(`Adding ${model.label} (${index + 1}/${additions.length})…`);
       setModelLoadProgress(`Downloading ${model.system} · ${index + 1} of ${additions.length}`, (index / additions.length) * 100);
       const blob = await fetchECGSupportModelBlob(assetModel, (fraction) => {
@@ -2801,7 +2879,7 @@ async function appendLibraryModelsToScene(models) {
       root.name = model.system;
       setModelLoadProgress(`Applying materials · ${model.system} · ${index + 1} of ${additions.length}`);
       const heart = isHeartModelId(model.id);
-      const textureVariant = heart ? heartTextureVariant(model.id) : 'original';
+      const textureVariant = modelQuality(model);
       await applySourceMaterials(root, { heart, textureVariant });
       prepared.push({
         model,
@@ -2836,8 +2914,8 @@ async function appendLibraryModelsToScene(models) {
     renderTree(ui.search.value);
     if (selectedNode) updateInspector(selectedNode);
     setStatus(`${loadedLibraryModels.length} models loaded`);
-    showToast(usedCompatibleHeartFallback
-      ? `Loaded ${additions.filter((model) => ['Heart Super Lite', 'Heart Extreme Lite'].includes(model.system)).map((model) => model.system).join(' and ')} with the compatible Lite mesh for this browser.`
+    showToast(usedCompatibleQualityFallback
+      ? 'Loaded original geometry where this browser could not decode a compressed quality variant.'
       : `Added ${additions.map((model) => model.system).join(' and ')} for ECG placement.`);
     requestRender();
     return true;
@@ -2873,7 +2951,8 @@ async function loadBundledHeart() {
 
 function renderLibrarySexOptions() {
   const selection = librarySelectionsBySex.get(selectedLibrarySex);
-  const models = libraryModels.filter((model) => model.model === selectedLibrarySex);
+  syncModelSelectionForQuality(selectedLibrarySex);
+  const models = visibleLibraryModels(selectedLibrarySex);
   ui.library.replaceChildren();
   ui.library.setAttribute('aria-label', `Choose ${selectedLibrarySex.toLowerCase()} anatomy systems`);
   for (const model of models) {
@@ -2884,23 +2963,11 @@ function renderLibrarySexOptions() {
     checkbox.value = model.id;
     checkbox.checked = selection.has(model.id);
     checkbox.addEventListener('change', () => {
-      if (checkbox.checked) {
-        selection.add(model.id);
-        if (isHeartLibraryModel(model)) {
-          for (const otherInput of ui.library.querySelectorAll('input[type="checkbox"]')) {
-            if (otherInput === checkbox) continue;
-            const otherModel = models.find((candidate) => candidate.id === otherInput.value);
-            if (isHeartLibraryModel(otherModel)) {
-              otherInput.checked = false;
-              selection.delete(otherModel.id);
-            }
-          }
-        }
-      }
+      if (checkbox.checked) selection.add(model.id);
       else selection.delete(model.id);
     });
     const name = document.createElement('span');
-    name.textContent = model.system;
+    name.textContent = isHeartLibraryModel(model) ? 'Heart' : model.system;
     label.append(checkbox, name);
     ui.library.append(label);
   }
@@ -2908,7 +2975,7 @@ function renderLibrarySexOptions() {
 
 function renderEmptyModelOptions() {
   const previous = emptyModelSelectionBySex.get(selectedLibrarySex);
-  const models = libraryModels.filter((model) => model.model === selectedLibrarySex);
+  const models = visibleLibraryModels(selectedLibrarySex);
   ui.emptyModelPicker.replaceChildren();
   const emptyOption = document.createElement('option');
   emptyOption.value = '';
@@ -2917,7 +2984,7 @@ function renderEmptyModelOptions() {
   for (const model of models) {
     const option = document.createElement('option');
     option.value = model.id;
-    option.textContent = `${selectedLibrarySex} · ${model.system}`;
+    option.textContent = `${selectedLibrarySex} · ${isHeartLibraryModel(model) ? 'Heart' : model.system}`;
     ui.emptyModelPicker.append(option);
   }
   const selected = models.some((model) => model.id === previous)
@@ -2932,6 +2999,7 @@ function setLibrarySex(sex) {
   selectedLibrarySex = sex;
   el('model-sex-male').setAttribute('aria-pressed', String(sex === 'Male'));
   el('model-sex-female').setAttribute('aria-pressed', String(sex === 'Female'));
+  renderModelQualityControl();
   renderLibrarySexOptions();
   renderEmptyModelOptions();
 }
@@ -2942,6 +3010,7 @@ async function loadModelLibrary() {
     if (!response.ok) throw new Error('Offline model catalog is unavailable.');
     const data = await response.json();
     libraryModels = Array.isArray(data.models) ? data.models : [];
+    renderModelQualityControl();
     renderLibrarySexOptions();
     renderEmptyModelOptions();
     ui.library.setAttribute('aria-busy', 'false');
@@ -3074,6 +3143,10 @@ ui.input.addEventListener('change', async () => { await loadFiles(ui.input.files
 ui.libraryLoad.addEventListener('click', () => loadSelectedLibraryModels());
 el('model-sex-male').addEventListener('click', () => setLibrarySex('Male'));
 el('model-sex-female').addEventListener('click', () => setLibrarySex('Female'));
+ui.modelQuality?.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-model-quality]');
+  if (button && !button.disabled) setModelQuality(button.dataset.modelQuality);
+});
 ui.emptyModelPicker.addEventListener('change', () => {
   emptyModelSelectionBySex.set(selectedLibrarySex, ui.emptyModelPicker.value);
 });

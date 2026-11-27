@@ -178,6 +178,7 @@ def main() -> None:
         "--out", str(ROOT / "public/models/conduction-node-geometry.json"),
     ], check=True)
     subprocess.run([sys.executable, str(ROOT / "tools/dedupe_source_textures.py")], check=True)
+    subprocess.run([sys.executable, str(ROOT / "tools/build_model_quality_variants.py")], check=True)
 
 
 if __name__ == "__main__":

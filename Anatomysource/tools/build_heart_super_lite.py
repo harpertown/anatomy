@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a lower-triangle, compressed male heart and compact source textures."""
+"""Build a compact, topology-preserving male heart and texture tiers."""
 
 from __future__ import annotations
 
@@ -9,19 +9,17 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from build_heart_lite import ROOT
+from build_heart_lite import ROOT, SOURCE, prepare_glb
 
 
 OUTPUT = ROOT / "public/models/catalog/male-heart-super-lite.glb"
 LITE_SOURCE = ROOT / "public/models/catalog/male-heart-lite.glb"
 TEXTURE_DIRECTORY = ROOT / "public/models/textures"
-SIMPLIFICATION_RATIO = "0.80"
-SIMPLIFICATION_ERROR = "0.003"
 POSITION_QUANTIZATION_BITS = "16"
-ATTRIBUTE_QUANTIZATION_BITS = "8"
+ATTRIBUTE_QUANTIZATION_BITS = "16"
 TEXTURE_TIERS = {
     "lite": ("2048", "86", "88"),
-    "superlite": ("1536", "80", "84"),
+    "superlite": ("1200", "80", "84"),
     "extremelite": ("1024", "72", "78"),
 }
 
@@ -71,24 +69,14 @@ def build_heart_texture_tiers(document: dict) -> dict[str, int]:
 def main() -> None:
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="heart-super-lite-") as temp_dir:
-        simplified_source = Path(temp_dir) / "male-heart-super-lite-simplified.glb"
-        subprocess.run(
-            [
-                "npx", "--yes", "@gltf-transform/cli", "simplify",
-                str(LITE_SOURCE), str(simplified_source),
-                "--ratio", SIMPLIFICATION_RATIO,
-                "--error", SIMPLIFICATION_ERROR,
-                "--lock-border", "true",
-            ],
-            check=True,
-            cwd=ROOT,
-        )
+        clean_source = Path(temp_dir) / "male-heart-clean.glb"
+        prepare_glb(SOURCE, clean_source)
         texture_tier_sizes = build_heart_texture_tiers(read_glb_document(LITE_SOURCE))
         subprocess.run(
             [
                 "npx", "--yes", "@gltf-transform/cli", "meshopt",
-                str(simplified_source), str(OUTPUT),
-                "--level", "high",
+                str(clean_source), str(OUTPUT),
+                "--level", "medium",
                 "--quantization-volume", "scene",
                 "--quantize-position", POSITION_QUANTIZATION_BITS,
                 "--quantize-normal", ATTRIBUTE_QUANTIZATION_BITS,
