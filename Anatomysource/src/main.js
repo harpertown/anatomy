@@ -1811,7 +1811,7 @@ function applyDetailedPreviewMaterials(root) {
         // Detailed-model atlases can encode layer coverage in alpha that makes
         // otherwise valid gallery surfaces disappear under glTF BLEND rules.
         // Keep the recovered color atlas and show the complete authored mesh.
-        replacement = new THREE.MeshBasicMaterial({
+        replacement = new THREE.MeshLambertMaterial({
           map: source.map || null,
           color: source.color || new THREE.Color('#ffffff'),
           vertexColors: source.vertexColors,
@@ -1819,6 +1819,7 @@ function applyDetailedPreviewMaterials(root) {
           transparent: false,
           opacity: 1,
           depthWrite: true,
+          emissive: 0x242424,
         });
         replacement.name = source.name;
         replacements.set(source, replacement);
