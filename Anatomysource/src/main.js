@@ -3215,28 +3215,11 @@ function renderDetailedModels(query = '') {
       parts.append(summary, list);
       body.append(parts);
     }
-    const status = document.createElement('p');
-    const availableTextureCount = Array.isArray(model.textureBuffersAvailable)
-      ? model.textureBuffersAvailable.length
-      : 0;
-    status.className = `detailed-card-status${model.geometryAvailable || model.texturesAvailable ? ' available' : ''}`;
-    if (model.platformComplete && model.platform === 'macOS') {
-      status.textContent = 'Mesh and macOS texture recovered · browser color and alpha maps ready';
-    } else if (model.geometryAvailable && availableTextureCount) {
-      status.textContent = `Geometry and ${availableTextureCount} texture payload${availableTextureCount === 1 ? '' : 's'} recovered · original app materials`;
-    } else if (model.geometryAvailable) {
-      status.textContent = 'Geometry recovered · no texture payloads recovered';
-    } else if (availableTextureCount) {
-      status.textContent = `${availableTextureCount} texture payload${availableTextureCount === 1 ? '' : 's'} recovered · geometry unavailable`;
-    } else {
-      status.textContent = 'App metadata and thumbnail available · model files not cached';
-    }
-    body.append(status);
     const action = document.createElement('button');
     action.className = 'detailed-card-action';
     action.type = 'button';
     action.disabled = !model.geometryAvailable;
-    action.textContent = model.geometryAvailable ? 'Open textured model' : 'Model data unavailable';
+    action.textContent = model.geometryAvailable ? 'Open model' : 'Model data unavailable';
     if (model.geometryAvailable) action.addEventListener('click', () => loadDetailedModel(model, action));
     body.append(action);
     card.append(imageWrap, body);
@@ -3500,7 +3483,7 @@ async function loadDetailedModel(model, button) {
     showToast(error.message || `Could not load ${model.displayTitle || model.title}.`, 'error');
   } finally {
     button.disabled = false;
-    button.textContent = 'Open textured model';
+    button.textContent = 'Open model';
   }
 }
 el('open-detailed-models').addEventListener('click', openDetailedGallery);
