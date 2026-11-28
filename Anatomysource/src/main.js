@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+import { createDetailedTransparency } from './detailed-transparency.js';
 import './style.css';
 
 function createGLTFLoader(manager) {
@@ -76,6 +77,7 @@ renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.NoToneMapping;
 renderer.toneMappingExposure = 1;
+const detailedTransparency = createDetailedTransparency(renderer);
 
 let heartEnvironmentPromise;
 let sourceIblPromise;
@@ -203,36 +205,6 @@ const sourceDirectionalLights = [
   { direction: [0.710924, 0.015361, 0.703101], intensity: 0.5 },
   { direction: [0.930026, -0.075524, -0.359650], intensity: 1.3 },
 ];
-const focusedDetailedLightingIds = new Set([
-  'blood',
-  'blood-air-barrier',
-  'blood-vessels',
-  'bone-cross-section',
-  'bronchial-tree',
-  'cardiac-striated-muscle',
-  'cell-membrane',
-  'cells-of-nervous-tissue',
-]);
-const sourceAmbientLight = new THREE.AmbientLight(0xffffff, 0.4);
-scene.add(sourceAmbientLight);
-const sourceLightObjects = [];
-for (const { direction, intensity } of sourceDirectionalLights) {
-  const light = new THREE.DirectionalLight(0xffffff, intensity);
-  light.position.set(...direction);
-  scene.add(light);
-  sourceLightObjects.push(light);
-}
-function setDetailedLighting(enabled) {
-  // The three KHR_lights_punctual nodes in recovered files sit under an unused
-  // camera node, outside the exported scene roots, so the loader does not add
-  // them to the render scene. Apply the native captured directional lights
-  // directly for detailed copies and keep the native ambient fill as well.
-  sourceAmbientLight.intensity = enabled ? 0.4 : 0;
-  sourceLightObjects.forEach((light, index) => {
-    light.visible = enabled;
-    light.intensity = sourceDirectionalLights[index].intensity;
-  });
-}
 const grid = new THREE.GridHelper(4, 16, 0x344a58, 0x263945);
 grid.position.y = -1.04;
 grid.material.transparent = true;
@@ -252,6 +224,7 @@ const ecgTorsoBlobs = new Map();
 const originalHeartTextureSizes = new Map();
 let ecgSupportVisibility = null;
 let loadedRoot = null;
+let detailedBlendedMaterials = null;
 let modelFileName = '';
 let loadedModelFileBytes = 0;
 let loadedTextureBytes = 0;
@@ -381,6 +354,7 @@ const heartMaterials = new Map();
 const originalHeartTextures = new Map();
 let conductionNodeGeometryPromise;
 let structureDescriptionsPromise;
+let detailedStructureCopyPromise;
 let ecgLandmarksPromise;
 const depolarizationResting = new THREE.Color('#167bd4');
 const depolarizationActive = new THREE.Color('#ec253e');
@@ -1630,7 +1604,7 @@ function getAppliedTextureBytes(root, { heart = false, textureVariant = 'origina
   return [...filenames].reduce((total, filename) => total + (originalHeartTextureSizes.get(filename) || 0), 0);
 }
 
-async function applySourceMaterials(root, { heart = false, detailed = false, textureVariant = 'original', detailedMaterials = [], blendOpacityScale = 1 } = {}) {
+async function applySourceMaterials(root, { heart = false, detailed = false, textureVariant = 'original', detailedMaterials = [] } = {}) {
   const detailedMetadataByName = new Map(detailedMaterials.map((material) => [
     material.name,
     material.extensions?.['3D4M_material'] || {},
@@ -1678,7 +1652,7 @@ async function applySourceMaterials(root, { heart = false, detailed = false, tex
         const clone = material.clone();
         const authoredOpacity = material.userData?.formeOriginalOpacity
           ?? (Number.isFinite(Number(detailedMetadata?.defaultOpacity)) ? Number(detailedMetadata.defaultOpacity) : clone.opacity);
-        clone.opacity = authoredOpacity * (material.transparent && detailedMetadata ? blendOpacityScale : 1);
+        clone.opacity = authoredOpacity;
         if (detailed) {
           // Complete Anatomy draws detailed BLEND materials with OIT and
           // applies source opacity even when glTF marks the surface OPAQUE.
@@ -1706,7 +1680,16 @@ async function applySourceMaterials(root, { heart = false, detailed = false, tex
         }
         const sourceReflection = material.userData?.formeOriginalReflection ?? Number(detailedMetadata?.reflection) ?? 0.55;
         clone.envMapIntensity = sourceIbl ? 0 : 1;
-        clone.side = detailed ? material.side : THREE.DoubleSide;
+        // Complete Anatomy stores its rasterizer cull mode in the vendor
+        // material extension. cullMode 0 means no face culling; the recovered
+        // glTF sets doubleSided=false and would otherwise hide the reverse
+        // faces of the capillary lamina as it rotates.
+        clone.side = detailed && Number(detailedMetadata?.cullMode) === 0
+          ? THREE.DoubleSide
+          : detailed ? material.side : THREE.DoubleSide;
+        // The native transparency pass handles both sides together. Avoid
+        // Three's extra back-face/front-face draw split for these materials.
+        clone.forceSinglePass = detailed && clone.transparent;
         if (detailed) {
           // The native material buffer supplies emission independently; the
           // recovered glTF emissiveFactor is not used by its scene shader.
@@ -1727,9 +1710,6 @@ async function applySourceMaterials(root, { heart = false, detailed = false, tex
           shader.uniforms.formeSourceSpecularIbl = { value: sourceIbl?.specular || null };
           shader.uniforms.formeSourceBrdfLut = { value: sourceIbl?.brdf || null };
           shader.uniforms.formeSourceReflectance = { value: sourceReflection };
-          shader.uniforms.formeSourceOpacityScale = {
-            value: detailed && (material.transparent || authoredOpacity < 1) ? blendOpacityScale : 1,
-          };
           shader.uniforms.formeSourceSssIntensity = { value: sssIntensity };
           shader.uniforms.formeSourceSssColor = { value: sssColor };
           shader.uniforms.formeSourceIblEnabled = { value: sourceIbl ? 1 : 0 };
@@ -1751,7 +1731,7 @@ async function applySourceMaterials(root, { heart = false, detailed = false, tex
               ? `#ifdef USE_MAP
                    vec4 formeSourceMapTexel = texture2D(map, vMapUv);
                    diffuseColor.rgb *= formeSourceMapTexel.rgb;
-                   diffuseColor.a = clamp(min(diffuseColor.a, formeSourceMapTexel.a) * formeSourceOpacityScale, 0.0, 1.0);
+                   diffuseColor.a = min(diffuseColor.a, formeSourceMapTexel.a);
                  #endif`
               : '#include <map_fragment>';
           shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', mapFragment);
@@ -1764,7 +1744,6 @@ async function applySourceMaterials(root, { heart = false, detailed = false, tex
              uniform samplerCube formeSourceSpecularIbl;
              uniform sampler2D formeSourceBrdfLut;
              uniform float formeSourceReflectance;
-             uniform float formeSourceOpacityScale;
              uniform float formeSourceSssIntensity;
              uniform vec3 formeSourceSssColor;
              uniform float formeSourceIblEnabled;
@@ -1872,118 +1851,6 @@ async function applySourceMaterials(root, { heart = false, detailed = false, tex
   originals.forEach((material) => material.dispose());
 }
 
-async function applyDetailedPreviewMaterials(root, sourceMaterials = [], blendOpacityScale = 1) {
-  let environment = null;
-  try { environment = await loadHeartEnvironment(); } catch (error) {
-    console.warn('Could not load the source reflection environment for this detailed model.', error);
-  }
-  const metadataByName = new Map(sourceMaterials.map((material) => [
-    material.name,
-    material.extensions?.['3D4M_material'] || {},
-  ]));
-  const replacements = new Map();
-  root.traverse((object) => {
-    if (!object.isMesh) return;
-    const sources = Array.isArray(object.material) ? object.material : [object.material];
-    const materials = sources.map((source) => {
-      if (!source) return source;
-      let replacement = replacements.get(source);
-      if (!replacement) {
-        const metadata = metadataByName.get(source.name) || {};
-        const baseColorMap = source.map || null;
-        const authoredOpacity = Number.isFinite(Number(metadata.defaultOpacity))
-          ? Number(metadata.defaultOpacity) * blendOpacityScale
-          : source.opacity;
-        const opacity = Math.min(1, Math.max(0, authoredOpacity));
-        const reflection = Number.isFinite(Number(metadata.reflection)) ? Number(metadata.reflection) : 0.55;
-        const roughness = Number.isFinite(source.roughness) ? source.roughness : 0.5;
-        const sssIntensity = THREE.MathUtils.clamp(Number(metadata.sssIntensity) || 0, 0, 1);
-        const sssColorValues = String(metadata.sssColor || '').match(/[+-]?(?:\d*\.)?\d+/g)?.map(Number) || [];
-        const sssColor = sssColorValues.length >= 3
-          ? new THREE.Color(sssColorValues[0], sssColorValues[1], sssColorValues[2])
-          : new THREE.Color(0, 0, 0);
-        const hasSourceTranslucency = sssIntensity > 0 && Math.max(sssColor.r, sssColor.g, sssColor.b) > 0.01;
-        // REA's native GGX shader derives dielectric F0 as 0.16 × reflectance².
-        // Three exposes that same Fresnel response through the material IOR.
-        const sourceF0 = THREE.MathUtils.clamp(0.16 * reflection * reflection, 0, 0.99);
-        const rootF0 = Math.sqrt(sourceF0);
-        const sourceIor = (1 + rootF0) / (1 - rootF0);
-        replacement = new THREE.MeshPhysicalMaterial({
-          map: baseColorMap,
-          normalMap: source.normalMap || null,
-          normalScale: source.normalScale?.clone?.() || new THREE.Vector2(1, 1),
-          roughnessMap: source.roughnessMap || null,
-          metalnessMap: source.metalnessMap || null,
-          aoMap: source.aoMap || null,
-          aoMapIntensity: Number.isFinite(source.aoMapIntensity) ? source.aoMapIntensity : 1,
-          emissiveMap: source.emissiveMap || null,
-          emissive: source.emissive?.clone?.() || new THREE.Color(0x000000),
-          // The native shader consumes its own emission buffer, while the
-          // exported glTF emissive factors act as fallback tints in these
-          // recovered detailed files and wash the atlas out if added again.
-          emissiveIntensity: 0,
-          alphaMap: source.alphaMap || null,
-          alphaTest: Number.isFinite(source.alphaTest) ? source.alphaTest : 0,
-          color: source.color || new THREE.Color('#ffffff'),
-          vertexColors: source.vertexColors,
-          // Complete Anatomy routes these source SSS values through a separate
-          // TranslucencyPass. A low physical transmission term approximates
-          // that pass for thin surfaces without changing authored alpha.
-          transmission: hasSourceTranslucency ? sssIntensity * 0.25 : 0,
-          thickness: hasSourceTranslucency && Number.isFinite(Number(metadata.sssThickness))
-            ? Number(metadata.sssThickness)
-            : 0,
-          attenuationColor: sssColor,
-          attenuationDistance: hasSourceTranslucency && Number.isFinite(Number(metadata.sssWidth))
-            ? Number(metadata.sssWidth)
-            : Infinity,
-          envMap: environment,
-          // Reflectance is already represented by the matched Fresnel IOR;
-          // avoid multiplying it a second time into the environment response.
-          // The eight focused models use source IBL in the custom PBR path.
-          // Other gallery entries retain this lower-strength PMREM fallback.
-          envMapIntensity: 0.35,
-          // Preserve the native glTF's front/back-face setting. The app only
-          // enables DOUBLE_SIDE for materials that request it.
-          side: Number.isFinite(source.side) ? source.side : THREE.FrontSide,
-          transparent: source.transparent || opacity < 1,
-          opacity,
-          // Native OIT composites intersecting layers per pixel. For this
-          // object-sorted fallback, keep standard transparent depth testing
-          // without writing depth so later layers are not incorrectly hidden.
-          depthWrite: !(source.transparent || opacity < 1),
-          roughness,
-          metalness: Number.isFinite(source.metalness) ? source.metalness : 0,
-          // The source shader uses a single GGX/Fresnel lobe. A second
-          // clearcoat lobe adds highlights that are absent from the app.
-          clearcoat: 0,
-          ior: sourceIor,
-        });
-        replacement.name = source.name;
-        replacement.onBeforeCompile = (shader) => {
-          shader.uniforms.formeDetailedExposure = { value: sourceRenderTuning.exposure };
-          shader.fragmentShader = shader.fragmentShader.replace(
-            'void main() {',
-            'uniform float formeDetailedExposure;\nvoid main() {'
-          );
-          // The captured native post-process applies 1-exp(-color*exposure),
-          // then gamma correction. Three's outputColorSpace handles the
-          // latter; this restores the exposure curve in the material pass.
-          shader.fragmentShader = shader.fragmentShader.replace(
-            '#include <tonemapping_fragment>',
-            'gl_FragColor.rgb = vec3(1.0) - exp(-gl_FragColor.rgb * formeDetailedExposure);\n#include <tonemapping_fragment>'
-          );
-        };
-        replacement.customProgramCacheKey = () => 'forme-detailed-source-exposure-v1';
-        replacements.set(source, replacement);
-      }
-      return replacement;
-    });
-    object.material = Array.isArray(object.material) ? materials : materials[0];
-  });
-  replacements.forEach((replacement, source) => { if (source !== replacement) source.dispose(); });
-}
-
 function releaseSourceShaderUniforms(root) {
   root.traverse((object) => {
     const materials = Array.isArray(object.material) ? object.material : [object.material];
@@ -2028,6 +1895,10 @@ function fitBounds(bounds) {
   };
 }
 
+function formatSceneTreeName(name) {
+  return modelGroup?.userData?.detailedModel ? name.replace(/_/g, ' ') : name;
+}
+
 function collectNodes(root) {
   const entries = [];
   root.traverse((object) => {
@@ -2035,7 +1906,8 @@ function collectNodes(root) {
     const isMesh = object.isMesh || object.isSkinnedMesh || object.isInstancedMesh;
     const hasChildren = object.children.length > 0;
     if (!isMesh && !hasChildren && !object.name) return;
-    const name = object.userData?.formeDisplayName?.trim() || object.name?.trim() || (isMesh ? `Unnamed ${object.type}` : object.type);
+    const sourceName = object.userData?.formeDisplayName?.trim() || object.name?.trim() || (isMesh ? `Unnamed ${object.type}` : object.type);
+    const name = formatSceneTreeName(sourceName);
     const parentName = object.parent?.userData?.formeDisplayName?.trim() || object.parent?.name?.trim();
     const duplicateWrapper = !isMesh && object.parent !== root && parentName === name;
     if (duplicateWrapper) return;
@@ -2052,7 +1924,7 @@ function collectNodes(root) {
       const grandparentName = parent.parent?.userData?.formeDisplayName?.trim() || parent.parent?.name?.trim();
       const parentIsMesh = parent.isMesh || parent.isSkinnedMesh || parent.isInstancedMesh;
       const duplicateParent = !parentIsMesh && parent.parent !== root && parentName === grandparentName;
-      if (parentName && !duplicateParent) ancestors.unshift(parentName);
+      if (parentName && !duplicateParent) ancestors.unshift(formatSceneTreeName(parentName));
     }
     entries.push({ object, id: object.id, name, depth, path: [...ancestors, name].join(' / '), isMesh });
   });
@@ -2352,22 +2224,14 @@ function renderStructureDescription(object, entry, name) {
   loading.textContent = 'Loading description…';
   container.append(loading);
 
-  if (!structureDescriptionsPromise) {
-    structureDescriptionsPromise = fetch('/models/structure-descriptions.json').then((response) => {
-      if (!response.ok) throw new Error('Descriptions are unavailable');
-      return response.json();
-    });
-  }
-
-  structureDescriptionsPromise.then((index) => {
+  const renderSections = (sections) => {
     if (selectedNode !== object) return;
-    const description = index[sourceId] || Object.values(index).find((item) => item.name === name);
     container.replaceChildren();
-    if (!description?.sections?.length) {
+    if (!sections?.length) {
       container.hidden = true;
       return;
     }
-    for (const section of description.sections) {
+    for (const section of sections) {
       const block = document.createElement('section');
       block.className = 'description-section';
       const heading = document.createElement('h4');
@@ -2378,11 +2242,47 @@ function renderStructureDescription(object, entry, name) {
       block.append(heading, text);
       container.append(block);
     }
-  }).catch(() => {
-    if (selectedNode !== object) return;
-    container.hidden = true;
-    structureDescriptionsPromise = null;
-  });
+  };
+
+  const renderGeneralDescription = () => {
+    if (!structureDescriptionsPromise) {
+      structureDescriptionsPromise = fetch('/models/structure-descriptions.json').then((response) => {
+        if (!response.ok) throw new Error('Descriptions are unavailable');
+        return response.json();
+      });
+    }
+    structureDescriptionsPromise.then((index) => {
+      if (selectedNode !== object) return;
+      const description = index[sourceId] || Object.values(index).find((item) => item.name === name);
+      renderSections(description?.sections);
+    }).catch(() => {
+      if (selectedNode !== object) return;
+      container.hidden = true;
+      structureDescriptionsPromise = null;
+    });
+  };
+
+  const structureId = object.userData?.structureId;
+  if (modelGroup?.userData.detailedModelId && structureId) {
+    if (!detailedStructureCopyPromise) {
+      detailedStructureCopyPromise = fetch('/models/detailed/structure-copy.json').then((response) => {
+        if (!response.ok) throw new Error('Detailed model copy is unavailable');
+        return response.json();
+      }).then((data) => data.structureCopy || {});
+    }
+    detailedStructureCopyPromise.then((index) => {
+      if (selectedNode !== object) return;
+      const copy = index[structureId];
+      if (copy?.sections?.length) renderSections(copy.sections);
+      else renderGeneralDescription();
+    }).catch(() => {
+      detailedStructureCopyPromise = null;
+      renderGeneralDescription();
+    });
+    return;
+  }
+
+  renderGeneralDescription();
 }
 
 function resetCamera() {
@@ -2683,9 +2583,6 @@ async function parseModel(files) {
 }
 
 async function installLoadedScene({ root, displayName = '', catalogId = '', detailedModelId = '', catalogModels = [], modelCount = 1, animations = [], heartRoot = null, heartModelId = catalogId, blobUrls = [], modelFileBytes = 0, textureBytes = 0, loadNotice = '', preferredViewDirection = null, preferredFieldOfView = 38, preferredDistanceScale = 0.62 } = {}) {
-  // With an environment map, the native shader uses IBL diffuse and specular
-  // as its ambient term; its 0.4 ambient color is only used without IBL.
-  setDetailedLighting(false);
   clearSelectionHighlight();
   if (modelGroup?.userData.blobUrls) modelGroup.userData.blobUrls.forEach(URL.revokeObjectURL);
   if (mixer && loadedRoot) {
@@ -2733,11 +2630,13 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', deta
   ui.ecg.setAttribute('aria-pressed', 'false');
   modelGroup = new THREE.Group();
   modelGroup.name = 'Loaded anatomy fit';
-  modelGroup.userData.detailedModel = focusedDetailedLightingIds.has(detailedModelId);
+  modelGroup.userData.detailedModel = Boolean(detailedModelId);
+  modelGroup.userData.detailedModelId = detailedModelId;
   modelGroup.userData.preferredViewDirection = preferredViewDirection;
   modelGroup.userData.preferredFieldOfView = preferredFieldOfView;
   modelGroup.userData.preferredDistanceScale = preferredDistanceScale;
   loadedRoot = root;
+  detailedBlendedMaterials = detailedModelId ? detailedTransparency?.prepare(root) : null;
   invalidateVisibleStructureMeshes();
   modelGroup.add(loadedRoot);
   scene.add(modelGroup);
@@ -2811,7 +2710,7 @@ async function installLoadedScene({ root, displayName = '', catalogId = '', deta
   requestRender();
 }
 
-async function loadFiles(fileList, { displayName = '', catalogId = '', detailedModelId = '', textureBytes: providedTextureBytes = 0, detailedMaterials = [], detailedVisibleStructureIds = [], preferredViewDirection = null, preferredFieldOfView = 38, preferredDistanceScale = 0.88, blendOpacityScale = 1 } = {}) {
+async function loadFiles(fileList, { displayName = '', catalogId = '', detailedModelId = '', textureBytes: providedTextureBytes = 0, detailedMaterials = [], detailedVisibleStructureIds = [], preferredViewDirection = null, preferredFieldOfView = 38, preferredDistanceScale = 0.88 } = {}) {
   const files = Array.from(fileList || []);
   if (!files.length) return;
   let modelFileBytes = files.reduce((total, file) => total + (file.size || 0), 0);
@@ -2823,6 +2722,12 @@ async function loadFiles(fileList, { displayName = '', catalogId = '', detailedM
     if (displayName.startsWith('Detailed · ')) {
       gltf.scene.traverse((object) => {
         const geometry = object.isMesh ? object.geometry : null;
+        if (geometry) {
+          // Recovered detailed meshes can contain thin, overlapping shells
+          // whose authored bounds are too tight for stable orbit culling.
+          // Let the GPU clip those shells instead of dropping the whole mesh.
+          object.frustumCulled = false;
+        }
         if (geometry?.attributes.position && !geometry.attributes.normal) {
           geometry.computeVertexNormals();
         }
@@ -2846,17 +2751,7 @@ async function loadFiles(fileList, { displayName = '', catalogId = '', detailedM
     else if (catalogId) await applySourceMaterials(gltf.scene, {
       textureVariant: modelQuality(libraryModels.find((model) => model.id === catalogId)),
     });
-    else if (displayName.startsWith('Detailed · ')) {
-      if (focusedDetailedLightingIds.has(detailedModelId)) {
-        await applySourceMaterials(gltf.scene, {
-          detailed: true,
-          detailedMaterials,
-          blendOpacityScale,
-        });
-      } else {
-        await applyDetailedPreviewMaterials(gltf.scene, detailedMaterials, blendOpacityScale);
-      }
-    }
+    else if (detailedModelId) await applySourceMaterials(gltf.scene, { detailed: true, detailedMaterials });
     await installLoadedScene({
       root: gltf.scene,
       displayName: displayName || modelFile.name,
@@ -3421,6 +3316,8 @@ async function loadDetailedModel(model, button) {
     }
     for (const material of gltf.materials || []) {
       if (opaqueMaterialIndexes.has(gltf.materials.indexOf(material))) material.alphaMode = 'OPAQUE';
+      // Keep the authored normal texture and its signed strength when present.
+      if (material.normalTexture) continue;
       const baseColorIndex = material.pbrMetallicRoughness?.baseColorTexture?.index;
       const baseColorName = gltf.textures?.[baseColorIndex]?.name;
       if (!baseColorName) continue;
@@ -3440,7 +3337,6 @@ async function loadDetailedModel(model, button) {
     // extra room better matches the live app once the left scene panel narrows
     // the local canvas.
     let preferredDistanceScale = 0.88;
-    let blendOpacityScale = 1;
     if (cameraNode?.matrix?.length === 16) {
       // A camera's local +Z axis points from the viewed model back toward the
       // camera. fitModel needs that position direction, not the camera's -Z
@@ -3464,9 +3360,6 @@ async function loadDetailedModel(model, button) {
       // model without turning all the way around to the outer wall.
       preferredViewDirection = new THREE.Vector3(-0.72, 0.32, 0.62).normalize();
       preferredDistanceScale = 1.25;
-      // The native app resolves Blood's layered BLEND surfaces with OIT; a
-      // modest alpha lift compensates for the viewer's per-object sorting.
-      blendOpacityScale = 1.5;
     }
     if (model.id === 'hepatic-lobule') {
       // The native detail presents the opposite cutaway face and uses a
@@ -3493,9 +3386,6 @@ async function loadDetailedModel(model, button) {
     }
     else if (model.id === 'synapse') {
       preferredDistanceScale = 1.25;
-      // The live Synapse model encodes its translucent areas in the atlas;
-      // retain authored BLEND opacity so the opaque peach process stays solid.
-      blendOpacityScale = 1;
     }
     else if (model.id === 'tooth') {
       // The app presents the sectioned face of the tooth directly. Its
@@ -3503,17 +3393,7 @@ async function loadDetailedModel(model, button) {
       preferredViewDirection = new THREE.Vector3(0, 0.08, 1);
       preferredDistanceScale = 1.15;
     }
-    if (model.id === 'photoreceptor-cells') {
-      // Keep the authored opacity from the source materials and alpha maps.
-      // A global reduction made the overlapping retina layers look washed out.
-      blendOpacityScale = 1;
-    }
-    if (model.id === 'retinal-layers') {
-      // Preserve the app's authored layer opacity for the layered retina.
-      blendOpacityScale = 1;
-      // Keep the broad retinal section framed inside the narrower viewer.
-      preferredDistanceScale = 0.78;
-    }
+    if (model.id === 'retinal-layers') preferredDistanceScale = 0.78;
     if (model.id === 'transverse-colon') preferredDistanceScale = 0.9;
     if (model.id === 'cardiac-striated-muscle') preferredDistanceScale = 1.15;
     // The live Blood Air Barrier uses nearly opaque layers with alpha carried
@@ -3523,27 +3403,10 @@ async function loadDetailedModel(model, button) {
       preferredDistanceScale = 1.1;
     }
     if (model.id === 'blood-vessels') preferredDistanceScale = 1.15;
-    const focusedBlendOpacityScales = {
-      'blood-air-barrier': 1.5,
-      'blood-vessels': 1.3,
-      'bone-cross-section': 1.35,
-      'bronchial-tree': 1.5,
-      'cardiac-striated-muscle': 1.12,
-      'cell-membrane': 1.6,
-      'cells-of-nervous-tissue': 1.6,
-    };
-    if (Object.hasOwn(focusedBlendOpacityScales, model.id)) {
-      // Native OIT preserves the color of overlapping layers. With per-mesh
-      // sorting, these model-specific lifts keep the recovered tissues vivid.
-      blendOpacityScale = focusedBlendOpacityScales[model.id];
-    }
-    if (model.id === 'blood') blendOpacityScale = 2.2;
-    if (model.id === 'bone-cross-section') blendOpacityScale = 1.35;
     if (model.id === 'bone-cross-section') preferredDistanceScale = 1.1;
     if (model.id === 'bronchial-tree') preferredDistanceScale = 1.05;
     if (model.id === 'cell-membrane') preferredDistanceScale = 1.15;
     if (model.id === 'cells-of-nervous-tissue') preferredDistanceScale = 1.12;
-    if (model.id === 'renal-corpuscle') blendOpacityScale = 0.68;
     const authoredFieldOfView = gltf.cameras?.[cameraNode?.camera]?.perspective?.yfov;
     if (Number.isFinite(authoredFieldOfView)) preferredFieldOfView = THREE.MathUtils.radToDeg(authoredFieldOfView);
     const bufferData = await Promise.all((gltf.buffers || []).map(async (buffer) => {
@@ -3632,7 +3495,6 @@ async function loadDetailedModel(model, button) {
       preferredViewDirection,
       preferredFieldOfView,
       preferredDistanceScale,
-      blendOpacityScale,
     });
   } catch (error) {
     showToast(error.message || `Could not load ${model.displayTitle || model.title}.`, 'error');
@@ -3661,21 +3523,23 @@ function resize() {
 function updateDetailedTransparencyOrder() {
   if (!modelGroup?.userData.detailedModel || !loadedRoot) return;
   loadedRoot.updateWorldMatrix(true, true);
+  camera.updateMatrixWorld();
   const projectedCenter = new THREE.Vector3();
   loadedRoot.traverse((object) => {
     if (!object.isMesh) return;
     const materials = Array.isArray(object.material) ? object.material : [object.material];
-    const isBlended = materials.some((material) => material?.transparent);
+    const isBlended = materials.some((material) => material?.transparent || (material?.opacity ?? 1) < 1);
     if (!isBlended) {
       object.renderOrder = 0;
       return;
     }
     const geometry = object.geometry;
     if (!geometry.boundingSphere) geometry.computeBoundingSphere();
+    // Three.js sorts transparent meshes by their object origins. Recovered
+    // detail meshes can have offset pivots, so sort by the actual bounds
+    // center in projected depth to keep overlapping layers in back-to-front
+    // order as the camera moves.
     projectedCenter.copy(geometry.boundingSphere.center).applyMatrix4(object.matrixWorld).project(camera);
-    // The native renderer uses OIT for alpha-blended detailed materials. A
-    // per-mesh back-to-front center sort is a useful fallback for Three's
-    // object-level alpha sorting when those source surfaces overlap.
     object.renderOrder = -projectedCenter.z;
   });
 }
@@ -3702,14 +3566,15 @@ function render(frameTime = performance.now()) {
     fpsWindowFrames = 1;
   }
   controls.update();
-  updateDetailedTransparencyOrder();
+  if (!detailedBlendedMaterials?.size) updateDetailedTransparencyOrder();
   const delta = Math.min(Math.max((frameTime - previousFrameTime) / 1000, 0), 0.05);
   previousFrameTime = frameTime;
   if (animationPlaying) mixer?.update(delta);
   if (animationPlaying && ecgLeadOverlay?.visible) ecgLeadOverlay.userData.updateAnimatedSurfaceGuides?.(frameTime);
   updateConductionOverlay(delta);
   updateSelectionHighlight();
-  renderer.render(scene, camera);
+  if (detailedBlendedMaterials?.size) detailedTransparency.render(scene, camera, detailedBlendedMaterials);
+  else renderer.render(scene, camera);
   const overlayUsesWallClock = !animationAction && depolarizationShell?.visible;
   if (animationPlaying || overlayUsesWallClock) requestRender();
 }
