@@ -104,14 +104,21 @@ def extract_preview_textures(source: dict, source_dir: Path, public_dir: Path) -
             continue
         image_name = f"texture-{index}.png"
         destination = texture_dir / image_name
-        if not destination.is_file():
+        source_size = (dds["width"], dds["height"])
+        existing_size = None
+        if destination.is_file():
+            with destination.open("rb") as existing:
+                header = existing.read(24)
+            if len(header) >= 24 and header[:8] == b"\x89PNG\r\n\x1a\n":
+                existing_size = struct.unpack(">II", header[16:24])
+        if existing_size != source_size:
             temporary = texture_dir / f".texture-{index}.dds"
             temporary.write_bytes(
                 dds_header(dds["width"], dds["height"], len(payload), dds["compression"]) + payload
             )
             try:
                 subprocess.run(
-                    [ffmpeg, "-v", "error", "-i", str(temporary), "-vf", "scale=1024:1024:flags=lanczos", "-frames:v", "1", "-y", str(destination)],
+                    [ffmpeg, "-v", "error", "-i", str(temporary), "-frames:v", "1", "-y", str(destination)],
                     check=True,
                 )
             finally:
@@ -123,6 +130,36 @@ def extract_preview_textures(source: dict, source_dir: Path, public_dir: Path) -
             clean_texture["sampler"] = texture["sampler"]
         textures.append(clean_texture)
     return images, textures
+
+
+def default_visible_structure_ids(assets: dict) -> list[str]:
+    """Resolve the app's selected composition layer to source structure IDs."""
+    compositions = assets.get("compositions", [])
+    if not compositions:
+        return [item["id"] for item in assets.get("structures", []) if item.get("id")]
+    composition = compositions[0]
+    layers = composition.get("layers", [])
+    layer_index = composition.get("default_layer", 0)
+    if not isinstance(layer_index, int) or not 0 <= layer_index < len(layers):
+        layer_index = 0
+    visible_indexes: list[int] = []
+
+    def visit(value) -> None:
+        if isinstance(value, int):
+            visible_indexes.append(value)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+        elif isinstance(value, dict):
+            visit(value.get("children", []))
+
+    visit(layers[layer_index].get("children", []))
+    structures = assets.get("structures", [])
+    return [
+        structures[index]["id"]
+        for index in dict.fromkeys(visible_indexes)
+        if 0 <= index < len(structures) and structures[index].get("id")
+    ]
 
 
 def make_geometry_preview(source: dict, geometry_buffer_indices: list[int], labels: dict, assets: dict,
@@ -200,6 +237,7 @@ def main() -> int:
         public_dir = PUBLIC_ROOT / slug
         source = read_json(source_dir / "assets.gltf")
         assets = read_json(source_dir / "assets.json")
+        model["defaultVisibleStructureIds"] = default_visible_structure_ids(assets)
         reconstructed_texture_indices = set()
         for index, buffer in enumerate(source.get("buffers", [])):
             uri = buffer.get("uri")
